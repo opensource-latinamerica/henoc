@@ -1,0 +1,47 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>images/background1.png</file>
+        <file>images/background2.png</file>
+        <file>images/background3.png</file>
+        <file>images/background4.png</file>
+        <file>images/bold.png</file>
+        <file>images/bringtofront.png</file>
+        <file>images/delete.png</file>
+        <file>images/floodfill.png</file>
+        <file>images/italic.png</file>
+        <file>images/linecolor.png</file>
+        <file>images/linepointer.png</file>
+        <file>images/pointer.png</file>
+        <file>images/sendtoback.png</file>
+        <file>images/textpointer.png</file>
+        <file>images/underline.png</file>
+    </qresource>
+    <qresource prefix="/Botones" >
+        <file>images/Botones/Config.png</file>
+        <file>images/Botones/Enoch21.JPG</file>
+        <file>images/Botones/Folder-Secure.png</file>
+        <file>images/Botones/My-Documents.png</file>
+        <file>images/Botones/SSave.png</file>
+        <file>images/Botones/Symbol-Stop.png</file>
+        <file>images/Botones/catapulta.png</file>
+        <file>images/Botones/catapulta2.jpg</file>
+        <file>images/Botones/circle.png</file>
+        <file>images/Botones/Config.png</file>
+        <file>images/Botones/dr-boton_linea.jpg</file>
+        <file>images/Botones/editredo.png</file>
+        <file>images/Botones/enmarca.png</file>
+        <file>images/Botones/enmarca2.png</file>
+        <file>images/Botones/enmarcax.png</file>
+        <file>images/Botones/fileclose.png</file>
+        <file>images/Botones/fileopen.png</file>
+        <file>images/Botones/folder.png</file>
+        <file>images/Botones/ok.png</file>
+        <file>images/Botones/rectangle.png</file>
+        <file>images/Botones/remove.png</file>
+        <file>images/Botones/rotateright.png</file>
+        <file>images/Botones/save2.png</file>
+        <file>images/Botones/trash.png</file>
+        <file>images/Botones/update.png</file>
+        <file>images/Botones/wmp.png</file>
+    </qresource>
+</RCC>

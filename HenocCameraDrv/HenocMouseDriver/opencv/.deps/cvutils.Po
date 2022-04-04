@@ -1,0 +1,147 @@
+cvutils.o cvutils.o: cvutils.c /usr/include/sys/time.h \
+  /usr/include/features.h /usr/include/sys/cdefs.h \
+  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+  /usr/include/gnu/stubs-32.h /usr/include/bits/types.h \
+  /usr/lib/gcc/i486-linux-gnu/4.1.2/include/stddef.h \
+  /usr/include/bits/typesizes.h /usr/include/time.h \
+  /usr/include/bits/time.h /usr/include/sys/select.h \
+  /usr/include/bits/select.h /usr/include/bits/sigset.h cvutils.h \
+  ../../../src/rvtk/v4l2.h ../../../src/rvtk/drv-v4l2.h \
+  /usr/include/linux/ioctl.h /usr/include/asm/ioctl.h \
+  /usr/include/asm-i386/ioctl.h /usr/include/asm-generic/ioctl.h \
+  /usr/include/linux/videodev.h /usr/include/linux/videodev2.h \
+  /usr/include/linux/types.h /usr/include/linux/posix_types.h \
+  /usr/include/linux/stddef.h \
+  /usr/lib/gcc/i486-linux-gnu/4.1.2/include/asm/posix_types.h \
+  /usr/include/asm/posix_types.h /usr/include/asm-i386/posix_types.h \
+  /usr/include/asm/types.h /usr/include/asm-i386/types.h \
+  ../../../src/rvtk/fourcc.h ../../../src/rvtk/frame.h \
+  /usr/include/opencv/cv.h /usr/include/opencv/cxcore.h \
+  /usr/include/opencv/cxtypes.h /usr/include/assert.h \
+  /usr/include/stdlib.h /usr/include/sys/types.h /usr/include/endian.h \
+  /usr/include/bits/endian.h /usr/include/sys/sysmacros.h \
+  /usr/include/bits/pthreadtypes.h /usr/include/alloca.h \
+  /usr/include/string.h /usr/include/bits/string.h \
+  /usr/include/bits/string2.h \
+  /usr/lib/gcc/i486-linux-gnu/4.1.2/include/float.h /usr/include/math.h \
+  /usr/include/bits/huge_val.h /usr/include/bits/mathdef.h \
+  /usr/include/bits/mathcalls.h /usr/include/bits/mathinline.h \
+  /usr/include/opencv/cxerror.h /usr/include/opencv/cvver.h \
+  /usr/include/opencv/cvtypes.h /usr/include/opencv/cvcompat.h \
+  /usr/include/opencv/highgui.h
+
+/usr/include/sys/time.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-32.h:
+
+/usr/include/bits/types.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.1.2/include/stddef.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/time.h:
+
+/usr/include/bits/time.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/bits/select.h:
+
+/usr/include/bits/sigset.h:
+
+cvutils.h:
+
+../../../src/rvtk/v4l2.h:
+
+../../../src/rvtk/drv-v4l2.h:
+
+/usr/include/linux/ioctl.h:
+
+/usr/include/asm/ioctl.h:
+
+/usr/include/asm-i386/ioctl.h:
+
+/usr/include/asm-generic/ioctl.h:
+
+/usr/include/linux/videodev.h:
+
+/usr/include/linux/videodev2.h:
+
+/usr/include/linux/types.h:
+
+/usr/include/linux/posix_types.h:
+
+/usr/include/linux/stddef.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.1.2/include/asm/posix_types.h:
+
+/usr/include/asm/posix_types.h:
+
+/usr/include/asm-i386/posix_types.h:
+
+/usr/include/asm/types.h:
+
+/usr/include/asm-i386/types.h:
+
+../../../src/rvtk/fourcc.h:
+
+../../../src/rvtk/frame.h:
+
+/usr/include/opencv/cv.h:
+
+/usr/include/opencv/cxcore.h:
+
+/usr/include/opencv/cxtypes.h:
+
+/usr/include/assert.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/endian.h:
+
+/usr/include/bits/endian.h:
+
+/usr/include/sys/sysmacros.h:
+
+/usr/include/bits/pthreadtypes.h:
+
+/usr/include/alloca.h:
+
+/usr/include/string.h:
+
+/usr/include/bits/string.h:
+
+/usr/include/bits/string2.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.1.2/include/float.h:
+
+/usr/include/math.h:
+
+/usr/include/bits/huge_val.h:
+
+/usr/include/bits/mathdef.h:
+
+/usr/include/bits/mathcalls.h:
+
+/usr/include/bits/mathinline.h:
+
+/usr/include/opencv/cxerror.h:
+
+/usr/include/opencv/cvver.h:
+
+/usr/include/opencv/cvtypes.h:
+
+/usr/include/opencv/cvcompat.h:
+
+/usr/include/opencv/highgui.h:

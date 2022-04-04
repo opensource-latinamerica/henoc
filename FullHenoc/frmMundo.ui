@@ -1,0 +1,212 @@
+<ui version="4.0" >
+ <class>frmMundo</class>
+ <widget class="QDialog" name="frmMundo" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>289</width>
+    <height>293</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>PROPIEDADES DEL MUNDO</string>
+  </property>
+  <layout class="QGridLayout" >
+   <item row="0" column="0" >
+    <layout class="QGridLayout" >
+     <item row="0" column="0" colspan="2" >
+      <widget class="QLabel" name="lblFacAnimacion" >
+       <property name="text" >
+        <string>Factor de Animacion</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2" >
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>81</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="3" >
+      <widget class="QSpinBox" name="intfactorDeAnimacion" />
+     </item>
+     <item row="1" column="0" >
+      <widget class="QLabel" name="lblDelta" >
+       <property name="text" >
+        <string>Delta</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" colspan="2" >
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>191</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="1" column="3" >
+      <widget class="QDoubleSpinBox" name="fltdelta" >
+       <property name="maximum" >
+        <double>1.000000000000000</double>
+       </property>
+       <property name="singleStep" >
+        <double>0.050000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" colspan="3" >
+      <widget class="QLabel" name="lblCorrMaxVeloc" >
+       <property name="text" >
+        <string>Correlacion  Maxima de  Velocidad</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3" >
+      <widget class="QSpinBox" name="intCorrelacionMaximaDeVelocidad" />
+     </item>
+     <item row="3" column="0" colspan="3" >
+      <widget class="QLabel" name="lblFacContSup" >
+       <property name="text" >
+        <string>Factor de Contacto Superficial</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="3" >
+      <widget class="QDoubleSpinBox" name="fltFactorDeContactoSuperficial" />
+     </item>
+     <item row="4" column="0" >
+      <widget class="QLabel" name="lblGravedad" >
+       <property name="text" >
+        <string>Gravedad </string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1" colspan="2" >
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>161</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="4" column="3" >
+      <widget class="QDoubleSpinBox" name="intGravedad" >
+       <property name="singleStep" >
+        <double>0.100000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0" colspan="2" >
+      <widget class="QLabel" name="lblUmbralDeLinealidad" >
+       <property name="text" >
+        <string>Umbral de Linealidad</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2" >
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>81</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="5" column="3" >
+      <widget class="QDoubleSpinBox" name="fltUmbralDeLinealidad" />
+     </item>
+     <item row="6" column="0" colspan="3" >
+      <widget class="QLabel" name="label" >
+       <property name="text" >
+        <string>Umbral de Correccion de Errores</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="3" >
+      <widget class="QDoubleSpinBox" name="fltUmbralDeCorreccionDeErrores" >
+       <property name="maximum" >
+        <double>1.000000000000000</double>
+       </property>
+       <property name="singleStep" >
+        <double>0.050000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0" >
+      <widget class="QLabel" name="lblCoaccion" >
+       <property name="text" >
+        <string>Coaccion</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1" colspan="2" >
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>111</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="7" column="3" >
+      <widget class="QSpinBox" name="intCoaccion" />
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0" >
+    <layout class="QGridLayout" >
+     <item row="0" column="0" >
+      <widget class="QPushButton" name="btnAceptar" >
+       <property name="text" >
+        <string>Aceptar</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" >
+      <widget class="QPushButton" name="btnLimpiar" >
+       <property name="text" >
+        <string>Limpiar</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2" >
+      <widget class="QPushButton" name="btnCancelar" >
+       <property name="text" >
+        <string>Cancelar</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

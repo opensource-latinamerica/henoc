@@ -1,0 +1,199 @@
+<ui version="4.0" >
+ <class>frmPeCaLi</class>
+ <widget class="QDialog" name="frmPeCaLi" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>372</width>
+    <height>251</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>PROPIEDADES PELOTA, CAJA Y LINEA</string>
+  </property>
+  <layout class="QGridLayout" >
+   <item row="0" column="0" >
+    <layout class="QGridLayout" >
+     <item row="0" column="0" >
+      <widget class="QLabel" name="lblDensidad" >
+       <property name="text" >
+        <string>Masa</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" >
+      <widget class="QDoubleSpinBox" name="fltdensidad" />
+     </item>
+     <item row="0" column="2" colspan="2" >
+      <widget class="QLabel" name="lblFriccion" >
+       <property name="text" >
+        <string>Friccion</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4" >
+      <widget class="QDoubleSpinBox" name="fltfriccion" />
+     </item>
+     <item row="1" column="0" >
+      <widget class="QLabel" name="lblFacRebote" >
+       <property name="text" >
+        <string>Factor de Rebote</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" >
+      <widget class="QDoubleSpinBox" name="fltfactorDeRebote" >
+       <property name="maximum" >
+        <double>10.000000000000000</double>
+       </property>
+       <property name="singleStep" >
+        <double>0.050000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2" colspan="2" >
+      <widget class="QLabel" name="lblVelRebote" >
+       <property name="text" >
+        <string>Velocidad de Rebote</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4" >
+      <widget class="QDoubleSpinBox" name="fltvelocidadDeRebote" />
+     </item>
+     <item row="2" column="0" >
+      <widget class="QLabel" name="lblColisiones" >
+       <property name="text" >
+        <string>Colisiones</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1" >
+      <widget class="QSpinBox" name="intcolisiones" >
+       <property name="minimum" >
+        <number>-99</number>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2" colspan="2" >
+      <widget class="QLabel" name="lblMascaraDeFriccion" >
+       <property name="text" >
+        <string>Mascara de Friccion</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="4" >
+      <widget class="QSpinBox" name="intmascaraDeFriccion" >
+       <property name="minimum" >
+        <number>-99</number>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0" >
+      <widget class="QLabel" name="lblLargo" >
+       <property name="text" >
+        <string>Largo</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1" >
+      <widget class="QSpinBox" name="intlargo" >
+       <property name="maximum" >
+        <number>800</number>
+       </property>
+       <property name="singleStep" >
+        <number>1</number>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0" >
+      <widget class="QLabel" name="lblAlto" >
+       <property name="text" >
+        <string>Alto</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1" >
+      <widget class="QSpinBox" name="intalto" >
+       <property name="maximum" >
+        <number>600</number>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0" >
+      <widget class="QLabel" name="lblRotacion" >
+       <property name="text" >
+        <string>Rotacion</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1" >
+      <widget class="QSpinBox" name="intRotacion" >
+       <property name="minimum" >
+        <number>-360</number>
+       </property>
+       <property name="maximum" >
+        <number>360</number>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2" >
+      <widget class="QLabel" name="lblRadio" >
+       <property name="text" >
+        <string>Radio</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="3" >
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>21</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="5" column="4" >
+      <widget class="QSpinBox" name="intRadio" >
+       <property name="maximum" >
+        <number>700</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0" >
+    <layout class="QGridLayout" >
+     <item row="0" column="0" >
+      <widget class="QPushButton" name="btnAceptar" >
+       <property name="text" >
+        <string>Aceptar</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" >
+      <widget class="QPushButton" name="btnLimpiar" >
+       <property name="text" >
+        <string>Limpiar</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2" >
+      <widget class="QPushButton" name="btnCancelar" >
+       <property name="text" >
+        <string>Cancelar</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

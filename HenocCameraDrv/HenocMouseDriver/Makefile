@@ -1,0 +1,3 @@
+all:
+	gcc -DHAVE_CONFIG_H -I. -I.. -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng12 -I/usr/include/libglade-2.0 -I/usr/include/libxml2 -I/usr/include/opencv -O2 -o HenocMouseDriver.o HenocMouseDriver.c -c
+	gcc  -O2 -export-dynamic  -o HMouseDrv HenocMouseDriver.o -lXtst -lglade-2.0 -lgtk-x11-2.0 -lxml2 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0 -lcxcore -lcv -lhighgui -lcvaux -lml   -L. -lrvtk-vc -Lopencv -lrvtk-opencv

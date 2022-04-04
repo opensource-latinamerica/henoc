@@ -1,0 +1,292 @@
+<ui version="4.0" >
+ <class>frmHenoc</class>
+ <widget class="QMainWindow" name="frmHenoc" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>590</height>
+   </rect>
+  </property>
+  <property name="minimumSize" >
+   <size>
+    <width>800</width>
+    <height>590</height>
+   </size>
+  </property>
+  <property name="maximumSize" >
+   <size>
+    <width>800</width>
+    <height>590</height>
+   </size>
+  </property>
+  <property name="windowTitle" >
+   <string>Henoc</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <layout class="QGridLayout" >
+    <property name="margin" >
+     <number>9</number>
+    </property>
+    <property name="spacing" >
+     <number>6</number>
+    </property>
+    <item row="0" column="0" >
+     <widget class="QGroupBox" name="groupBox" >
+      <property name="minimumSize" >
+       <size>
+        <width>91</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize" >
+       <size>
+        <width>91</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="title" >
+       <string>Menu</string>
+      </property>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item row="0" column="0" >
+        <widget class="QPushButton" name="btnBox" >
+         <property name="toolTip" >
+          <string>CAJA</string>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+         <property name="icon" >
+          <iconset resource="diagramscene.qrc" >:/Botones/images/Botones/rectangle.png</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QPushButton" name="btnBall" >
+         <property name="toolTip" >
+          <string>BOLA</string>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+         <property name="icon" >
+          <iconset resource="diagramscene.qrc" >:/Botones/images/Botones/circle.png</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <widget class="QPushButton" name="btnLine" >
+         <property name="toolTip" >
+          <string>LINEA</string>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+         <property name="icon" >
+          <iconset resource="diagramscene.qrc" >:/Botones/images/Botones/dr-boton_linea.jpg</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" >
+        <widget class="QPushButton" name="btnCatapult" >
+         <property name="toolTip" >
+          <string>ENMARCA</string>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+         <property name="icon" >
+          <iconset resource="diagramscene.qrc" >:/Botones/images/Botones/enmarcax.png</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" >
+        <widget class="QPushButton" name="btnBorrar" >
+         <property name="toolTip" >
+          <string>BORRAR OBJETO</string>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+         <property name="icon" >
+          <iconset resource="diagramscene.qrc" >:/Botones/images/Botones/trash.png</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" >
+        <widget class="QPushButton" name="btnPropiedades" >
+         <property name="toolTip" >
+          <string>PROPIEDADES</string>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+         <property name="icon" >
+          <iconset resource="diagramscene.qrc" >:/Botones/images/Botones/Config.png</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" >
+        <widget class="QPushButton" name="btnSave" >
+         <property name="toolTip" >
+          <string>GUARDAR</string>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+         <property name="icon" >
+          <iconset resource="diagramscene.qrc" >:/Botones/images/Botones/SSave.png</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" >
+        <widget class="QPushButton" name="btnFrame" >
+         <property name="toolTip" >
+          <string>ABRIR</string>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+         <property name="icon" >
+          <iconset resource="diagramscene.qrc" >:/Botones/images/Botones/Folder-Secure.png</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0" >
+        <widget class="Line" name="line" >
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0" >
+        <widget class="QPushButton" name="btnPlay" >
+         <property name="toolTip" >
+          <string>INICIAR</string>
+         </property>
+         <property name="text" >
+          <string>Play</string>
+         </property>
+         <property name="icon" >
+          <iconset resource="diagramscene.qrc" >:/Botones/images/Botones/wmp.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0" >
+        <widget class="QPushButton" name="bntStop" >
+         <property name="toolTip" >
+          <string>PARAR</string>
+         </property>
+         <property name="text" >
+          <string>Stop</string>
+         </property>
+         <property name="icon" >
+          <iconset resource="diagramscene.qrc" >:/Botones/images/Botones/Symbol-Stop.png</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="1" >
+     <widget class="QStackedWidget" name="stackedWidget" >
+      <property name="currentIndex" >
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page" >
+       <layout class="QGridLayout" >
+        <property name="margin" >
+         <number>9</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item row="0" column="0" >
+         <widget class="QGraphicsView" name="view" />
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_2" />
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>29</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar" />
+ </widget>
+ <resources>
+  <include location="diagramscene.qrc" />
+ </resources>
+ <connections/>
+</ui>
