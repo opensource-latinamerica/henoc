@@ -1,0 +1,87 @@
+<!DOCTYPE XKI>
+<Sketch>
+    <Ball x="268" y="93" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="260" y="54" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="5" y="12" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="24" y="23" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="47" y="32" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="48" y="11" radius="19" collisionMask="-1" rotation="0" mass="0.975" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="69" y="40" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="26" y="2" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="84" y="-31" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="169" y="-30" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="169" y="-55" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="169" y="-80" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="169" y="-105" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="199" y="-30" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="199" y="-55" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="199" y="-80" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="199" y="-105" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="73" y="16" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="100" y="25" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="109" y="56" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="152" y="35" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="142" y="63" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="152" y="0" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="569" y="-4" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="527" y="-13" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="485" y="-15" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="508" y="0" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="546" y="-3" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="592" y="-12" radius="19" collisionMask="-1" rotation="0" mass="0.975" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="521" y="19" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="543" y="19" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="449" y="-8" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="468" y="4" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="489" y="13" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="498" y="33" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="409" y="-4" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="428" y="6" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="456" y="25" radius="19" collisionMask="-1" rotation="0" mass="0.975" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="477" y="43" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="448" y="49" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="422" y="29" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="425" y="59" radius="19" collisionMask="-1" rotation="0" mass="0.95" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="402" y="72" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="399" y="34" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="378" y="2" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="366" y="50" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="167" y="75" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="184" y="51" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="175" y="13" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="197" y="28" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="196" y="-3" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="211" y="51" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="195" y="76" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="209" y="96" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="222" y="73" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="237" y="49" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="217" y="15" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="250" y="16" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="279" y="29" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="220" y="-9" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="240" y="-14" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="267" y="-13" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="292" y="-3" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="317" y="-15" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="342" y="-4" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="321" y="14" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="348" y="17" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="375" y="24" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="312" y="38" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="339" y="43" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="286" y="59" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="307" y="65" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="341" y="72" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="234" y="98" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="370" y="75" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="246" y="76" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="295" y="87" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="324" y="85" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="351" y="99" radius="20" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Line collisionMask="-1" frictionMask="-1" y1="29" x1="3" y2="144" friction="1" x2="269" />
+    <Line collisionMask="-1" frictionMask="-1" y1="141" x1="323" y2="3" friction="1" x2="651" />
+    <Line collisionMask="0" frictionMask="0" y1="0" x1="655" y2="517" friction="99" x2="655" />
+    <Line collisionMask="0" frictionMask="0" y1="517" x1="0" y2="517" friction="99" x2="655" />
+    <Line collisionMask="0" frictionMask="0" y1="0" x1="0" y2="517" friction="99" x2="0" />
+</Sketch>

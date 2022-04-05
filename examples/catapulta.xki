@@ -1,0 +1,12 @@
+<!DOCTYPE XKI>
+<Sketch>
+    <Line collisionMask="-1" frictionMask="-1" y1="292" x1="188" y2="293" friction="1" x2="199" />
+    <Line collisionMask="-1" frictionMask="-1" y1="291" x1="374" y2="290" friction="1" x2="382" />
+    <Box width="21" x="324" y="262" collisionMask="-1" rotation="0" mass="0.3" frictionMask="-1" height="21" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="15" y="50" radius="56" collisionMask="-1" rotation="0" mass="2.8" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <!--Line collisionMask="0" frictionMask="0" y1="0" x1="0" y2="0" friction="99" x2="655" /-->
+    <Line collisionMask="0" frictionMask="0" y1="0" x1="655" y2="517" friction="99" x2="655" />
+    <Line collisionMask="0" frictionMask="0" y1="517" x1="0" y2="517" friction="99" x2="655" />
+    <Line collisionMask="0" frictionMask="0" y1="0" x1="0" y2="517" friction="99" x2="0" />
+    <Box width="378" x="23" y="284" collisionMask="-1" rotation="0" mass="0.55" frictionMask="-1" height="6" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+</Sketch>

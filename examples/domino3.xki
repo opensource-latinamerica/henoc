@@ -1,0 +1,31 @@
+<!DOCTYPE XKI>
+<Sketch>
+    <Ball x="410" y="186" radius="38" collisionMask="-1" rotation="0" mass="10.8" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="412" y="244" radius="58" collisionMask="-1" rotation="0" mass="8.8" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Ball x="192" y="386" radius="34" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" friction="1" bounceFactor="1.55" bounceVelocity="0" />
+    <Ball x="6" y="19" radius="34" collisionMask="-1" rotation="0" mass="7.6" frictionMask="-1" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Box width="20" x="236" y="151" collisionMask="-1" rotation="0" mass="2.25" frictionMask="-1" height="72" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Box width="134" x="452" y="366" collisionMask="-1" rotation="30" mass="3.7" frictionMask="-1" height="50" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Box width="23" x="303" y="144" collisionMask="-1" rotation="0" mass="2.475" frictionMask="-1" height="78" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Box width="24" x="368" y="147" collisionMask="-1" rotation="0" mass="2.45" frictionMask="-1" height="76" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Box width="21" x="132" y="155" collisionMask="-1" rotation="0" mass="2.15" frictionMask="-1" height="67" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Box width="18" x="185" y="149" collisionMask="-1" rotation="0" mass="2.25" frictionMask="-1" height="74" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Box width="21" x="509" y="281" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" height="21" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Box width="228" x="190" y="452" collisionMask="-1" rotation="0" mass="2" frictionMask="-1" height="14" friction="10" bounceFactor="0.35" bounceVelocity="0" />
+    <Box width="15" x="291" y="467" collisionMask="-1" rotation="0" mass="1.48" frictionMask="-1" height="48" friction="10" bounceFactor="0.35" bounceVelocity="0" />
+    <Box width="158" x="46" y="430" collisionMask="-1" rotation="0" mass="1" frictionMask="-1" height="17" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Box width="30" x="111" y="449" collisionMask="-1" rotation="0" mass="2.375" frictionMask="-1" height="67" friction="1" bounceFactor="0.35" bounceVelocity="0" />
+    <Line collisionMask="-1" frictionMask="-1" y1="304" x1="412" y2="304" friction="1" x2="616" />
+    <Line collisionMask="-1" frictionMask="-1" y1="224" x1="100" y2="223" friction="1" x2="443" />
+    <Line collisionMask="0" frictionMask="0" y1="0" x1="0" y2="0" friction="99" x2="655" />
+    <Line collisionMask="0" frictionMask="0" y1="0" x1="655" y2="517" friction="99" x2="655" />
+    <Line collisionMask="0" frictionMask="0" y1="517" x1="0" y2="517" friction="99" x2="655" />
+    <Line collisionMask="0" frictionMask="0" y1="0" x1="0" y2="517" friction="99" x2="0" />
+    <Line collisionMask="-1" frictionMask="-1" y1="158" x1="639" y2="257" friction="1" x2="551" />
+    <Line collisionMask="-1" frictionMask="-1" y1="305" x1="411" y2="417" friction="1" x2="412" />
+    <Line collisionMask="-1" frictionMask="-1" y1="243" x1="347" y2="416" friction="1" x2="348" />
+    <Line collisionMask="-1" frictionMask="-1" y1="459" x1="292" y2="459" friction="1" x2="292" />
+    <Line collisionMask="-1" frictionMask="-1" y1="422" x1="210" y2="423" friction="1" x2="286" />
+    <Line collisionMask="-1" frictionMask="-1" y1="406" x1="229" y2="406" friction="1" x2="244" />
+    <Line collisionMask="-1" frictionMask="-1" y1="225" x1="99" y2="171" friction="1" x2="1" />
+</Sketch>
