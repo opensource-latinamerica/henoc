@@ -5,6 +5,10 @@ Physics Simulation Software based on user sketches running a pattern recognition
 # 
 
 Román Cisneros José Eduardo
+
 Soto Escobar Álvaro Antonio
+
 Valdez Guzmán Rubén
+
 Villanueva Cortez Eder
+
