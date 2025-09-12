@@ -1,0 +1,3 @@
+[submodule "src/HenocUniverse/ode"]
+	path = src/HenocUniverse/ode
+	url = https://bitbucket.org/odedevs/ode.git
