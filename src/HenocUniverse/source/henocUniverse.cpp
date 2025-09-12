@@ -15,7 +15,7 @@ void dGeomMoved(dGeomID g) { g->Move(); }
 dGeomID dGeomGetBodyNext(dGeomID) { return 0; }
 void dGeomSetBody(dGeomID g, dBodyID b) {}
 
-ObjectProperties Object::defaults = { 5, dInfinity, 0.35, 0, ~0, ~0, 0 };
+ObjectProperties Object::defaults = { 5, dInfinity, 0.35, 0, ~0U, ~0U, 0 };
 std::stack<ObjectProperties> Object::defaultStack;
 
 Object::Object() : properties(defaults) {}

@@ -1,32 +1,12 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
 *.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
 *.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+Henoc
+src/FullHenoc/Makefile
+*.pro.user
+src/HenocUniverse/.obj
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+moc_predefs.h
+Makefile
+.qmake.stash

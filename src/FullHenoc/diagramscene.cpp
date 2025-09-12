@@ -1,4 +1,9 @@
-#include <QtGui>
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsLineItem>
+#include <QColor>
+#include <QPen>
+#include <QGraphicsView>
+#include <QTransform>
 
 #include "diagramscene.h"
 #include "HObject.h"
@@ -8,7 +13,7 @@
 
 #include<iostream>
 
-#include<math.h>
+#include<cmath>
 
 using namespace std;
 
@@ -124,7 +129,7 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent){
 				((HBox *)item)->obj.setColor( tColor );
 				((QGraphicsRectItem*)(item))->setPen( QPen( fromThetaColor(tColor) )  );
 				((QGraphicsRectItem*)(item))->setBrush(fromThetaIncreasedColor(tColor, 0.5));
-				((QGraphicsRectItem*)(item))->resetMatrix();
+				((QGraphicsRectItem*)(item))->setTransform(QTransform());
 			}
 			if(2 == myItemType ){
 				item = new HBall(10,10,20,20);
@@ -212,7 +217,7 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent){
 }
 
 bool DiagramScene::isItemChange(int type){
-    foreach (QGraphicsItem *item, selectedItems()) {
+    for (QGraphicsItem *item : selectedItems()) {
         if (item->type() == type)
             return true;
     }

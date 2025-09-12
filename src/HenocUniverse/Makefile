@@ -37,7 +37,7 @@ all:
 	@g++ -c ode/source/fastlsolve.c -I. -I$(INCLUDES) -o .obj/fastlsolve.o $(OPTIONS)
 	@g++ -c ode/source/fastltsolve.c -I. -I$(INCLUDES) -o .obj/fastltsolve.o $(OPTIONS)
 	@echo "linking libHenocUniverse..."
-	@ar rcs libHenocUniverse.a .obj/shapes.o .obj/vector.o .obj/henocUniverse.o .obj/intersection.o .obj/circle-circle.o .obj/quad-quad.o .obj/quad-circle.o .obj/terrain-all.o .obj/composite-all.o .obj/array.o .obj/joint.o .obj/mass.o .obj/matrix.o .obj/misc.o .obj/ode.o .obj/quickstep.o .obj/step.o .obj/testing.o .obj/util.o .obj/error.o .obj/lcp.o .obj/mat.o .obj/memory.o .obj/obstack.o .obj/odemath.o .obj/rotation.o .obj/stepfast.o .obj/timer.o .obj/fastdot.o .obj/fastldlt.o .obj/fastlsolve.o .obj/fastltsolve.o
+	ar rcs ../FullHenoc/libHenocUniverse.a .obj/shapes.o .obj/vector.o .obj/henocUniverse.o .obj/intersection.o .obj/circle-circle.o .obj/quad-quad.o .obj/quad-circle.o .obj/terrain-all.o .obj/composite-all.o .obj/array.o .obj/joint.o .obj/mass.o .obj/matrix.o .obj/misc.o .obj/ode.o .obj/quickstep.o .obj/step.o .obj/testing.o .obj/util.o .obj/error.o .obj/lcp.o .obj/mat.o .obj/memory.o .obj/obstack.o .obj/odemath.o .obj/rotation.o .obj/stepfast.o .obj/timer.o .obj/fastdot.o .obj/fastldlt.o .obj/fastlsolve.o .obj/fastltsolve.o
 
 clean:
 	@echo "cleaning henocUniverse..."

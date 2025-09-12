@@ -5,7 +5,7 @@
 
 INCLUDEPATH += ../HenocUniverse/ /usr/include/malloc/
 LIBS += -L. -L../HenocUniverse/ -lHenocUniverse
-CONFIG += warn_off static release
+CONFIG += warn_off static release c++11
 FORMS += frmHenoc.ui \
 	frmPeCaLi.ui \
 	frmMundo.ui
@@ -14,8 +14,7 @@ SOURCES += main.cpp \
 	HObject.cpp\
 	HLine.cpp\
 	HBox.cpp\
-	HBall.cpp\
-	glwidget.cpp \
+	HBall.cpp \
 	CfrmPeCaLi.cpp \
 	CfrmMundo.cpp \
 	CfrmHenoc.cpp
@@ -24,7 +23,6 @@ HEADERS += CfrmHenoc.h\
 	HBox.h\
 	HLine.h\
 	HBall.h\
-	glwidget.h \
 	CfrmPeCaLi.h \
 	CfrmMundo.h \
 	diagramscene.h
@@ -32,4 +30,4 @@ RESOURCES += diagramscene.qrc
 
 DESTDIR += ../
 
-QT           += opengl xml
+QT           += opengl widgets xml

@@ -1,37 +1,35 @@
-#include<QtGui>
-#include<QtCore>
-#include<QtOpenGL>
-#include<QtXml>
+#include <QtWidgets>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
 
-#include<CfrmHenoc.h>
-#include<CfrmPeCaLi.h>
-#include<CfrmMundo.h>
-#include<diagramscene.h>
+#include <CfrmHenoc.h>
+#include <CfrmPeCaLi.h>
+#include <CfrmMundo.h>
+#include <diagramscene.h>
 
-#include<iostream>
-#include<HBox.h>
-#include<HLine.h>
-#include<HBall.h>
+#include <iostream>
+#include <HBox.h>
+#include <HLine.h>
+#include <HBall.h>
 
-#include"glwidget.h"
-#include<henocUniverseI.h>
+#include <henocUniverseI.h>
 
 using namespace HenocUniverseI;
 using namespace std;
 
-CfrmHenoc::CfrmHenoc( QWidget * parent, Qt::WFlags flags):QMainWindow(parent, flags){
+CfrmHenoc::CfrmHenoc( QWidget * parent, Qt::WindowFlags flags):QMainWindow(parent, flags){
 	setupUi(this);
 	
-	connect(btnBox, SIGNAL(clicked()), this, SLOT(AddBox()));
-	connect(btnLine, SIGNAL(clicked()), this, SLOT(AddLine()));
-	connect(btnCatapult, SIGNAL(clicked()), this, SLOT(AddCatapult()));
-	connect(btnBall, SIGNAL(clicked()), this, SLOT(AddBall()));
-	connect(btnPlay, SIGNAL(clicked()), this, SLOT(Play()));
-	connect(btnPropiedades, SIGNAL(clicked()), this, SLOT(changeProperties()));
-	connect(btnBorrar, SIGNAL(clicked()), this, SLOT(Delete()));
-	connect(bntStop, SIGNAL(clicked()), this, SLOT(Stop()));
-	connect(btnSave, SIGNAL(clicked()), this, SLOT(Save()));
-	connect(btnFrame, SIGNAL(clicked()), this, SLOT(Open()));
+	connect(btnBox, &QPushButton::clicked, this, &CfrmHenoc::AddBox);
+	connect(btnLine, &QPushButton::clicked, this, &CfrmHenoc::AddLine);
+	connect(btnCatapult, &QPushButton::clicked, this, &CfrmHenoc::AddCatapult);
+	connect(btnBall, &QPushButton::clicked, this, &CfrmHenoc::AddBall);
+	connect(btnPlay, &QPushButton::clicked, this, &CfrmHenoc::Play);
+	connect(btnPropiedades, &QPushButton::clicked, this, &CfrmHenoc::changeProperties);
+	connect(btnBorrar, &QPushButton::clicked, this, &CfrmHenoc::Delete);
+	connect(bntStop, &QPushButton::clicked, this, &CfrmHenoc::Stop);
+	connect(btnSave, &QPushButton::clicked, this, &CfrmHenoc::Save);
+	connect(btnFrame, &QPushButton::clicked, this, &CfrmHenoc::Open);
 
 	myWorldProp.fAnim = 3;
 	myWorldProp.delta = 0.15f; 	
@@ -46,21 +44,18 @@ CfrmHenoc::CfrmHenoc( QWidget * parent, Qt::WFlags flags):QMainWindow(parent, fl
 	scene->setSceneRect(QRectF(0, 0, 655, 517));
 	view->setScene(scene);	
 
-	connect(scene, SIGNAL(itemInserted(QGraphicsItem *)),this, SLOT(itemInserted(QGraphicsItem *)));
+	connect(scene, &DiagramScene::itemInserted, this, &CfrmHenoc::itemInserted);
 
-	QGridLayout *gridLayoutx;
-	gridLayoutx = new QGridLayout(page_2);
-	glWidget = new GLWidget(page_2);
-	gridLayoutx->addWidget(glWidget, 0, 0, 1 ,1);
+	glWidget = new QOpenGLWidget(this);
+    setCentralWidget(glWidget);
 
 	timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), glWidget, SLOT(animate()));
 }	
 
 void CfrmHenoc::Play(){
 	QList<QGraphicsItem*> lista = scene->items();
 	int xa, ya, wa, ha;
-	glWidget->delSpace();
+	//glWidget->delSpace();
 	for(unsigned int i=0; i < lista.size(); i++){
 		lista.at(i);
 		xa = view->mapFromScene( lista.at(i)->mapToScene( lista.at(i)->boundingRect() )).boundingRect().x();  
@@ -76,18 +71,17 @@ void CfrmHenoc::Play(){
 			
 		if(0 != auxR){
 			HObject obj = ((HBox*)auxR)->obj;
-			glWidget->addBox(fao.center().x(), fao.center().y(), obj.width(), obj.height(), fabsf(obj.getMass()), obj.getFriction(), obj.getBounceFactor(), obj.getBounceVelocity(), obj.getColMask(), obj.getFrictionMask(), obj.getRotation(), obj.getColor());
+			//glWidget->addBox(fao.center().x(), fao.center().y(), obj.width(), obj.height(), fabsf(obj.getMass()), obj.getFriction(), obj.getBounceFactor(), obj.getBounceVelocity(), obj.getColMask(), obj.getFrictionMask(), obj.getRotation(), obj.getColor());
 		}
 		else if(0 != auxE){
 			div_t q;
 			q = div(ha,2);
 			HObject obj = ((HBall*)auxE)->obj;
-			glWidget->addBall(fao.center().x(), fao.center().y(), q.quot, fabsf(obj.getMass()), obj.getFriction(), obj.getBounceFactor(), obj.getBounceVelocity(), obj.getColMask(), obj.getFrictionMask(), obj.getRotation(), obj.getColor());
+			//glWidget->addBall(fao.center().x(), fao.center().y(), q.quot, fabsf(obj.getMass()), obj.getFriction(), obj.getBounceFactor(), obj.getBounceVelocity(), obj.getColMask(), obj.getFrictionMask(), obj.getRotation(), obj.getColor());
 		}
 		else if(0 != auxL){
 			HObject obj = ((HLine*)auxL)->obj;
-			glWidget->addLine((int)auxL->line().x1(), (int)auxL->line().y1(), (int)auxL->line().x2(), (int)auxL->line().y2(), obj.getFriction(), obj.getColMask(), obj.getFrictionMask(), obj.getColor() );
-			//glWidget->addLine(xa, ya, xa+wa, ya+ha);
+			//glWidget->addLine((int)auxL->line().x1(), (int)auxL->line().y1(), (int)auxL->line().x2(), (int)auxL->line().y2(), obj.getFriction(), obj.getColMask(), obj.getFrictionMask(), obj.getColor() );
 		}
 
 	}
@@ -95,7 +89,7 @@ void CfrmHenoc::Play(){
 
 
 	stackedWidget->setCurrentIndex(1);
-	glWidget->setWorldParams(myWorldProp);		
+	//glWidget->setWorldParams(myWorldProp);		
 	timer->start( myWorldProp.fAnim );
 }
 
@@ -203,10 +197,9 @@ void CfrmHenoc::changeProperties(){
 			fao.setHeight(  ((HBox*)lista.at(0))->obj.height() );
 			fao.setWidth( ((HBox*)lista.at(0))->obj.width() );
 			((QGraphicsRectItem*)lista.at(0))->setRect(fao);
-			((QGraphicsRectItem*)lista.at(0))->resetMatrix();
-			QMatrix xx = ((QGraphicsRectItem*)lista.at(0))->matrix( );
+			QTransform matrix = ((QGraphicsRectItem*)lista.at(0))->transform();
 			((QGraphicsRectItem*)lista.at(0))->moveBy(-((QGraphicsRectItem*)lista.at(0))->rect().width()/2,-((QGraphicsRectItem*)lista.at(0))->rect().height()/2);
-			((QGraphicsRectItem*)lista.at(0))->rotate( (((HBox*)lista.at(0))->obj.getRotation()) );
+			((QGraphicsRectItem*)lista.at(0))->setRotation( (((HBox*)lista.at(0))->obj.getRotation()) );
 			((QGraphicsRectItem*)lista.at(0))->moveBy(((QGraphicsRectItem*)lista.at(0))->rect().width()/2,((QGraphicsRectItem*)lista.at(0))->rect().height()/2);
 		}
 		else{
@@ -219,7 +212,7 @@ void CfrmHenoc::changeProperties(){
 }
 
 void CfrmHenoc::Delete(){
-	foreach (QGraphicsItem *item, scene->selectedItems()) {
+	for (QGraphicsItem *item : scene->selectedItems()) {
 		scene->removeItem(item);
 	}
 }
@@ -246,13 +239,14 @@ void CfrmHenoc::Save(){
 		return;
 	}
         
-	QDomDocument doc("XKI");
-	QDomElement root = doc.createElement("Sketch");
-	doc.appendChild(root);
+    QXmlStreamWriter xmlWriter(&file);
+    xmlWriter.setAutoFormatting(true);
+    xmlWriter.writeStartDocument();
+    xmlWriter.writeStartElement("Sketch");
 
 	QList<QGraphicsItem*> lista = scene->items();
 	int xa, ya, wa, ha;
-	glWidget->delSpace();
+	//glWidget->delSpace();
 	for(unsigned int i=0; i < lista.size(); i++){
 		xa =  ( lista.at(i)->mapToScene( lista.at(i)->boundingRect() )).boundingRect().x();  
 		ya =  ( lista.at(i)->mapToScene( lista.at(i)->boundingRect() )).boundingRect().y(); 
@@ -266,39 +260,54 @@ void CfrmHenoc::Save(){
 		QRect fao(xa,ya,wa,ha);
 			
 		if(0 != auxR){
-			QDomElement tag = doc.createElement("Box");
+			xmlWriter.writeStartElement("Box");
 			HObject obj = ((HBox*)auxR)->obj;
-			XkiAddBox(tag, xa, ya, obj.width(), obj.height(), 
-				obj.getMass(), obj.getFriction(), obj.getBounceFactor(), 
-				obj.getBounceVelocity(), obj.getColMask(), 
-				obj.getFrictionMask(), obj.getRotation());
-			root.appendChild(tag);
+            xmlWriter.writeAttribute("x", QString::number(xa));
+            xmlWriter.writeAttribute("y", QString::number(ya));
+            xmlWriter.writeAttribute("width", QString::number(obj.width()));
+            xmlWriter.writeAttribute("height", QString::number(obj.height()));
+            xmlWriter.writeAttribute("mass", QString::number(obj.getMass()));
+            xmlWriter.writeAttribute("friction", QString::number(obj.getFriction()));
+            xmlWriter.writeAttribute("bounceFactor", QString::number(obj.getBounceFactor()));
+            xmlWriter.writeAttribute("bounceVelocity", QString::number(obj.getBounceVelocity()));
+            xmlWriter.writeAttribute("collisionMask", QString::number(obj.getColMask()));
+            xmlWriter.writeAttribute("frictionMask", QString::number(obj.getFrictionMask()));
+            xmlWriter.writeAttribute("rotation", QString::number(obj.getRotation()));
+            xmlWriter.writeEndElement();
 		}
 		else if(0 != auxE){
 			div_t q;
 			q = div(ha,2);
 			HObject obj = ((HBall*)auxE)->obj;
-			QDomElement tag = doc.createElement("Ball");
-			XkiAddBall(tag, xa, ya, wa, 
-				obj.getMass(), obj.getFriction(), obj.getBounceFactor(), 
-				obj.getBounceVelocity(), obj.getColMask(), 
-				obj.getFrictionMask(), obj.getRotation());
-			root.appendChild(tag);
+			xmlWriter.writeStartElement("Ball");
+            xmlWriter.writeAttribute("x", QString::number(xa));
+            xmlWriter.writeAttribute("y", QString::number(ya));
+            xmlWriter.writeAttribute("radius", QString::number(wa));
+            xmlWriter.writeAttribute("mass", QString::number(obj.getMass()));
+            xmlWriter.writeAttribute("friction", QString::number(obj.getFriction()));
+            xmlWriter.writeAttribute("bounceFactor", QString::number(obj.getBounceFactor()));
+            xmlWriter.writeAttribute("bounceVelocity", QString::number(obj.getBounceVelocity()));
+            xmlWriter.writeAttribute("collisionMask", QString::number(obj.getColMask()));
+            xmlWriter.writeAttribute("frictionMask", QString::number(obj.getFrictionMask()));
+            xmlWriter.writeAttribute("rotation", QString::number(obj.getRotation()));
+            xmlWriter.writeEndElement();
 		}
 		else if(0 != auxL){
-			QDomElement tag = doc.createElement("Line");
+			xmlWriter.writeStartElement("Line");
 			HObject obj = ((HLine*)auxL)->obj;
-			XkiAddLine(tag, (int)auxL->line().x1(), (int)auxL->line().y1(), 
-				(int)auxL->line().x2(), (int)auxL->line().y2(), 
-				obj.getFriction(), obj.getColMask(), obj.getFrictionMask() );
-			root.appendChild(tag);
+            xmlWriter.writeAttribute("x1", QString::number(auxL->line().x1()));
+            xmlWriter.writeAttribute("y1", QString::number(auxL->line().y1()));
+            xmlWriter.writeAttribute("x2", QString::number(auxL->line().x2()));
+            xmlWriter.writeAttribute("y2", QString::number(auxL->line().y2()));
+            xmlWriter.writeAttribute("friction", QString::number(obj.getFriction()));
+            xmlWriter.writeAttribute("collisionMask", QString::number(obj.getColMask()));
+            xmlWriter.writeAttribute("frictionMask", QString::number(obj.getFrictionMask()));
+            xmlWriter.writeEndElement();
 		}
 
 	}
-
-	QIODevice *device = &file;
-	QTextStream out(device);
-	doc.save(out, 4);
+    xmlWriter.writeEndElement();
+    xmlWriter.writeEndDocument();
 	file.close();
 }
 
@@ -318,178 +327,112 @@ void CfrmHenoc::Open(){
 		return;
 	}
 	
-	QIODevice *device = &file;
-	QString errorStr;
-	int errorLine;
-	int errorColumn;
-	QDomDocument domDocument;
-	
-	if (!domDocument.setContent(device, true, &errorStr, &errorLine, &errorColumn)) {
-		QMessageBox::information(window(), tr("XKI"),
-			tr("Error de parser en linea %1, columna %2:\n%3")
-			.arg(errorLine)
-			.arg(errorColumn)
-			.arg(errorStr));
-		return;
-	}
+    QXmlStreamReader xmlReader(&file);
 
-	
 	//Limpia la escena
-	foreach (QGraphicsItem *item, scene->items()) {
+	for (QGraphicsItem *item : scene->items()) {
 		scene->removeItem(item);
 	}
 
-	QDomElement root = domDocument.documentElement();
+    if (xmlReader.readNextStartElement()) {
+        if (xmlReader.name().toString() == "Sketch"){
+            while(xmlReader.readNextStartElement()){
+                if(xmlReader.name().toString() == "Ball"){
+                    int x = xmlReader.attributes().value(QStringLiteral("x")).toInt();
+                    int y = xmlReader.attributes().value(QStringLiteral("y")).toInt();
+                    int radius = xmlReader.attributes().value(QStringLiteral("radius")).toInt();
+                    float mass = xmlReader.attributes().value(QStringLiteral("mass")).toFloat();
+                    float friction = xmlReader.attributes().value(QStringLiteral("friction")).toFloat();
+                    float bounceFactor = xmlReader.attributes().value(QStringLiteral("bounceFactor")).toFloat();
+                    float bounceVelocity = xmlReader.attributes().value(QStringLiteral("bounceVelocity")).toFloat();
+                    int colMask = xmlReader.attributes().value(QStringLiteral("collisionMask")).toInt();
+                    int frictionMask = xmlReader.attributes().value(QStringLiteral("frictionMask")).toInt();
+                    int rotation = xmlReader.attributes().value(QStringLiteral("rotation")).toInt();
 
-	QDomNodeList balls = root.elementsByTagName("Ball");	
-	QDomNodeList lines = root.elementsByTagName("Line");	
-	QDomNodeList boxes = root.elementsByTagName("Box");
+                    HBall *item = new HBall(x, y, radius, radius);
+                    item->setFlag(QGraphicsItem::ItemIsSelectable, true);
+                    scene->addItem(item);
+                    item->obj.setType(2);
+                    item->obj.setWidth(radius);
+                    item->obj.setHeight(radius);
+                    item->obj.setMass(mass);
+                    item->obj.setFriction(friction);
+                    item->obj.setBounceFactor(bounceFactor);
+                    item->obj.setBounceVelocity(bounceVelocity);
+                    item->obj.setColMask(colMask);
+                    item->obj.setFrictionMask(frictionMask);
+                    item->obj.setRotation(rotation);
+                    float tColor = (60.0f + (rand() % 90) - 45);
+                    item->obj.setColor(tColor);
+                    ((QGraphicsEllipseItem*)(item))->setPen( QPen( fromThetaColor(tColor) )  );
+                    ((QGraphicsEllipseItem*)(item))->setBrush(fromThetaIncreasedColor(tColor, 0.5));
+                } else if(xmlReader.name().toString() == "Box"){
+                    int x = xmlReader.attributes().value(QStringLiteral("x")).toInt();
+                    int y = xmlReader.attributes().value(QStringLiteral("y")).toInt();
+                    int width = xmlReader.attributes().value(QStringLiteral("width")).toInt();
+                    int height = xmlReader.attributes().value(QStringLiteral("height")).toInt();
+                    float mass = xmlReader.attributes().value(QStringLiteral("mass")).toFloat();
+                    float friction = xmlReader.attributes().value(QStringLiteral("friction")).toFloat();
+                    float bounceFactor = xmlReader.attributes().value(QStringLiteral("bounceFactor")).toFloat();
+                    float bounceVelocity = xmlReader.attributes().value(QStringLiteral("bounceVelocity")).toFloat();
+                    int colMask = xmlReader.attributes().value(QStringLiteral("collisionMask")).toInt();
+                    int frictionMask = xmlReader.attributes().value(QStringLiteral("frictionMask")).toInt();
+                    int rotation = xmlReader.attributes().value(QStringLiteral("rotation")).toInt();
 
-	int i = 0;
+                    HBox *item = new HBox(10, 10, 20, 20);
+                    item->setFlag(QGraphicsItem::ItemIsSelectable, true);
+                    item->obj.setType(1);
+                    item->obj.setWidth(width);
+                    item->obj.setHeight(height);
+                    item->obj.setMass(mass);
+                    item->obj.setFriction(friction);
+                    item->obj.setBounceFactor(bounceFactor);
+                    item->obj.setBounceVelocity(bounceVelocity);
+                    item->obj.setColMask(colMask);
+                    item->obj.setFrictionMask(frictionMask);
+                    item->obj.setRotation(rotation);
+                    float tColor = (60.0f + (rand() % 90) - 45);
 
-	for(i = 0; i < balls.count(); i++){
-		QDomElement e = balls.at(i).toElement();
-		HBall *item = new HBall( e.attribute("x").toInt(), e.attribute("y").toInt(),
-					e.attribute("radius").toInt(), e.attribute("radius").toInt() );
-		item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-		scene->addItem(item);
-		item->obj.setType(2);
-		item->obj.setWidth( e.attribute("radius").toInt() );
-		item->obj.setHeight( e.attribute("radius").toInt() );
-		item->obj.setMass( e.attribute("mass").toFloat() );
-		item->obj.setFriction( e.attribute("friction").toFloat() );
-		item->obj.setBounceFactor( e.attribute("bounceFactor").toFloat() );
-		item->obj.setBounceVelocity( e.attribute("bounceVelocity").toFloat() );
-		item->obj.setColMask( e.attribute("collisionMask").toFloat() );
-		item->obj.setFrictionMask( e.attribute("frictionMask").toFloat() );
-		item->obj.setRotation( e.attribute("rotation").toFloat() );
-		float tColor = (60.0f + (rand() % 90) - 45);
-		item->obj.setColor( tColor );
-		((QGraphicsEllipseItem*)(item))->setPen( QPen( fromThetaColor(tColor) )  );
-		((QGraphicsEllipseItem*)(item))->setBrush(fromThetaIncreasedColor(tColor, 0.5));
-	}
+                    QRectF dao(x, y, width, height);
+                    
+                    item->obj.setColor(tColor);
 
-	for(i = 0; i < boxes.size(); i++){
-		QDomElement e = boxes.at(i).toElement();
-		//HBox *item = new HBox( e.attribute("x").toInt(), e.attribute("y").toInt(),
-		//			e.attribute("width").toInt(), e.attribute("height").toInt() );
-		
-		HBox *item = new HBox( 10, 10,
-					20, 20 );
-		item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-		item->obj.setType(1);
-		item->obj.setWidth( e.attribute("width").toInt() );
-		item->obj.setHeight( e.attribute("height").toInt() );
-		item->obj.setMass( e.attribute("mass").toFloat() );
-		item->obj.setFriction( e.attribute("friction").toFloat() );
-		item->obj.setBounceFactor( e.attribute("bounceFactor").toFloat() );
-		item->obj.setBounceVelocity( e.attribute("bounceVelocity").toFloat() );
-		item->obj.setColMask( e.attribute("collisionMask").toFloat() );
-		item->obj.setFrictionMask( e.attribute("frictionMask").toFloat() );
-		item->obj.setRotation( e.attribute("rotation").toFloat() );
-		float tColor = (60.0f + (rand() % 90) - 45);
+                    ((QGraphicsRectItem*)(item))->setPen( QPen( fromThetaColor(tColor) )  );
+                    ((QGraphicsRectItem*)(item))->setBrush(fromThetaIncreasedColor(tColor, 0.5));
+                    ((QGraphicsRectItem*)(item))->setFlag(QGraphicsItem::ItemIsSelectable, true);
+                    ((QGraphicsRectItem*)(item))->setRect(dao);
+                    ((QGraphicsRectItem*)item)->setRotation(item->obj.getRotation());
+                    scene->addItem(((QGraphicsRectItem*)item));
 
-		QRectF dao(e.attribute("x").toInt(), e.attribute("y").toInt(),
-                                      e.attribute("width").toInt(), e.attribute("height").toInt() );
-		
-		item->obj.setColor( tColor );
+                } else if(xmlReader.name().toString() == "Line"){
+                    int x1 = xmlReader.attributes().value(QStringLiteral("x1")).toInt();
+                    int y1 = xmlReader.attributes().value(QStringLiteral("y1")).toInt();
+                    int x2 = xmlReader.attributes().value(QStringLiteral("x2")).toInt();
+                    int y2 = xmlReader.attributes().value(QStringLiteral("y2")).toInt();
+                    float friction = xmlReader.attributes().value(QStringLiteral("friction")).toFloat();
+                    int colMask = xmlReader.attributes().value(QStringLiteral("collisionMask")).toInt();
+                    int frictionMask = xmlReader.attributes().value(QStringLiteral("frictionMask")).toInt();
 
-		((QGraphicsRectItem*)(item))->setPen( QPen( fromThetaColor(tColor) )  );
-		((QGraphicsRectItem*)(item))->setBrush(fromThetaIncreasedColor(tColor, 0.5));
-		((QGraphicsRectItem*)(item))->setFlag(QGraphicsItem::ItemIsSelectable, true);
-		((QGraphicsRectItem*)(item))->setRect( dao);
-	//	((QGraphicsRectItem*)item)->moveBy(-((QGraphicsRectItem*)item)->rect().width()/2,-((QGraphicsRectItem*)item)->rect().height()/2);
-		((QGraphicsRectItem*)item)->rotate( (((HBox*)item)->obj.getRotation()) );
-	//	((QGraphicsRectItem*)item)->moveBy(((QGraphicsRectItem*)item)->rect().width()/2,((QGraphicsRectItem*)item)->rect().height()/2);
-		scene->addItem(((QGraphicsRectItem*)item));
+                    QLineF ml((qreal)x1, (qreal)y1, (qreal)x2, (qreal)y2);
+                    HLine *item = new HLine(ml);
+                    item->setFlag(QGraphicsItem::ItemIsSelectable, true);
+                    float tColor = (60.0f + (rand() % 90) - 45);
+                    item->obj.setColor( tColor );
+                    ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 2));
+                    scene->addItem(item);
+                    item->obj.setType(3);
+                    item->obj.setFriction(friction);
+                    item->obj.setColMask(colMask);
+                    item->obj.setFrictionMask(frictionMask);
+                }
+                xmlReader.skipCurrentElement();
+            }
+        }
+    }
+    if (xmlReader.hasError()) {
+        QMessageBox::information(this, tr("XKI"),
+                                 tr("Error de parser: %1").arg(xmlReader.errorString()));
+    }
 
-		QRectF fao = ((QGraphicsRectItem*)item)->rect();
-		fao.setHeight( item->obj.height() );
-		fao.setWidth( item->obj.width() );
-
-		int auxx=0, auxy=0, xao, yao;
-		for(xao=0; xao < 1600; xao++){
-			auxx = (((QGraphicsRectItem*)(item))->mapToScene( QPointF(xao,10) )).x();
-			if(auxx == e.attribute("x").toInt()){
-				break;
-			}
-		}
-		for(yao=0; yao < 1600; yao++){
-			auxy = (((QGraphicsRectItem*)(item))->mapToScene( QPointF(10,yao) )).y();
-			if(auxy == e.attribute("y").toInt()){
-				break;
-			}
-		}
-
-		float ix = (((QGraphicsRectItem*)(item))->mapToScene( ((QGraphicsRectItem*)(item))->boundingRect() )).boundingRect().x();  
-		float iy = (((QGraphicsRectItem*)(item))->mapToScene( ((QGraphicsRectItem*)(item))->boundingRect()  )).boundingRect().y(); 
-		
-		float dx = auxx - ((auxx-e.attribute("x").toInt())+ix);
-		float dy = auxy - ((auxy-e.attribute("y").toInt())+iy);
-		((QGraphicsRectItem*)item)->setPos(dx,dy);
-			
-	}
-
-	for(i = 0; i < lines.size(); i++){
-		QDomElement e = lines.at(i).toElement();
-		QLineF ml( (qreal)e.attribute("x1").toInt(), (qreal)e.attribute("y1").toInt(),
-			(qreal)e.attribute("x2").toInt(), (qreal)e.attribute("y2").toInt() );
-		HLine *item = new HLine(ml);
-		item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-		float tColor = (60.0f + (rand() % 90) - 45);
-		item->obj.setColor( tColor );
-		((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 2));
-		scene->addItem(item);
-		item->obj.setType(3);
-		item->obj.setFriction( e.attribute("friction").toFloat() );
-		item->obj.setColMask( e.attribute("collisionMask").toFloat() );
-		item->obj.setFrictionMask( e.attribute("frictionMask").toFloat() );
-	}
 	file.close();
-	//QLineF newLine(((QGraphicsLineItem*)itemx)->line().p1(), mouseEvent->scenePos());
-
-}
-
-void CfrmHenoc::XkiAddLine(QDomElement &element, int x1, int y1, int x2, int y2, float friction, int colMask, int frictionMask){
-	element.setAttribute("x1",x1);
-	element.setAttribute("x2",x2);
-	element.setAttribute("y1",y1);
-	element.setAttribute("y2",y2);
-	element.setAttribute("friction",friction);
-	element.setAttribute("collisionMask",colMask);
-	element.setAttribute("frictionMask",frictionMask);
-}
-
-void CfrmHenoc::XkiAddBox(QDomElement &element, int x, int y, int w, int h, 
-			float mass, float friction, float bounceFactor, float bounceVelocity,
-			 int colMask, int frictionMask, int rotation){
-
-	element.setAttribute("x",x);
-	element.setAttribute("y",y);
-	element.setAttribute("width",w);
-	element.setAttribute("height",h);
-	element.setAttribute("mass",mass);
-	element.setAttribute("friction",friction);
-	element.setAttribute("bounceFactor",bounceFactor);
-	element.setAttribute("bounceVelocity",bounceVelocity);
-	element.setAttribute("collisionMask",colMask);
-	element.setAttribute("frictionMask",frictionMask);
-	element.setAttribute("rotation",rotation);
-}
-
-void CfrmHenoc::XkiAddBall(QDomElement &element, int x, int y, int r, 
-		float mass, float friction, float bounceFactor, 
-		float bounceVelocity, int colMask, int frictionMask, int rotation){
-	
-	element.setAttribute("x",x);
-	element.setAttribute("y",y);
-	element.setAttribute("radius",r);
-	element.setAttribute("mass",mass);
-	element.setAttribute("friction",friction);
-	element.setAttribute("bounceFactor",bounceFactor);
-	element.setAttribute("bounceVelocity",bounceVelocity);
-	element.setAttribute("collisionMask",colMask);
-	element.setAttribute("frictionMask",frictionMask);
-	element.setAttribute("rotation",rotation);
-
 }
