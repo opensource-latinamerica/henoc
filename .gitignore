@@ -1,12 +1,34 @@
-*.o
-*.a
-Henoc
-src/FullHenoc/Makefile
-*.pro.user
-src/HenocUniverse/.obj
-moc_*.cpp
-qrc_*.cpp
-ui_*.h
-moc_predefs.h
-Makefile
-.qmake.stash
+# Build artifacts
+src/HenocUniverse/ode_install/
+src/HenocUniverse/.obj/
+src/HenocUniverse/libHenocUniverse.a
+
+# Qt build artifacts
+src/FullHenoc/Makefile*
+src/FullHenoc/debug/
+src/FullHenoc/release/
+src/FullHenoc/Henoc
+src/FullHenoc/*.o
+src/FullHenoc/moc_*.cpp
+src/FullHenoc/ui_*.h
+
+# ODE autotools generated files
+src/HenocUniverse/ode/autom4te.cache/
+src/HenocUniverse/ode/configure
+src/HenocUniverse/ode/config.log
+src/HenocUniverse/ode/config.status
+src/HenocUniverse/ode/libtool
+src/HenocUniverse/ode/Makefile
+src/HenocUniverse/ode/Makefile.in
+src/HenocUniverse/ode/stamp-h1
+src/HenocUniverse/ode/m4/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*~

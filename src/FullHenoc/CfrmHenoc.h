@@ -2,11 +2,23 @@
 #define __CFRMHENOC_H__
 
 #include "ui_frmHenoc.h"
-#include<QtWidgets>
-#include<QtXml>
-#include<iostream>
-#include<henocUniverseI.h>
+#include <QtWidgets>
+#include <QtXml>
+#include <iostream>
+#include "henocUniverseI.h"
 
+// This struct holds the simulation's world-specific properties.
+// It is edited by the CfrmMundo dialog.
+struct Whstc {
+	int fAnim;
+	float delta;
+	float cmv;
+	float fcs;
+	float gravity;
+	float erp;
+	float lin;
+	float co;
+};
 
 using namespace std;
 
@@ -39,7 +51,7 @@ class CfrmHenoc : public QMainWindow, frmHenoc {
 		QOpenGLWidget *glWidget;
 		DiagramScene *scene;
 		QTimer *timer;
-		HenocUniverseI::Whstc myWorldProp;
+		Whstc myWorldProp;
 };
 
 #endif

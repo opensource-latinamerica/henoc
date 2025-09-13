@@ -15,24 +15,24 @@
 namespace HenocUniverse{
 	class Quad : public Geometry{
 		public:
-			Quad(float width, float height);
+			Quad(dReal width, dReal height);
 			void UpdateBounds();
-			void SetMass(Body body, float density) const;
+			void SetMass(Body body, dReal density) const;
 			Shape GetShape() const { return Shape::Quad; }
-			virtual float Extent(int i) const { return extent[i]; }
+			virtual dReal Extent(int i) const { return extent[i]; }
 			vec2 EAxis(int i) const { return Axis(i) * extent[i]; } 
 			const vec2* GetCorners() const { return corners; }
 			bool Contains(const vec2 &v) const;
 		protected:
-			float extent[2];
+			dReal extent[2];
 			vec2 corners[4];
 	};
 
 	class Block : public Quad{
 		public:
 			Block(vec2 topleft, vec2 bottomright);
-			Block(vec2 center, float width, float height);
-			Block(float left, float top, float right, float bottom);
+			Block(vec2 center, dReal width, dReal height);
+			Block(dReal left, dReal top, dReal right, dReal bottom);
 	};
 
 	class Line : public Quad{
@@ -44,7 +44,7 @@ namespace HenocUniverse{
 
 	typedef std::vector<vec2> VList;
 	typedef std::vector<Line> LineStrip;
-	typedef std::map<float, int> SpanMap;
+	typedef std::map<dReal, int> SpanMap;
 
 	class Terrain : public Geometry{
 		public:
@@ -52,7 +52,7 @@ namespace HenocUniverse{
 			void UpdateBounds();
 			void Finalize() { UpdateBounds(); }
 			Shape GetShape() const { return Shape::Terrain; }
-			bool GetIndexRange(float left, float right, int &lower, int &upper) const;
+			bool GetIndexRange(dReal left, dReal right, int &lower, int &upper) const;
 
 			typedef VList::const_iterator const_iterator;
 			const_iterator begin() const { return vertices.begin(); }
@@ -73,13 +73,13 @@ namespace HenocUniverse{
 
 	class Circle : public Geometry{
 		public:
-			Circle(const vec2 &center, float radius);
+			Circle(const vec2 &center, dReal radius);
 			void UpdateBounds();
-			void SetMass(Body body, float density) const;
+			void SetMass(Body body, dReal density) const;
 			Shape GetShape() const { return Shape::Circle; }
-			float Radius() const { return radius; }
+			dReal Radius() const { return radius; }
 		private:
-			float radius;
+			dReal radius;
 	};
 
 	typedef std::list<Geometry*> GList;
@@ -93,7 +93,7 @@ namespace HenocUniverse{
 			Shape GetShape() const { return Shape::Composite; }
 			void SetCenter(const vec2 &center);
 			void SetAxis(const vec2 &axis);
-			void SetMass(Body body, float density) const;
+			void SetMass(Body body, dReal density) const;
 			typedef GList::const_iterator const_iterator;
 			typedef GList::iterator iterator;
 			const_iterator begin() const { return geometries.begin(); }

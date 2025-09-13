@@ -10,6 +10,10 @@
     pkgs.gnumake
     pkgs.qt5.qtbase
     pkgs.libsForQt5.full
+    pkgs.automake
+    pkgs.autoconf
+    pkgs.libtool
+    pkgs.m4
     # pkgs.python311
     # pkgs.python311Packages.pip
     # pkgs.nodejs_20
@@ -47,6 +51,7 @@
       onCreate = {
         # Example: install JS dependencies from NPM
         # npm-install = "npm install";
+        git-submodule-init = "git submodule update --init --recursive";
       };
       # Runs when the workspace is (re)started
       onStart = {

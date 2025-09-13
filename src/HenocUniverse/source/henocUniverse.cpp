@@ -6,16 +6,14 @@
 
 
 #include <ode/ode.h>
-#include <ode/source/objects.h>
 #include <cassert>
+#include <stack>
+#include <algorithm>
+#include "henocUniverse.h"
 
 using namespace HenocUniverse;
 
-void dGeomMoved(dGeomID g) { g->Move(); }
-dGeomID dGeomGetBodyNext(dGeomID) { return 0; }
-void dGeomSetBody(dGeomID g, dBodyID b) {}
-
-ObjectProperties Object::defaults = { 5, dInfinity, 0.35, 0, ~0U, ~0U, 0 };
+ObjectProperties Object::defaults = { 5, (dReal)dInfinity, 0.35, 0, ~0U, ~0U, 0 };
 std::stack<ObjectProperties> Object::defaultStack;
 
 Object::Object() : properties(defaults) {}
@@ -24,28 +22,29 @@ Geometry::Geometry(){
 	axis = vec2(1, 0);
 	center = vec2(0, 0);
 	bounds = aabb(0,0,0,0);
+    geom = 0;
 }
 
 void Object::Move(){
 	assert(IsDynamic() && GetBody());
-	const float *R = dBodyGetRotation(GetBody());
+	const dReal *R = dBodyGetRotation(GetBody());
 	{
-		float c[3] = {1, 0, 0};
-		float a[4];
+		dReal c[3] = {1, 0, 0};
+		dReal a[4];
 		dMultiply0(a, R, c, 4, 3, 1);
 		GetGeometry().SetAxis(vec2(a));
 	}
 
-	const float *position = dBodyGetPosition(GetBody());
+	const dReal *position = dBodyGetPosition(GetBody());
 	GetGeometry().SetCenter(vec2(position));
 	GetGeometry().UpdateBounds();
 }
 
-void Object::Rotate(float theta){
+void Object::Rotate(dReal theta){
 	GetGeometry().SetAxis(vec2(0, 1));
 	GetGeometry().Rotate(theta);
 	if (IsDynamic() && GetBody()){
-		const float degreesToRadians = atan(1.0f) / 45;
+		const dReal degreesToRadians = atan(1.0) / 45;
 		dMatrix3 R;
 		dRFromAxisAndAngle(R, 0, 0, 1, theta * degreesToRadians);
 		dBodySetRotation(GetBody(), R);
@@ -58,7 +57,7 @@ void Object::SetCenter(const vec2 &center){
 		dBodySetPosition(GetBody(), center.x, center.y, 0);
 }
 
-void Geometry::Rotate(float theta){
+void Geometry::Rotate(dReal theta){
 	SetAxis(this->axis.rotate(theta));
 }
 
@@ -85,7 +84,7 @@ World::~World(){
 	dWorldDestroy(world);
 }
 
-void World::QuickStep(float f){
+void World::QuickStep(dReal f){
 	dWorldQuickStep(world, f);
 }
 
@@ -93,15 +92,15 @@ Body World::BodyCreate(){
 	return dBodyCreate(world);
 }
 
-void World::SetAutoDisableLinearThreshold(float f){
+void World::SetAutoDisableLinearThreshold(dReal f){
 	dWorldSetAutoDisableLinearThreshold(world, f);
 }
 
-void World::SetAutoDisableAngularThreshold(float f){
+void World::SetAutoDisableAngularThreshold(dReal f){
 	dWorldSetAutoDisableAngularThreshold(world, f);
 }
 
-void World::SetCFM(float f){
+void World::SetCFM(dReal f){
 	dWorldSetCFM(world, f);
 }
 
@@ -109,15 +108,15 @@ void World::SetAutoDisableFlag(bool b){
 	dWorldSetAutoDisableFlag(world, b ? 1 : 0);
 }
 
-void World::SetERP(float f){
+void World::SetERP(dReal f){
 	dWorldSetERP(world, f);
 }
 
-void World::SetContactMaxCorrectingVel(float f){
+void World::SetContactMaxCorrectingVel(dReal f){
 	dWorldSetContactMaxCorrectingVel(world, f);
 }
 
-void World::SetContactSurfaceLayer(float f){
+void World::SetContactSurfaceLayer(dReal f){
 	dWorldSetContactSurfaceLayer(world, f);
 }
 
@@ -148,12 +147,12 @@ dJointID World::AnchorAxis(Object &object, const vec2 &axis){
 	return joint;
 }
 
-dJointID World::Anchor(Object &o1, Object &o2, const vec2 &point, float mu, float erp){
+dJointID World::Anchor(Object &o1, Object &o2, const vec2 &point, dReal mu, dReal erp){
 	dJointID joint = dJointCreateHinge(world, 0);
 	dJointAttach(joint, o1.GetBody(), o2.GetBody());
 	dJointSetHingeAnchor(joint, point.x, point.y, 0);
 	dJointSetHingeAxis(joint, 0, 0, 1);
-	dJointSetErp(joint, erp);
+    dJointSetPUParam(joint, dParamERP, erp);
 
 	if (mu){
 		dJointID friction = dJointCreateAMotor(world, 0);
@@ -167,12 +166,12 @@ dJointID World::Anchor(Object &o1, Object &o2, const vec2 &point, float mu, floa
 	return joint;
 }
 
-dJointID World::Anchor(Object &o1, const vec2 &point, float mu, float erp){
+dJointID World::Anchor(Object &o1, const vec2 &point, dReal mu, dReal erp){
 	dJointID joint = dJointCreateHinge(world, 0);
 	dJointAttach(joint, o1.GetBody(), 0);
 	dJointSetHingeAnchor(joint, point.x, point.y, 0);
 	dJointSetHingeAxis(joint, 0, 0, 1);
-	dJointSetErp(joint, erp);
+    dJointSetPUParam(joint, dParamERP, erp);
 
 	if (mu){
 		dJointID friction = dJointCreateAMotor(world, 0);
@@ -190,11 +189,11 @@ void World::DeleteJoint(dJointID joint){
 	dJointDestroy(joint);
 }
 
-void World::SetMotorVelocity(dJointID joint, float velocity){
+void World::SetMotorVelocity(dJointID joint, dReal velocity){
 	dJointSetAMotorParam(joint, dParamVel, velocity);
 }
 
-float World::GetMotorVelocity(dJointID joint){
+dReal World::GetMotorVelocity(dJointID joint){
 	return dJointGetAMotorParam(joint, dParamVel);
 }
 
@@ -213,7 +212,7 @@ void ContactList::Reset(Object *o1, Object *o2){
 	this->o2 = o2;
 }
 
-void ContactList::AddContact(const vec2 &position, const vec2 &normal, float depth){
+void ContactList::AddContact(const vec2 &position, const vec2 &normal, dReal depth){
 	assert(count < Max - 1);
 	dContactGeom &cg = contacts[count].geom;
 	cg.pos[0] = position.x;
@@ -251,8 +250,8 @@ void ContactList::Finalize(){
 		c.surface.bounce_vel = (p1.bounceVelocity + p2.bounceVelocity) / 2;
 
 		dContactGeom &cg = contacts[i].geom;
-		cg.g1 = o1;
-		cg.g2 = o2;
+		cg.g1 = o1->GetGeometry().GetGeomID();
+		cg.g2 = o2->GetGeometry().GetGeomID();
 	}
 
 	if (p1.callback) p1.callback(*this);
@@ -270,6 +269,6 @@ void ContactList::CreateJoints(dWorldID world, dJointGroupID contactGroup) const
 		dJointID joint = dJointCreateContact(world, contactGroup, &c);
 
 		const dContactGeom &cg = c.geom;
-		dJointAttach(joint, cg.g1->GetBody(), cg.g2->GetBody());
+		dJointAttach(joint, dGeomGetBody(cg.g1), dGeomGetBody(cg.g2));
 	}
 }

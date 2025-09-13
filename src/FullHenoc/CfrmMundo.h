@@ -3,10 +3,9 @@
 
 #include "ui_frmMundo.h"
 #include <QtGui>
-#include <henocUniverseI.h>
+#include "CfrmHenoc.h"
 
 using namespace Ui;
-using namespace HenocUniverseI;
 
 class CfrmMundo : public QDialog, frmMundo{
 	Q_OBJECT

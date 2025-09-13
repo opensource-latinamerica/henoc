@@ -12,7 +12,7 @@
 
 using namespace HenocUniverse;
 
-Quad::Quad(float width, float height){
+Quad::Quad(dReal width, dReal height){
 	extent[0] = width / 2;
 	extent[1] = height / 2;
 	UpdateBounds();
@@ -24,13 +24,13 @@ Block::Block(vec2 topleft, vec2 bottomright) : Quad(bottomright.x - topleft.x, b
 	UpdateBounds();
 }
 
-Block::Block(vec2 center, float width, float height) : Quad(width, height){
+Block::Block(vec2 center, dReal width, dReal height) : Quad(width, height){
 	SetCenter(center);
 	SetAxis(vec2(1, 0));
 	UpdateBounds();
 }
 
-Block::Block(float left, float top, float right, float bottom) : Quad(right - left, bottom - top){
+Block::Block(dReal left, dReal top, dReal right, dReal bottom) : Quad(right - left, bottom - top){
 	SetCenter(vec2(right + left, top + bottom) / 2);
 	SetAxis(vec2(1, 0));
 	UpdateBounds();
@@ -47,7 +47,7 @@ Terrain::Terrain(const vec2 &start) : previous(start){
 	spans[start.x] = 0;
 }
 
-Circle::Circle(const vec2 &center, float radius) : radius(radius){
+Circle::Circle(const vec2 &center, dReal radius) : radius(radius){
 	SetCenter(center);
 	UpdateBounds();
 }
@@ -69,7 +69,7 @@ void Quad::UpdateBounds(){
 bool Quad::Contains(const vec2 &v) const{
 	vec2 p = v - center;
 	p = p.rotate(axis);
-	return fabsf(p.x) < extent[0] && fabsf(p.y) < extent[1];
+	return fabs(p.x) < extent[0] && fabs(p.y) < extent[1];
 }
 
 void Terrain::push_back(const vec2 &v){
@@ -80,7 +80,7 @@ void Terrain::push_back(const vec2 &v){
 	vertices.push_back(v);
 }
 
-bool Terrain::GetIndexRange(float left, float right, int &lower, int &upper) const{
+bool Terrain::GetIndexRange(dReal left, dReal right, int &lower, int &upper) const{
 	SpanMap::const_iterator lowerBound = spans.lower_bound(left);
 	if (lowerBound == spans.end()) return false;
 
@@ -183,7 +183,7 @@ void Composite::SetAxis(const vec2 &axis){
 	Geometry::SetAxis(axis);
 }
 
-void Quad::SetMass(Body body, float density) const{
+void Quad::SetMass(Body body, dReal density) const{
 	dMass m;
 	if (extent[1])
 		dMassSetBox(&m, density, 2 * extent[0], 2 * extent[1], 1);
@@ -192,13 +192,13 @@ void Quad::SetMass(Body body, float density) const{
 	dBodySetMass(body, &m);
 }
 
-void Circle::SetMass(Body body, float density) const{
+void Circle::SetMass(Body body, dReal density) const{
 	dMass m;
 	dMassSetBox(&m, density, radius, radius, 1); // TODO
 	dBodySetMass(body, &m);
 }
 
-void Composite::SetMass(Body body, float density) const{
+void Composite::SetMass(Body body, dReal density) const{
 	dMass m;
 	dMassSetBox(&m, density, 100, 100, 1); // TODO
 	dBodySetMass(body, &m);

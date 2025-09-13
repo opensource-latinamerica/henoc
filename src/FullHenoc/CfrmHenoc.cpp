@@ -12,9 +12,8 @@
 #include <HLine.h>
 #include <HBall.h>
 
-#include <henocUniverseI.h>
+#include <henocUniverse.h>
 
-using namespace HenocUniverseI;
 using namespace std;
 
 CfrmHenoc::CfrmHenoc( QWidget * parent, Qt::WindowFlags flags):QMainWindow(parent, flags){

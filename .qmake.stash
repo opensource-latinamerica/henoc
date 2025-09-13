@@ -1,0 +1,24 @@
+QMAKE_CXX.QT_COMPILER_STDCXX = 201703L
+QMAKE_CXX.QMAKE_GCC_MAJOR_VERSION = 13
+QMAKE_CXX.QMAKE_GCC_MINOR_VERSION = 2
+QMAKE_CXX.QMAKE_GCC_PATCH_VERSION = 0
+QMAKE_CXX.COMPILER_MACROS = \
+    QT_COMPILER_STDCXX \
+    QMAKE_GCC_MAJOR_VERSION \
+    QMAKE_GCC_MINOR_VERSION \
+    QMAKE_GCC_PATCH_VERSION
+QMAKE_CXX.INCDIRS = \
+    /nix/store/f2lglcw69yh2yyihxq6kvhpanc3s1n9p-gcc-13.2.0/include/c++/13.2.0 \
+    /nix/store/f2lglcw69yh2yyihxq6kvhpanc3s1n9p-gcc-13.2.0/include/c++/13.2.0/x86_64-unknown-linux-gnu \
+    /nix/store/f2lglcw69yh2yyihxq6kvhpanc3s1n9p-gcc-13.2.0/include/c++/13.2.0/backward \
+    /nix/store/f2lglcw69yh2yyihxq6kvhpanc3s1n9p-gcc-13.2.0/lib/gcc/x86_64-unknown-linux-gnu/13.2.0/include \
+    /nix/store/f2lglcw69yh2yyihxq6kvhpanc3s1n9p-gcc-13.2.0/include \
+    /nix/store/f2lglcw69yh2yyihxq6kvhpanc3s1n9p-gcc-13.2.0/lib/gcc/x86_64-unknown-linux-gnu/13.2.0/include-fixed \
+    /nix/store/jig62nn8174n4dlk05lqwsvs5wd2c64r-glibc-2.39-52-dev/include
+QMAKE_CXX.LIBDIRS = \
+    /nix/store/pf5avvvl4ssd6kylcvg2g23hcjp71h19-glibc-2.39-52/lib \
+    /nix/store/90yn7340r8yab8kxpb0p7y0c9j3snjam-gcc-13.2.0-lib/lib \
+    /nix/store/rdc1jnyw74mwr2gszqc5zwi433zxs089-gcc-wrapper-13.2.0/bin \
+    /nix/store/f2lglcw69yh2yyihxq6kvhpanc3s1n9p-gcc-13.2.0/lib/gcc/x86_64-unknown-linux-gnu/13.2.0 \
+    /nix/store/f2lglcw69yh2yyihxq6kvhpanc3s1n9p-gcc-13.2.0/lib64 \
+    /nix/store/f2lglcw69yh2yyihxq6kvhpanc3s1n9p-gcc-13.2.0/lib

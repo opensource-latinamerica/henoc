@@ -1,9 +1,6 @@
 #include<QtGui>
 #include<CfrmMundo.h>
 
-
-using namespace HenocUniverseI;
-
 CfrmMundo::CfrmMundo(Whstc *pW, QWidget *parent, Qt::WindowFlags f):QDialog(parent,f),mW(pW){
 	setupUi(this);
 	connect(btnAceptar, SIGNAL(clicked()), this, SLOT(Aceptar()));

@@ -3,8 +3,9 @@
 # en linux esta directamente en /usr/include
 #
 
-INCLUDEPATH += ../HenocUniverse/ /usr/include/malloc/
-LIBS += -L. -L../HenocUniverse/ -lHenocUniverse
+DEFINES += dNODEBUG
+INCLUDEPATH += ../HenocUniverse/ ../HenocUniverse/ode_install/include /usr/include/malloc/
+LIBS += -L../HenocUniverse -lHenocUniverse -L../HenocUniverse/ode_install/lib -lode
 CONFIG += warn_off static release c++11
 FORMS += frmHenoc.ui \
 	frmPeCaLi.ui \
@@ -25,9 +26,12 @@ HEADERS += CfrmHenoc.h\
 	HBall.h\
 	CfrmPeCaLi.h \
 	CfrmMundo.h \
-	diagramscene.h
+	diagramscene.h \
+    henocUniverseI.h
 RESOURCES += diagramscene.qrc
 
 DESTDIR += ../
+OBJECTS_DIR = .obj
+MOC_DIR = .obj
 
 QT           += opengl widgets xml
