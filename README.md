@@ -18,6 +18,12 @@ To build and run Henoc, you will need the following software installed on your s
 *   **Qt Framework:** The project requires the `opengl`, `widgets`, and `xml` modules.
 *   **GNU Make:** For managing the build process.
 
+## Example for dependencies on a Debian system.
+
+```bash
+ sudo apt install autotools-dev autoconf automake libtool build-essential libfontconfig1  mesa-common-dev libglu1-mesa-dev qtbase5-dev qt5-qmake qtbase5-dev-tools -y
+```
+
 ## Building the Project
 
 The project uses a `Makefile` that automates the entire build process, including the compilation of the included ODE (Open Dynamics Engine) library.
