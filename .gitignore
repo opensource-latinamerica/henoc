@@ -32,3 +32,17 @@ Thumbs.db
 .vscode/
 *.swp
 *~
+
+# Build artifacts
+*.o
+*.a
+henoc
+Henoc
+
+# Qt files
+.qmake.stash
+Makefile
+
+# Directories
+.obj/
+ode_install/
