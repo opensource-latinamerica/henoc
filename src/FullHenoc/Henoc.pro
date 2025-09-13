@@ -31,7 +31,11 @@ HEADERS += CfrmHenoc.h\
 RESOURCES += diagramscene.qrc
 
 DESTDIR += ../
+TARGET = henoc
 OBJECTS_DIR = .obj
 MOC_DIR = .obj
+
+# Ensure the .obj directory is removed on clean
+QMAKE_CLEAN += -rf .obj
 
 QT           += opengl widgets xml

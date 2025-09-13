@@ -36,13 +36,14 @@ $(TARGET): $(OBJECTS)
 
 # Rule to compile source files into object files
 .obj/%.o: source/%.cpp
+	@mkdir -p .obj
 	@echo "Compiling $<"
 	@$(CXX) $(CXXFLAGS) $(INCLUDES) -o $@ $<
 
 # Clean rule
 clean:
 	@echo "Cleaning up..."
-	@rm -f .obj/*.o
+	@rm -rf .obj
 	@rm -f $(TARGET)
 
 # Phony targets

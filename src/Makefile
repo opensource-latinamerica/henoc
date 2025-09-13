@@ -7,14 +7,14 @@ ODE_DIR = $(HENOC_UNIVERSE_DIR)/ode
 ODE_INSTALL_DIR_ABS = $(abspath $(HENOC_UNIVERSE_DIR)/ode_install)
 
 # Phony targets
-.PHONY: all ode henochuniverse fullhenoc clean
+.PHONY: all ode henochuniverse henoc clean
 
 # Default target
-all: fullhenoc
+all: henoc
 
 # Target to build the FullHenoc application
-fullhenoc: henochuniverse
-	@echo "--- Building FullHenoc application ---"
+henoc: henochuniverse
+	@echo "--- Building henoc application ---"
 	@cd $(FULL_HENOC_DIR) && qmake Henoc.pro && $(MAKE)
 
 # Target to build the HenocUniverse library
@@ -46,3 +46,4 @@ clean:
 		$(MAKE) -C $(ODE_DIR) distclean; \
 	fi
 	@rm -rf $(HENOC_UNIVERSE_DIR)/ode_install
+	@rm -f henoc
