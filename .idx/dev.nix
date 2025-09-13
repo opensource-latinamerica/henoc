@@ -14,10 +14,6 @@
     pkgs.autoconf
     pkgs.libtool
     pkgs.m4
-    # pkgs.python311
-    # pkgs.python311Packages.pip
-    # pkgs.nodejs_20
-    # pkgs.nodePackages.nodemon
   ];
 
   # Sets environment variables in the workspace
