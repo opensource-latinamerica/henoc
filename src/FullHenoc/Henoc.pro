@@ -18,7 +18,8 @@ SOURCES += main.cpp \
 	HBall.cpp \
 	CfrmPeCaLi.cpp \
 	CfrmMundo.cpp \
-	CfrmHenoc.cpp
+	CfrmHenoc.cpp \
+	glviewport.cpp
 HEADERS += CfrmHenoc.h\
 	HObject.h\
 	HBox.h\
@@ -27,6 +28,7 @@ HEADERS += CfrmHenoc.h\
 	CfrmPeCaLi.h \
 	CfrmMundo.h \
 	diagramscene.h \
+    glviewport.h \
     henocUniverseI.h
 RESOURCES += diagramscene.qrc
 

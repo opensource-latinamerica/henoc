@@ -13,6 +13,8 @@
 #include <HBall.h>
 
 #include <henocUniverse.h>
+#include <QVBoxLayout>
+#include "glviewport.h"
 
 using namespace std;
 
@@ -45,10 +47,18 @@ CfrmHenoc::CfrmHenoc( QWidget * parent, Qt::WindowFlags flags):QMainWindow(paren
 
 	connect(scene, &DiagramScene::itemInserted, this, &CfrmHenoc::itemInserted);
 
-	glWidget = new QOpenGLWidget(this);
-    setCentralWidget(glWidget);
+    // Embed an OpenGL viewport inside page_2 of the stacked widget
+    glWidget = new GLViewport(stackedWidget->widget(1));
+    QWidget *page2 = stackedWidget->widget(1);
+    if (!page2->layout()) {
+        auto *v = new QVBoxLayout(page2);
+        v->setContentsMargins(0, 0, 0, 0);
+    }
+    page2->layout()->addWidget(glWidget);
 
-	timer = new QTimer(this);
+    timer = new QTimer(this);
+    // Trigger repaints while playing
+    connect(timer, &QTimer::timeout, glWidget, QOverload<>::of(&QOpenGLWidget::update));
 }	
 
 void CfrmHenoc::Play(){

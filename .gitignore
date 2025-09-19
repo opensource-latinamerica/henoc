@@ -23,6 +23,9 @@ src/HenocUniverse/ode/Makefile.in
 src/HenocUniverse/ode/stamp-h1
 src/HenocUniverse/ode/m4/
 
+# ODE submodule
+src/HenocUniverse/ode/*
+
 # OS generated files
 .DS_Store
 Thumbs.db
