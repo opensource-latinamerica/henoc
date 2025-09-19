@@ -62,9 +62,12 @@ CfrmHenoc::CfrmHenoc( QWidget * parent, Qt::WindowFlags flags):QMainWindow(paren
 }	
 
 void CfrmHenoc::Play(){
-	QList<QGraphicsItem*> lista = scene->items();
-	int xa, ya, wa, ha;
-	//glWidget->delSpace();
+    QList<QGraphicsItem*> lista = scene->items();
+    int xa, ya, wa, ha;
+    //glWidget->delSpace();
+    // Reset GL items and configure simple world params
+    static_cast<GLViewport*>(glWidget)->clearObjects();
+    static_cast<GLViewport*>(glWidget)->setGravity(myWorldProp.gravity);
 	for(unsigned int i=0; i < lista.size(); i++){
 		lista.at(i);
 		xa = view->mapFromScene( lista.at(i)->mapToScene( lista.at(i)->boundingRect() )).boundingRect().x();  
@@ -80,24 +83,33 @@ void CfrmHenoc::Play(){
 			
 		if(0 != auxR){
 			HObject obj = ((HBox*)auxR)->obj;
-			//glWidget->addBox(fao.center().x(), fao.center().y(), obj.width(), obj.height(), fabsf(obj.getMass()), obj.getFriction(), obj.getBounceFactor(), obj.getBounceVelocity(), obj.getColMask(), obj.getFrictionMask(), obj.getRotation(), obj.getColor());
+			const QColor stroke = fromThetaColor(obj.getColor());
+			const QColor fill = fromThetaIncreasedColor(obj.getColor(), 0.5f);
+			static_cast<GLViewport*>(glWidget)->addRectangle(xa, ya, wa, ha, obj.getRotation(), fill, stroke, true);
 		}
 		else if(0 != auxE){
 			div_t q;
 			q = div(ha,2);
 			HObject obj = ((HBall*)auxE)->obj;
-			//glWidget->addBall(fao.center().x(), fao.center().y(), q.quot, fabsf(obj.getMass()), obj.getFriction(), obj.getBounceFactor(), obj.getBounceVelocity(), obj.getColMask(), obj.getFrictionMask(), obj.getRotation(), obj.getColor());
+			const QColor stroke = fromThetaColor(obj.getColor());
+			const QColor fill = fromThetaIncreasedColor(obj.getColor(), 0.5f);
+			static_cast<GLViewport*>(glWidget)->addCircle(fao.center().x(), fao.center().y(), q.quot, fill, stroke, true);
 		}
-		else if(0 != auxL){
-			HObject obj = ((HLine*)auxL)->obj;
-			//glWidget->addLine((int)auxL->line().x1(), (int)auxL->line().y1(), (int)auxL->line().x2(), (int)auxL->line().y2(), obj.getFriction(), obj.getColMask(), obj.getFrictionMask(), obj.getColor() );
-		}
+        else if(0 != auxL){
+            HObject obj = ((HLine*)auxL)->obj;
+            const QColor stroke = fromThetaColor(obj.getColor());
+            const QPoint p1 = view->mapFromScene(auxL->line().p1());
+            const QPoint p2 = view->mapFromScene(auxL->line().p2());
+            static_cast<GLViewport*>(glWidget)->addLine(p1.x(), p1.y(), p2.x(), p2.y(), stroke, 2.0f);
+        }
 
 	}
 
 
 
-	stackedWidget->setCurrentIndex(1);
+    // Switch to the OpenGL page which hosts the GL viewport
+    stackedWidget->setCurrentIndex(1);
+    glWidget->update();
 	//glWidget->setWorldParams(myWorldProp);		
 	timer->start( myWorldProp.fAnim );
 }

@@ -201,17 +201,32 @@ void DiagramScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent){
 }
 
 void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent){
-	if(myMode == InsertItem && itemx != 0){
-		if(3 != myItemType){
-			((HBall *)itemx)->obj.setWidth(views().at(0)->mapFromScene( itemx->mapToScene( itemx->boundingRect() )).boundingRect().width());
-			((HBall *)itemx)->obj.setHeight(views().at(0)->mapFromScene( itemx->mapToScene( itemx->boundingRect() )).boundingRect().height());
-			((HBall *)itemx)->obj.setMass( ( (float)(itemx->boundingRect().width()+itemx->boundingRect().height())/40.0 ) );
-		}
-		myItemType = 0;
-		emit itemInserted(itemx);
-		//delete itemx;
-		itemx=0;
-	}
+    if(myMode == InsertItem && itemx != 0){
+        if (3 != myItemType && !views().isEmpty()) {
+            const QRect mapped = views().at(0)->mapFromScene(itemx->mapToScene(itemx->boundingRect())).boundingRect();
+            const int w = mapped.width();
+            const int h = mapped.height();
+            const float m = static_cast<float>(itemx->boundingRect().width() + itemx->boundingRect().height()) / 40.0f;
+
+            if (myItemType == 1) { // Box
+                if (auto *box = qgraphicsitem_cast<HBox *>(itemx)) {
+                    box->obj.setWidth(w);
+                    box->obj.setHeight(h);
+                    box->obj.setMass(m);
+                }
+            } else if (myItemType == 2) { // Ball
+                if (auto *ball = qgraphicsitem_cast<HBall *>(itemx)) {
+                    ball->obj.setWidth(w);
+                    ball->obj.setHeight(h);
+                    ball->obj.setMass(m);
+                }
+            }
+        }
+        myItemType = 0;
+        emit itemInserted(itemx);
+        //delete itemx;
+        itemx=0;
+    }
 
 	QGraphicsScene::mouseReleaseEvent(mouseEvent);
 }
