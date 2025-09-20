@@ -4,6 +4,9 @@
 #include <QPen>
 #include <QGraphicsView>
 #include <QTransform>
+#include <QGraphicsSceneContextMenuEvent>
+#include <QMenu>
+#include <QInputDialog>
 
 #include "diagramscene.h"
 #include "HObject.h"
@@ -238,4 +241,37 @@ bool DiagramScene::isItemChange(int type){
             return true;
     }
     return false;
+}
+
+void DiagramScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
+    QGraphicsItem *clicked = itemAt(event->scenePos(), QTransform());
+    if (!clicked) {
+        QGraphicsScene::contextMenuEvent(event);
+        return;
+    }
+    QGraphicsLineItem *line = qgraphicsitem_cast<QGraphicsLineItem*>(clicked);
+    if (!line) {
+        QGraphicsScene::contextMenuEvent(event);
+        return;
+    }
+    QMenu menu;
+    QAction *a1 = menu.addAction("Thickness: 1 px");
+    QAction *a2 = menu.addAction("Thickness: 2 px");
+    QAction *a4 = menu.addAction("Thickness: 4 px");
+    QAction *a8 = menu.addAction("Thickness: 8 px");
+    menu.addSeparator();
+    QAction *acustom = menu.addAction("Custom…");
+    QAction *chosen = menu.exec(event->screenPos());
+    if (!chosen) return;
+    qreal w = line->pen().widthF();
+    if (chosen == a1) w = 1.0;
+    else if (chosen == a2) w = 2.0;
+    else if (chosen == a4) w = 4.0;
+    else if (chosen == a8) w = 8.0;
+    else if (chosen == acustom){
+        bool ok=false; double val = QInputDialog::getDouble(nullptr, tr("Line Thickness"), tr("Pixels:"), w, 0.5, 64.0, 1, &ok);
+        if (!ok) return; w = val;
+    }
+    QPen p = line->pen(); p.setWidthF(w); line->setPen(p);
+    emit lineThicknessChanged(w);
 }

@@ -228,6 +228,26 @@
      <item row="10" column="3" >
       <widget class="QComboBox" name="cmbLineThickness" />
      </item>
+     <item row="11" column="0" colspan="3" >
+      <widget class="QLabel" name="lblLineThicknessCustom" >
+       <property name="text" >
+        <string>Custom Thickness (px)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="3" >
+      <widget class="QDoubleSpinBox" name="fltLineThicknessCustom" >
+       <property name="minimum" >
+        <double>0.500000000000000</double>
+       </property>
+       <property name="maximum" >
+        <double>64.000000000000000</double>
+       </property>
+       <property name="singleStep" >
+        <double>0.500000000000000</double>
+       </property>
+      </widget>
+     </item>
     </layout>
   </item>
    <item row="1" column="0" >

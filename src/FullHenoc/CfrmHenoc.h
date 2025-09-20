@@ -48,6 +48,8 @@ class CfrmHenoc : public QMainWindow, frmHenoc {
 		void AddLine();		void AddCatapult();
 		void AddBall();
 		void itemInserted(QGraphicsItem *);
+        void onSelectionChanged();
+        void onLineThicknessChanged(qreal w);
 	private:
 		void XkiAddLine(QDomElement &, int x1, int y1, int x2, int y2, float friction, int colMask, int frictionMask);
 		void XkiAddBox(QDomElement &, int x, int y, int w, int h, float mass, float friction, float bounceFactor, float bounceVelocity, int colMask, int frictionMask, int rotation);

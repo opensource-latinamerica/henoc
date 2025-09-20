@@ -2,6 +2,9 @@
 #define DIAGRAMSCENE_H
 
 #include <QGraphicsScene>
+class QGraphicsSceneContextMenuEvent;
+class QMenu;
+class QGraphicsLineItem;
 
 class QGraphicsSceneMouseEvent;
 class QMenu;
@@ -34,11 +37,13 @@ public slots:
 signals:
     void itemInserted(QGraphicsItem *item);
 //    void itemSelected(QGraphicsItem *item);
+    void lineThicknessChanged(qreal width);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 
 private:
 	bool isItemChange(int type);

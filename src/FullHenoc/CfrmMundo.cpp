@@ -30,6 +30,7 @@ CfrmMundo::CfrmMundo(Whstc *pW, QWidget *parent, Qt::WindowFlags f):QDialog(pare
     cmbLineThickness->addItem("Normal (2 px)", 2.0);
     cmbLineThickness->addItem("Bold (4 px)", 4.0);
     cmbLineThickness->addItem("Heavy (8 px)", 8.0);
+    cmbLineThickness->addItem("Custom", QVariant());
     // Select closest preset
     int bestIdx = 0; double bestDiff = 1e9;
     for (int i=0;i<cmbLineThickness->count();++i){
@@ -38,6 +39,23 @@ CfrmMundo::CfrmMundo(Whstc *pW, QWidget *parent, Qt::WindowFlags f):QDialog(pare
         if (d < bestDiff){ bestDiff = d; bestIdx = i; }
     }
     cmbLineThickness->setCurrentIndex(bestIdx);
+    // Custom spin setup
+    fltLineThicknessCustom->setRange(0.5, 64.0);
+    fltLineThicknessCustom->setSingleStep(0.5);
+    fltLineThicknessCustom->setValue(mW->lineThicknessPx);
+    // Enable custom only if Custom selected
+    auto updateCustomEnabled = [this](){
+        bool isCustom = !cmbLineThickness->currentData().isValid();
+        fltLineThicknessCustom->setEnabled(isCustom);
+    };
+    updateCustomEnabled();
+    connect(cmbLineThickness, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int){ updateCustomEnabled(); });
+
+    // Tooltips
+    fltFillBright->setToolTip("Increase fill brightness relative to stroke color (0=no change, 1=max).");
+    fltDensityScale->setToolTip("Global multiplier applied to mass/area density; use to stabilize dynamics.");
+    cmbLineThickness->setToolTip("Preset thickness for new lines; choose Custom to set a specific value.");
+    fltLineThicknessCustom->setToolTip("Custom line thickness in pixels.");
 
 }
 
@@ -52,7 +70,10 @@ void CfrmMundo::Aceptar(){
 	mW->co = intCoaccion->value();
     mW->fillBrightFactor = (float)fltFillBright->value();
     mW->densityScale = (float)fltDensityScale->value();
-    mW->lineThicknessPx = (float)cmbLineThickness->currentData().toDouble();
+    if (cmbLineThickness->currentData().isValid())
+        mW->lineThicknessPx = (float)cmbLineThickness->currentData().toDouble();
+    else
+        mW->lineThicknessPx = (float)fltLineThicknessCustom->value();
 	accept();
 }
 
@@ -63,4 +84,3 @@ void CfrmMundo::Limpiar(){
 void CfrmMundo::Cancelar(){
 	reject();
 }
-

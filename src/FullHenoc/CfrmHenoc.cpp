@@ -50,6 +50,8 @@ CfrmHenoc::CfrmHenoc( QWidget * parent, Qt::WindowFlags flags):QMainWindow(paren
 	view->setScene(scene);	
 
 	connect(scene, &DiagramScene::itemInserted, this, &CfrmHenoc::itemInserted);
+    connect(scene, &QGraphicsScene::selectionChanged, this, &CfrmHenoc::onSelectionChanged);
+    connect(scene, &DiagramScene::lineThicknessChanged, this, &CfrmHenoc::onLineThicknessChanged);
 
     // Embed an OpenGL viewport inside page_2 of the stacked widget
     glWidget = new GLViewport(stackedWidget->widget(1));
@@ -135,61 +137,65 @@ void CfrmHenoc::AddLine(){
 }
 
 void CfrmHenoc::AddCatapult(){
-	{
-		QLineF ml( 0, 0, 655, 0 );
-		HLine *item = new HLine(ml);
-		item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-		float tColor = (0);
-		item->obj.setColor( tColor );
-        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), myWorldProp.lineThicknessPx));
-		scene->addItem(item);
-		item->obj.setType(3);
-		item->obj.setFriction( 99 );
-		item->obj.setColMask( 0 );
-		item->obj.setFrictionMask( 0 );
-	}
+    {
+        QLineF ml( 0, 0, 655, 0 );
+        HLine *item = new HLine(ml);
+        item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+        float tColor = (0);
+        item->obj.setColor( tColor );
+        qreal thick = std::max<qreal>(myWorldProp.lineThicknessPx, 8.0);
+        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), thick));
+        scene->addItem(item);
+        item->obj.setType(3);
+        item->obj.setFriction( 99 );
+        item->obj.setColMask( ~0 );
+        item->obj.setFrictionMask( ~0 );
+    }
 	
-	{
-		QLineF ml( 655, 0,  655, 517 );
-		HLine *item = new HLine(ml);
-		item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-		float tColor = (0);
-		item->obj.setColor( tColor );
-        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), myWorldProp.lineThicknessPx));
-		scene->addItem(item);
-		item->obj.setType(3);
-		item->obj.setFriction( 99 );
-		item->obj.setColMask( 0 );
-		item->obj.setFrictionMask( 0 );
-	}
+    {
+        QLineF ml( 655, 0,  655, 517 );
+        HLine *item = new HLine(ml);
+        item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+        float tColor = (0);
+        item->obj.setColor( tColor );
+        qreal thick = std::max<qreal>(myWorldProp.lineThicknessPx, 8.0);
+        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), thick));
+        scene->addItem(item);
+        item->obj.setType(3);
+        item->obj.setFriction( 99 );
+        item->obj.setColMask( ~0 );
+        item->obj.setFrictionMask( ~0 );
+    }
 	
-	{
-		QLineF ml( 0, 517, 655, 517 );
-		HLine *item = new HLine(ml);
-		item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-		float tColor = (0);
-		item->obj.setColor( tColor );
-        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), myWorldProp.lineThicknessPx));
-		scene->addItem(item);
-		item->obj.setType(3);
-		item->obj.setFriction( 99 );
-		item->obj.setColMask( 0 );
-		item->obj.setFrictionMask( 0 );
-	}
+    {
+        QLineF ml( 0, 517, 655, 517 );
+        HLine *item = new HLine(ml);
+        item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+        float tColor = (0);
+        item->obj.setColor( tColor );
+        qreal thick = std::max<qreal>(myWorldProp.lineThicknessPx, 8.0);
+        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), thick));
+        scene->addItem(item);
+        item->obj.setType(3);
+        item->obj.setFriction( 99 );
+        item->obj.setColMask( ~0 );
+        item->obj.setFrictionMask( ~0 );
+    }
 
-	{
-		QLineF ml( 0, 0, 0, 517 );
-		HLine *item = new HLine(ml);
-		item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-		float tColor = (0);
-		item->obj.setColor( tColor );
-        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), myWorldProp.lineThicknessPx));
-		scene->addItem(item);
-		item->obj.setType(3);
-		item->obj.setFriction( 99 );
-		item->obj.setColMask( 0 );
-		item->obj.setFrictionMask( 0 );
-	}
+    {
+        QLineF ml( 0, 0, 0, 517 );
+        HLine *item = new HLine(ml);
+        item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+        float tColor = (0);
+        item->obj.setColor( tColor );
+        qreal thick = std::max<qreal>(myWorldProp.lineThicknessPx, 8.0);
+        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), thick));
+        scene->addItem(item);
+        item->obj.setType(3);
+        item->obj.setFriction( 99 );
+        item->obj.setColMask( ~0 );
+        item->obj.setFrictionMask( ~0 );
+    }
 }
 
 void CfrmHenoc::AddBall(){
@@ -199,9 +205,25 @@ void CfrmHenoc::AddBall(){
 }
 
 void CfrmHenoc::itemInserted(QGraphicsItem *){
-	scene->setMode(DiagramScene::MoveItem);
-	btnBox->setChecked(false);
-	scene->setItemType(0);
+    scene->setMode(DiagramScene::MoveItem);
+    btnBox->setChecked(false);
+    scene->setItemType(0);
+}
+
+void CfrmHenoc::onSelectionChanged(){
+    QList<QGraphicsItem*> sel = scene->selectedItems();
+    if (sel.size() == 1){
+        if (auto line = qgraphicsitem_cast<QGraphicsLineItem*>(sel.first())){
+            qreal w = line->pen().widthF();
+            statusBar()->showMessage(tr("Line width: %1 px").arg(w));
+            return;
+        }
+    }
+    statusBar()->clearMessage();
+}
+
+void CfrmHenoc::onLineThicknessChanged(qreal w){
+    statusBar()->showMessage(tr("Line width: %1 px").arg(w), 3000);
 }
 
 void CfrmHenoc::changeProperties(){
@@ -219,7 +241,7 @@ void CfrmHenoc::changeProperties(){
 		return;
 	}
 
-	CfrmPeCaLi dialog((HObject*)(&(((HBox*)lista.at(0))->obj)),this);
+	CfrmPeCaLi dialog((HObject*)(&(((HBox*)lista.at(0))->obj)), lista.at(0), this);
 	if( QDialog::Accepted == dialog.exec() ){
 		if( 1 == ((HBox*)lista.at(0))->obj.getType() ){
 			QRectF fao = ((QGraphicsRectItem*)lista.at(0))->rect();
