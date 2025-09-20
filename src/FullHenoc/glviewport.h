@@ -20,6 +20,7 @@ struct GLItem {
 class GLViewport : public QOpenGLWidget, protected QOpenGLFunctions {
 public:
     explicit GLViewport(QWidget *parent = nullptr);
+    void setStepDelta(float dt) { m_step = dt; }
     void clearObjects();
     void addRectangle(int x, int y, int w, int h, float rotationDeg, const QColor &fill, const QColor &stroke, bool dynamic = true);
     void addCircle(int cx, int cy, int r, const QColor &fill, const QColor &stroke, bool dynamic = true);
@@ -35,4 +36,5 @@ private:
     void stepSimulation(float dt);
     QVector<GLItem> m_items;
     float m_gravity = 0.0f;
+    float m_step = 0.015f;
 };

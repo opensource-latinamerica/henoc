@@ -61,7 +61,7 @@ void GLViewport::resizeGL(int w, int h)
 void GLViewport::paintGL()
 {
     #if USE_ODE_BRIDGE
-    ODEBridge::StepAndDraw(1.0f);
+    ODEBridge::StepAndDraw(m_step);
     #else
     // Painter-based fallback simulation
     // Basic step: advance simple gravity
@@ -139,7 +139,7 @@ void GLViewport::addLine(int x1, int y1, int x2, int y2, const QColor &color, fl
 {
     #if USE_ODE_BRIDGE
     (void)color; (void)width;
-    ODEBridge::AddLine(x1, y1, x2, y2, 1.0f, ~0u, ~0u, 0.f);
+    ODEBridge::AddLine(x1, y1, x2, y2, 1.0f, ~0u, ~0u, 0.f, width);
     #else
     GLItem it; it.type = GLItem::Line; it.x1 = x1; it.y1 = y1; it.x2 = x2; it.y2 = y2; it.lw = width; it.stroke = color;
     it.fill = Qt::transparent; it.dynamic = false;

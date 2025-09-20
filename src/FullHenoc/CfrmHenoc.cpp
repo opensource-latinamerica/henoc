@@ -69,6 +69,7 @@ void CfrmHenoc::Play(){
     // Reset world and configure ODE params
     static_cast<GLViewport*>(glWidget)->clearObjects();
     ODEBridge::SetWorldParams(myWorldProp);
+    static_cast<GLViewport*>(glWidget)->setStepDelta(myWorldProp.delta);
 	for(unsigned int i=0; i < lista.size(); i++){
 		lista.at(i);
 		xa = view->mapFromScene( lista.at(i)->mapToScene( lista.at(i)->boundingRect() )).boundingRect().x();  
@@ -101,7 +102,8 @@ void CfrmHenoc::Play(){
             HObject obj = ((HLine*)auxL)->obj;
             const QPoint p1 = view->mapFromScene(auxL->line().p1());
             const QPoint p2 = view->mapFromScene(auxL->line().p2());
-            ODEBridge::AddLine(p1.x(), p1.y(), p2.x(), p2.y(), obj.getFriction(), obj.getColMask(), obj.getFrictionMask(), obj.getColor());
+            float thickness = auxL->pen().widthF();
+            ODEBridge::AddLine(p1.x(), p1.y(), p2.x(), p2.y(), obj.getFriction(), obj.getColMask(), obj.getFrictionMask(), obj.getColor(), thickness);
         }
 
 	}

@@ -19,6 +19,8 @@ namespace {
         // colors
         float fillR=0.8f, fillG=0.8f, fillB=0.8f;
         float strokeR=0.0f, strokeG=0.0f, strokeB=0.0f;
+        unsigned int collisionMask = ~0u;
+        unsigned int frictionMask = ~0u;
     };
 
     dWorldID g_world = 0;
@@ -54,13 +56,18 @@ namespace {
 
         // Only collide dynamic vs any or static vs dynamic
         if (!o1->dynamic && !o2->dynamic) return;
+        // Collision mask filtering
+        if ((o1->collisionMask & o2->collisionMask) == 0) return;
 
         dContact contacts[8];
         int n = dCollide(g1, g2, 8, &contacts[0].geom, sizeof(dContact));
         for (int i = 0; i < n; ++i){
             dContact &c = contacts[i];
             c.surface.mode = dContactBounce;
-            c.surface.mu = (o1->mu == dInfinity || o2->mu == dInfinity) ? dInfinity : (o1->mu * o2->mu);
+            if ((o1->frictionMask & o2->frictionMask) != 0)
+                c.surface.mu = (o1->mu == dInfinity || o2->mu == dInfinity) ? dInfinity : (o1->mu * o2->mu);
+            else
+                c.surface.mu = 0;
             c.surface.bounce = (o1->bounce + o2->bounce) * 0.5f;
             c.surface.bounce_vel = (o1->bounceVel + o2->bounceVel) * 0.5f;
             dJointID j = dJointCreateContact(g_world, g_contactGroup, &c);
@@ -75,6 +82,11 @@ namespace {
         if (theta < 120){ g = theta / 120.f; r = 1 - g; b = 0; }
         else if (theta < 240){ b = (theta - 120.f) / 120.f; g = 1 - b; r = 0; }
         else { r = (theta - 240.f) / 120.f; b = 1 - r; g = 0; }
+    }
+
+    static void increaseBrightness(float &r, float &g, float &b, float factor){
+        r += factor; g += factor; b += factor;
+        if (r > 1.f) r = 1.f; if (g > 1.f) g = 1.f; if (b > 1.f) b = 1.f;
     }
 }
 
@@ -111,14 +123,20 @@ namespace ODEBridge {
         cleanup_space();
     }
 
-    void AddBox(int cx, int cy, int w, int h, float mass, float friction, float bounceFactor, float bounceVelocity, int /*colMask*/, int /*frictionMask*/, float rotationDeg, float thetaColor){
+    void AddBox(int cx, int cy, int w, int h, float mass, float friction, float bounceFactor, float bounceVelocity, int colMask, int frictionMask, float rotationDeg, float thetaColor){
         ensureWorld();
         Obj *o = new Obj(); o->type = Obj::Box; o->dynamic = true; o->w = (float)w; o->h = (float)h; o->mu = friction; o->bounce = bounceFactor; o->bounceVel = bounceVelocity;
         float r,g,b; thetaToRGB(thetaColor, r,g,b); o->strokeR = r; o->strokeG = g; o->strokeB = b;
-        // brighten fill a bit
-        o->fillR = std::min(1.f, r + 0.5f); o->fillG = std::min(1.f, g + 0.5f); o->fillB = std::min(1.f, b + 0.5f);
+        // exact fromThetaIncreasedColor behavior (factor = 0.5)
+        float fr=r, fg=g, fb=b; increaseBrightness(fr, fg, fb, 0.5f);
+        o->fillR = fr; o->fillG = fg; o->fillB = fb;
+        o->collisionMask = (unsigned int)colMask;
+        o->frictionMask = (unsigned int)frictionMask;
         o->body = dBodyCreate(g_world);
-        dMass m; dMassSetBox(&m, mass, w, h, 1); dBodySetMass(o->body, &m);
+        // scale density by pixel area for stability
+        float area = std::max(1.f, (float)w * (float)h);
+        float density = std::max(1e-4f, mass / area);
+        dMass m; dMassSetBox(&m, density, w, h, 1); dBodySetMass(o->body, &m);
         dBodySetPosition(o->body, cx, cy, 0);
         dMatrix3 R; dRFromAxisAndAngle(R, 0, 0, 1, rotationDeg * M_PI/180.0);
         dBodySetRotation(o->body, R);
@@ -128,12 +146,17 @@ namespace ODEBridge {
         g_objs.push_back(o);
     }
 
-    void AddBall(int cx, int cy, int r, float mass, float friction, float bounceFactor, float bounceVelocity, int /*colMask*/, int /*frictionMask*/, float /*rotationDeg*/, float thetaColor){
+    void AddBall(int cx, int cy, int r, float mass, float friction, float bounceFactor, float bounceVelocity, int colMask, int frictionMask, float /*rotationDeg*/, float thetaColor){
         ensureWorld();
         Obj *o = new Obj(); o->type = Obj::Ball; o->dynamic = true; o->r = (float)r; o->mu = friction; o->bounce = bounceFactor; o->bounceVel = bounceVelocity;
-        float rr,gg,bb; thetaToRGB(thetaColor, rr,gg,bb); o->strokeR=rr; o->strokeG=gg; o->strokeB=bb; o->fillR = std::min(1.f, rr+0.5f); o->fillG = std::min(1.f, gg+0.5f); o->fillB = std::min(1.f, bb+0.5f);
+        float rr,gg,bb; thetaToRGB(thetaColor, rr,gg,bb); o->strokeR=rr; o->strokeG=gg; o->strokeB=bb; float fr2=rr, fg2=gg, fb2=bb; increaseBrightness(fr2, fg2, fb2, 0.5f); o->fillR = fr2; o->fillG = fg2; o->fillB = fb2;
+        o->collisionMask = (unsigned int)colMask;
+        o->frictionMask = (unsigned int)frictionMask;
         o->body = dBodyCreate(g_world);
-        dMass m; dMassSetSphere(&m, mass, r); dBodySetMass(o->body, &m);
+        // density scaled by circular pixel area
+        float areaS = std::max(1.f, (float)M_PI * r * r);
+        float densityS = std::max(1e-4f, mass / areaS);
+        dMass m; dMassSetSphere(&m, densityS, r); dBodySetMass(o->body, &m);
         dBodySetPosition(o->body, cx, cy, 0);
         o->geom = dCreateSphere(g_space, r);
         dGeomSetBody(o->geom, o->body);
@@ -141,15 +164,17 @@ namespace ODEBridge {
         g_objs.push_back(o);
     }
 
-    void AddLine(int x1, int y1, int x2, int y2, float friction, int /*colMask*/, int /*frictionMask*/, float thetaColor){
+    void AddLine(int x1, int y1, int x2, int y2, float friction, int colMask, int frictionMask, float thetaColor, float thicknessPx){
         // Represent as a thin static box
         float dx = (float)(x2 - x1), dy = (float)(y2 - y1);
         float length = std::sqrt(dx*dx + dy*dy);
         float angle = std::atan2(dy, dx);
         float cx = (x1 + x2) * 0.5f, cy = (y1 + y2) * 0.5f;
         ensureWorld();
-        Obj *o = new Obj(); o->type = Obj::Line; o->dynamic = false; o->w = length; o->h = 2.0f; o->mu = friction; o->bounce = 0.0f; o->bounceVel = 0.0f;
+        Obj *o = new Obj(); o->type = Obj::Line; o->dynamic = false; o->w = length; o->h = std::max(1.f, thicknessPx); o->mu = friction; o->bounce = 0.0f; o->bounceVel = 0.0f;
         float r,g,b; thetaToRGB(thetaColor, r,g,b); o->strokeR=r; o->strokeG=g; o->strokeB=b; o->fillR=r; o->fillG=g; o->fillB=b;
+        o->collisionMask = (unsigned int)colMask;
+        o->frictionMask = (unsigned int)frictionMask;
         o->geom = dCreateBox(g_space, length, o->h, 1);
         dGeomSetData(o->geom, o);
         dGeomSetPosition(o->geom, cx, cy, 0);
@@ -200,11 +225,15 @@ namespace ODEBridge {
                 glBegin(GL_LINE_LOOP);
                 for (int i = 0; i < slices; ++i){ float t = i * d; glVertex2f(std::sinf(t) * o->r, std::cosf(t) * o->r); }
                 glEnd();
-            } else { // Line (thin box)
+            } else { // Line: draw as a thin quad for thickness
                 glColor4f(o->strokeR, o->strokeG, o->strokeB, 1);
-                glLineWidth(2);
-                glBegin(GL_LINES);
-                glVertex2f(-o->w/2, 0); glVertex2f(o->w/2, 0);
+                float halfL = o->w * 0.5f;
+                float halfT = o->h * 0.5f;
+                glBegin(GL_QUADS);
+                glVertex2f(-halfL, -halfT);
+                glVertex2f( halfL, -halfT);
+                glVertex2f( halfL,  halfT);
+                glVertex2f(-halfL,  halfT);
                 glEnd();
             }
             glPopMatrix();
