@@ -41,6 +41,9 @@ CfrmHenoc::CfrmHenoc( QWidget * parent, Qt::WindowFlags flags):QMainWindow(paren
 	myWorldProp.erp = 0.7f;
 	myWorldProp.lin = 0.25f;
 	myWorldProp.co = 0;
+    myWorldProp.fillBrightFactor = 0.5f;
+    myWorldProp.densityScale = 1.0f;
+    myWorldProp.lineThicknessPx = 2.0f;
 
 	scene = new DiagramScene(NULL);
 	scene->setSceneRect(QRectF(0, 0, 655, 517));
@@ -103,6 +106,7 @@ void CfrmHenoc::Play(){
             const QPoint p1 = view->mapFromScene(auxL->line().p1());
             const QPoint p2 = view->mapFromScene(auxL->line().p2());
             float thickness = auxL->pen().widthF();
+            if (thickness <= 0.0f) thickness = myWorldProp.lineThicknessPx;
             ODEBridge::AddLine(p1.x(), p1.y(), p2.x(), p2.y(), obj.getFriction(), obj.getColMask(), obj.getFrictionMask(), obj.getColor(), thickness);
         }
 
@@ -124,9 +128,10 @@ void CfrmHenoc::AddBox(){
 }
 
 void CfrmHenoc::AddLine(){
-	scene->setMode(DiagramScene::InsertItem);
-	scene->setItemType(3);
-	btnBox->setChecked(true);
+    scene->setMode(DiagramScene::InsertItem);
+    scene->setItemType(3);
+    scene->setDefaultLineWidth(myWorldProp.lineThicknessPx);
+    btnBox->setChecked(true);
 }
 
 void CfrmHenoc::AddCatapult(){
@@ -136,7 +141,7 @@ void CfrmHenoc::AddCatapult(){
 		item->setFlag(QGraphicsItem::ItemIsSelectable, false);
 		float tColor = (0);
 		item->obj.setColor( tColor );
-		((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 1));
+        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), myWorldProp.lineThicknessPx));
 		scene->addItem(item);
 		item->obj.setType(3);
 		item->obj.setFriction( 99 );
@@ -150,7 +155,7 @@ void CfrmHenoc::AddCatapult(){
 		item->setFlag(QGraphicsItem::ItemIsSelectable, false);
 		float tColor = (0);
 		item->obj.setColor( tColor );
-		((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 1));
+        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), myWorldProp.lineThicknessPx));
 		scene->addItem(item);
 		item->obj.setType(3);
 		item->obj.setFriction( 99 );
@@ -164,7 +169,7 @@ void CfrmHenoc::AddCatapult(){
 		item->setFlag(QGraphicsItem::ItemIsSelectable, false);
 		float tColor = (0);
 		item->obj.setColor( tColor );
-		((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 1));
+        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), myWorldProp.lineThicknessPx));
 		scene->addItem(item);
 		item->obj.setType(3);
 		item->obj.setFriction( 99 );
@@ -178,7 +183,7 @@ void CfrmHenoc::AddCatapult(){
 		item->setFlag(QGraphicsItem::ItemIsSelectable, false);
 		float tColor = (0);
 		item->obj.setColor( tColor );
-		((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 1));
+        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), myWorldProp.lineThicknessPx));
 		scene->addItem(item);
 		item->obj.setType(3);
 		item->obj.setFriction( 99 );
@@ -442,7 +447,7 @@ void CfrmHenoc::Open(){
                     item->setFlag(QGraphicsItem::ItemIsSelectable, true);
                     float tColor = (60.0f + (rand() % 90) - 45);
                     item->obj.setColor( tColor );
-                    ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 2));
+                    ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), myWorldProp.lineThicknessPx));
                     scene->addItem(item);
                     item->obj.setType(3);
                     item->obj.setFriction(friction);

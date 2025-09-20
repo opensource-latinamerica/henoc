@@ -18,6 +18,10 @@ struct Whstc {
 	float erp;
 	float lin;
 	float co;
+	// New rendering/physics tunables
+	float fillBrightFactor; // 0..1
+	float densityScale;     // multiplier for mass->density scaling
+	float lineThicknessPx;  // default line thickness in pixels
 };
 
 using namespace std;

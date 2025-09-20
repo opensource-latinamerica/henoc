@@ -25,6 +25,7 @@ public:
         { return myLineColor; }
     void setLineColor(const QColor &color);
     void setItemColor(const QColor &color);
+    void setDefaultLineWidth(qreal w) { m_defaultLineWidth = w; }
 
 public slots:
 	void setMode(Mode mode);
@@ -48,8 +49,9 @@ private:
 	bool leftButtonDown;
 	QPointF startPoint;
 	//QGraphicsLineItem *line;
-	QColor myItemColor;
-	QColor myLineColor;
+    QColor myItemColor;
+    QColor myLineColor;
+    qreal m_defaultLineWidth = 2.0;
 };
 
 QColor fromThetaIncreasedColor(float theta, float factor);

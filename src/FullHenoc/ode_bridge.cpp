@@ -27,6 +27,8 @@ namespace {
     dSpaceID g_space = 0;
     dJointGroupID g_contactGroup = 0;
     std::list<Obj*> g_objs;
+    float g_fillBright = 0.5f;
+    float g_densityScale = 1.0f;
 
     inline void ensureWorld(){
         if (g_world) return;
@@ -116,6 +118,9 @@ namespace ODEBridge {
         dWorldSetContactMaxCorrectingVel(g_world, p.cmv);
         dWorldSetContactSurfaceLayer(g_world, p.fcs);
         dWorldSetGravity(g_world, 0, p.gravity, 0);
+        // Store global tunables
+        g_fillBright = p.fillBrightFactor;
+        g_densityScale = p.densityScale;
     }
 
     void Clear(){
@@ -127,15 +132,16 @@ namespace ODEBridge {
         ensureWorld();
         Obj *o = new Obj(); o->type = Obj::Box; o->dynamic = true; o->w = (float)w; o->h = (float)h; o->mu = friction; o->bounce = bounceFactor; o->bounceVel = bounceVelocity;
         float r,g,b; thetaToRGB(thetaColor, r,g,b); o->strokeR = r; o->strokeG = g; o->strokeB = b;
-        // exact fromThetaIncreasedColor behavior (factor = 0.5)
-        float fr=r, fg=g, fb=b; increaseBrightness(fr, fg, fb, 0.5f);
+        // exact fromThetaIncreasedColor behavior with configurable factor
+        float fr=r, fg=g, fb=b; increaseBrightness(fr, fg, fb, g_fillBright);
         o->fillR = fr; o->fillG = fg; o->fillB = fb;
         o->collisionMask = (unsigned int)colMask;
         o->frictionMask = (unsigned int)frictionMask;
         o->body = dBodyCreate(g_world);
-        // scale density by pixel area for stability
+        // scale density by pixel area, with global densityScale multiplier
         float area = std::max(1.f, (float)w * (float)h);
-        float density = std::max(1e-4f, mass / area);
+        float density = std::max(1e-4f, (mass / area));
+        density *= g_densityScale;
         dMass m; dMassSetBox(&m, density, w, h, 1); dBodySetMass(o->body, &m);
         dBodySetPosition(o->body, cx, cy, 0);
         dMatrix3 R; dRFromAxisAndAngle(R, 0, 0, 1, rotationDeg * M_PI/180.0);
@@ -149,13 +155,14 @@ namespace ODEBridge {
     void AddBall(int cx, int cy, int r, float mass, float friction, float bounceFactor, float bounceVelocity, int colMask, int frictionMask, float /*rotationDeg*/, float thetaColor){
         ensureWorld();
         Obj *o = new Obj(); o->type = Obj::Ball; o->dynamic = true; o->r = (float)r; o->mu = friction; o->bounce = bounceFactor; o->bounceVel = bounceVelocity;
-        float rr,gg,bb; thetaToRGB(thetaColor, rr,gg,bb); o->strokeR=rr; o->strokeG=gg; o->strokeB=bb; float fr2=rr, fg2=gg, fb2=bb; increaseBrightness(fr2, fg2, fb2, 0.5f); o->fillR = fr2; o->fillG = fg2; o->fillB = fb2;
+        float rr,gg,bb; thetaToRGB(thetaColor, rr,gg,bb); o->strokeR=rr; o->strokeG=gg; o->strokeB=bb; float fr2=rr, fg2=gg, fb2=bb; increaseBrightness(fr2, fg2, fb2, g_fillBright); o->fillR = fr2; o->fillG = fg2; o->fillB = fb2;
         o->collisionMask = (unsigned int)colMask;
         o->frictionMask = (unsigned int)frictionMask;
         o->body = dBodyCreate(g_world);
-        // density scaled by circular pixel area
+        // density scaled by circular pixel area, with global densityScale
         float areaS = std::max(1.f, (float)M_PI * r * r);
         float densityS = std::max(1e-4f, mass / areaS);
+        densityS *= g_densityScale;
         dMass m; dMassSetSphere(&m, densityS, r); dBodySetMass(o->body, &m);
         dBodySetPosition(o->body, cx, cy, 0);
         o->geom = dCreateSphere(g_space, r);

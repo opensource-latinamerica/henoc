@@ -23,7 +23,8 @@ DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent): QGraphicsScene(par
 	myItemType = 0;
 	itemx = 0;
 	myItemColor = Qt::white;
-	myLineColor = Qt::black;
+    myLineColor = Qt::black;
+    m_defaultLineWidth = 2.0;
 }
 
 void DiagramScene::setLineColor(const QColor &color)
@@ -140,17 +141,17 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent){
 				((QGraphicsEllipseItem*)(item))->setBrush(fromThetaIncreasedColor(tColor, 0.5));
 				//item = new QGraphicsEllipseItem(10,10,20,20);
 			}
-			if(3 == myItemType ){
-				item = new HLine(QLineF(mouseEvent->scenePos(), mouseEvent->scenePos()));
-				((HLine *)item)->obj.setType(3);
-				item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-				float tColor = (60.0f + (rand() % 90) - 45);
-				((HLine *)item)->obj.setColor( tColor );
-				((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 2));
-				addItem(item);
-				itemx = item;
-				break;
-			}
+            if(3 == myItemType ){
+                item = new HLine(QLineF(mouseEvent->scenePos(), mouseEvent->scenePos()));
+                ((HLine *)item)->obj.setType(3);
+                item->setFlag(QGraphicsItem::ItemIsSelectable, true);
+                float tColor = (60.0f + (rand() % 90) - 45);
+                ((HLine *)item)->obj.setColor( tColor );
+                ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), m_defaultLineWidth));
+                addItem(item);
+                itemx = item;
+                break;
+            }
 			//item->setBrush(myItemColor);
 			//item->setFlag(QGraphicsItem::ItemIsMovable, true);
 			item->setFlag(QGraphicsItem::ItemIsSelectable, true);
