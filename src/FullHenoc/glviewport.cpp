@@ -2,6 +2,14 @@
 #include <QPainter>
 #include <QElapsedTimer>
 #include <cmath>
+// Toggle ODE-backed simulation (1) vs. built-in painter physics (0)
+#ifndef USE_ODE_BRIDGE
+#define USE_ODE_BRIDGE 1
+#endif
+
+#if USE_ODE_BRIDGE
+#include "ode_bridge.h"
+#endif
 
 static inline float dot2(float ax, float ay, float bx, float by) {
     return ax * bx + ay * by;
@@ -36,25 +44,32 @@ GLViewport::GLViewport(QWidget *parent)
 void GLViewport::initializeGL()
 {
     initializeOpenGLFunctions();
-    glClearColor(0.15f, 0.18f, 0.22f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+#if USE_ODE_BRIDGE
+    ODEBridge::Init();
+#endif
 }
 
 void GLViewport::resizeGL(int w, int h)
 {
     glViewport(0, 0, w, h);
+#if USE_ODE_BRIDGE
+    ODEBridge::Resize(w, h);
+#endif
 }
 
 void GLViewport::paintGL()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    #if USE_ODE_BRIDGE
+    ODEBridge::StepAndDraw(1.0f);
+    #else
+    // Painter-based fallback simulation
     // Basic step: advance simple gravity
-    stepSimulation(1.0f); // one unit per timer tick; external code controls timer
+    stepSimulation(1.0f);
 
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing, true);
 
-    // Draw items
     for (const auto &it : m_items) {
         switch (it.type) {
         case GLItem::Box: {
@@ -82,74 +97,66 @@ void GLViewport::paintGL()
         }
         }
     }
-
-    // Small debug watermark so users know GL is live
-    p.setPen(Qt::yellow);
-    p.setFont(QFont("Sans", 10, QFont::DemiBold));
-    p.drawText(QRect(8, 8, width() - 16, 20), Qt::AlignLeft | Qt::AlignVCenter, QStringLiteral("Play Mode"));
+    #endif
 }
 
 void GLViewport::clearObjects()
 {
+    #if USE_ODE_BRIDGE
+    ODEBridge::Clear();
+    #else
     m_items.clear();
+    #endif
 }
 
 void GLViewport::addRectangle(int x, int y, int w, int h, float rotationDeg, const QColor &fill, const QColor &stroke, bool dynamic)
 {
+    #if USE_ODE_BRIDGE
+    (void)fill; (void)stroke; (void)dynamic;
+    ODEBridge::AddBox(x + w/2, y + h/2, w, h, 5.0f, 1.0f, 0.35f, 0.f, ~0u, ~0u, rotationDeg, 0.f);
+    #else
     GLItem it;
     it.type = GLItem::Box;
-    it.x = x;
-    it.y = y;
-    it.w = w;
-    it.h = h;
-    it.rotDeg = rotationDeg;
-    it.fill = fill;
-    it.stroke = stroke;
-    it.dynamic = dynamic;
+    it.x = x; it.y = y; it.w = w; it.h = h; it.rotDeg = rotationDeg;
+    it.fill = fill; it.stroke = stroke; it.dynamic = dynamic;
     m_items.push_back(it);
+    #endif
 }
 
 void GLViewport::addCircle(int cx, int cy, int r, const QColor &fill, const QColor &stroke, bool dynamic)
 {
-    GLItem it;
-    it.type = GLItem::Ball;
-    it.cx = cx;
-    it.cy = cy;
-    it.r = r;
-    it.fill = fill;
-    it.stroke = stroke;
-    it.dynamic = dynamic;
+    #if USE_ODE_BRIDGE
+    (void)fill; (void)stroke; (void)dynamic;
+    ODEBridge::AddBall(cx, cy, r, 5.0f, 1.0f, 0.35f, 0.f, ~0u, ~0u, 0.f, 0.f);
+    #else
+    GLItem it; it.type = GLItem::Ball; it.cx = cx; it.cy = cy; it.r = r;
+    it.fill = fill; it.stroke = stroke; it.dynamic = dynamic;
     m_items.push_back(it);
+    #endif
 }
 
 void GLViewport::addLine(int x1, int y1, int x2, int y2, const QColor &color, float width)
 {
-    GLItem it;
-    it.type = GLItem::Line;
-    it.x1 = x1;
-    it.y1 = y1;
-    it.x2 = x2;
-    it.y2 = y2;
-    it.stroke = color;
-    it.fill = Qt::transparent;
-    it.lw = width;
-    it.dynamic = false;
+    #if USE_ODE_BRIDGE
+    (void)color; (void)width;
+    ODEBridge::AddLine(x1, y1, x2, y2, 1.0f, ~0u, ~0u, 0.f);
+    #else
+    GLItem it; it.type = GLItem::Line; it.x1 = x1; it.y1 = y1; it.x2 = x2; it.y2 = y2; it.lw = width; it.stroke = color;
+    it.fill = Qt::transparent; it.dynamic = false;
     m_items.push_back(it);
+    #endif
 }
 
 void GLViewport::stepSimulation(float dt)
 {
     const float g = m_gravity;
     const float bottom = static_cast<float>(height());
-    const float mu = 0.25f; // slope friction coefficient
+    const float mu = 0.25f;
 
     for (auto &it : m_items) {
         if (!it.dynamic) continue;
 
-        // Integrate gravity
         it.vy += g * dt;
-
-        // Integrate positions using current velocity
         if (it.type == GLItem::Ball) {
             it.cx += it.vx * dt;
             it.cy += it.vy * dt;
@@ -158,7 +165,6 @@ void GLViewport::stepSimulation(float dt)
             it.y  += it.vy * dt;
         }
 
-        // Ground-plane (window bottom)
         if (it.type == GLItem::Ball) {
             if (it.cy + it.r > bottom) {
                 it.cy = bottom - it.r;
@@ -173,42 +179,35 @@ void GLViewport::stepSimulation(float dt)
             }
         }
 
-        // Collide with each line and apply slope friction
         for (const auto &ln : m_items) {
             if (ln.type != GLItem::Line) continue;
-            // Line direction and upward normal
             float dx = ln.x2 - ln.x1;
             float dy = ln.y2 - ln.y1;
             float len = length2(dx, dy);
             if (len < 1e-5f) continue;
-            float tx = dx / len; // tangent unit vector along the line
+            float tx = dx / len;
             float ty = dy / len;
-            float nx = -ty;      // left normal
+            float nx = -ty;
             float ny = tx;
-            if (ny > 0.0f) { nx = -nx; ny = -ny; } // ensure normal points 'up'
+            if (ny > 0.0f) { nx = -nx; ny = -ny; }
 
             if (it.type == GLItem::Ball) {
                 float projx, projy, u;
                 closestPointOnSegment(it.cx, it.cy, ln.x1, ln.y1, ln.x2, ln.y2, projx, projy, u);
                 float dc = dot2(it.cx - ln.x1, it.cy - ln.y1, nx, ny);
                 if (u >= 0.0f && u <= 1.0f && dc <= it.r + 0.5f) {
-                    // Resolve penetration
                     float pen = it.r - dc;
                     if (pen > 0.0f) {
                         it.cx += nx * pen;
                         it.cy += ny * pen;
                     }
-                    // Decompose velocity
                     float vn = dot2(it.vx, it.vy, nx, ny);
                     float vt = dot2(it.vx, it.vy, tx, ty);
-                    // Kill inward normal component (bounce a bit)
                     if (vn < 0.0f) vn = (std::fabs(vn) < 0.8f) ? 0.0f : (-0.2f * vn);
                     else if (vn < 0.1f) vn = 0.0f;
-                    // Add gravity along tangent and apply friction
                     float at = dot2(0.0f, g, tx, ty);
                     vt += at * dt;
                     vt *= (1.0f - mu * dt);
-                    // Recompose velocity
                     it.vx = vn * nx + vt * tx;
                     it.vy = vn * ny + vt * ty;
                 }

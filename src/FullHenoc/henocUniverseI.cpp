@@ -5,7 +5,7 @@
  */
 
 
-#include <ode/source/objects.h>
+#include <ode/objects.h>
 #include <shapes.h>
 #include <fstream>
 #include <string>
@@ -13,6 +13,8 @@
 
 using HenocUniverse::vec2;
 using namespace HenocUniverseI;
+
+// Singleton instance is created on first HU_Init() call.
 
 Color Color::Transparent(0,0,0,0);
 Color Color::Black(0,0,0,1);
@@ -886,4 +888,75 @@ void HenocWrapper::setOdeW(const Whstc &p){
 	world.SetGravity(vec2(0,p.gravity));
 }
 
+// Public, minimal API wrappers for external code (Qt widget) ------------------
+namespace HenocUniverseI {
+    void HU_Init(){
+        static HenocWrapper instance; // constructs and sets singleton
+        (void)instance;
+        AppInstance.InitGl();
+        AppInstance.InitOde();
+    }
 
+    void HU_Resize(int w, int h){
+        AppInstance.Resize(w, h);
+    }
+
+    void HU_SetWorldParams(const Whstc &p){
+        AppInstance.setOdeW(p);
+    }
+
+    void HU_ClearSpace(){
+        // delete and clear all objects in space
+        for (Space::iterator it = AppInstance.space.begin(); it != AppInstance.space.end(); ++it)
+            delete *it;
+        AppInstance.space.clear();
+    }
+
+    static Color makeFill(float theta){ Color c(theta); c.IncreaseBrightness(0.5f); return c; }
+    static Color makeStroke(float theta){ return Color(theta); }
+
+    void HU_AddBox(int cx, int cy, int w, int h, float mass, float friction, float bounceFactor, float bounceVelocity, int colMask, int frictionMask, float rotationDeg, float thetaColor){
+        Block *b = new Block(vec2((float)cx, (float)cy), (float)w, (float)h);
+        b->GetFlatlandObject()->Property().density = std::max(0.001f, mass);
+        b->GetFlatlandObject()->Property().friction = friction;
+        b->GetFlatlandObject()->Property().bounceFactor = bounceFactor;
+        b->GetFlatlandObject()->Property().bounceVelocity = bounceVelocity;
+        b->GetFlatlandObject()->Property().collisionMask = (HenocUniverse::Mask)colMask;
+        b->GetFlatlandObject()->Property().frictionMask = (HenocUniverse::Mask)frictionMask;
+        b->Property().fillColor = makeFill(thetaColor);
+        b->Property().outlineColor = makeStroke(thetaColor);
+        b->GetFlatlandObject()->Rotate(rotationDeg);
+        b->Insert(AppInstance.space);
+    }
+
+    void HU_AddBall(int cx, int cy, int r, float mass, float friction, float bounceFactor, float bounceVelocity, int colMask, int frictionMask, float rotationDeg, float thetaColor){
+        Ball *ball = new Ball(vec2((float)cx, (float)cy), (float)r);
+        ball->GetFlatlandObject()->Property().density = std::max(0.001f, mass);
+        ball->GetFlatlandObject()->Property().friction = friction;
+        ball->GetFlatlandObject()->Property().bounceFactor = bounceFactor;
+        ball->GetFlatlandObject()->Property().bounceVelocity = bounceVelocity;
+        ball->GetFlatlandObject()->Property().collisionMask = (HenocUniverse::Mask)colMask;
+        ball->GetFlatlandObject()->Property().frictionMask = (HenocUniverse::Mask)frictionMask;
+        ball->Property().fillColor = makeFill(thetaColor);
+        ball->Property().outlineColor = makeStroke(thetaColor);
+        ball->GetFlatlandObject()->Rotate(rotationDeg);
+        ball->Insert(AppInstance.space);
+    }
+
+    void HU_AddLine(int x1, int y1, int x2, int y2, float friction, int colMask, int frictionMask, float thetaColor){
+        Line *ln = new Line(vec2((float)x1, (float)y1), vec2((float)x2, (float)y2));
+        // Set visual properties
+        ln->Property().outlineThickness = 2;
+        ln->Property().outlineColor = makeStroke(thetaColor);
+        // Physical surface properties live on the flatland object
+        ln->GetFlatlandObject()->Property().friction = friction;
+        ln->GetFlatlandObject()->Property().collisionMask = (HenocUniverse::Mask)colMask;
+        ln->GetFlatlandObject()->Property().frictionMask = (HenocUniverse::Mask)frictionMask;
+        ln->Insert(AppInstance.space);
+    }
+
+    void HU_StepAndDraw(float delta){
+        AppInstance.Step(delta);
+        AppInstance.Draw();
+    }
+}

@@ -241,12 +241,14 @@ namespace HenocUniverse{
 
     template<class G>
     Dynamic<G>::Dynamic(G *g, Body b) : geometry(g), body(b){
-        dGeomSetData(geometry->GetGeomID(), this);
-        dGeomSetBody(geometry->GetGeomID(), b);
+        // Some geometries may not back with an ODE geom; guard ODE calls
+        if (geometry->GetGeomID()){
+            dGeomSetData(geometry->GetGeomID(), this);
+            dGeomSetBody(geometry->GetGeomID(), b);
+        }
         dMatrix3 R;
         dReal theta = atan2(geometry->Axis(0).y, geometry->Axis(0).x);
         dRFromAxisAndAngle(R, 0, 0, 1, theta);
-        //dBodyInit(body, geometry->Center().x, geometry->Center().y, R);
         dBodySetPosition(body, geometry->Center().x, geometry->Center().y, 0);
         dBodySetRotation(body, R);
         SetMass(Object::Default().density);

@@ -13,6 +13,7 @@
 #include <HBall.h>
 
 #include <henocUniverse.h>
+#include "ode_bridge.h"
 #include <QVBoxLayout>
 #include "glviewport.h"
 
@@ -65,9 +66,9 @@ void CfrmHenoc::Play(){
     QList<QGraphicsItem*> lista = scene->items();
     int xa, ya, wa, ha;
     //glWidget->delSpace();
-    // Reset GL items and configure simple world params
+    // Reset world and configure ODE params
     static_cast<GLViewport*>(glWidget)->clearObjects();
-    static_cast<GLViewport*>(glWidget)->setGravity(myWorldProp.gravity);
+    ODEBridge::SetWorldParams(myWorldProp);
 	for(unsigned int i=0; i < lista.size(); i++){
 		lista.at(i);
 		xa = view->mapFromScene( lista.at(i)->mapToScene( lista.at(i)->boundingRect() )).boundingRect().x();  
@@ -81,26 +82,26 @@ void CfrmHenoc::Play(){
 
 		QRect fao(xa,ya,wa,ha);
 			
-		if(0 != auxR){
-			HObject obj = ((HBox*)auxR)->obj;
-			const QColor stroke = fromThetaColor(obj.getColor());
-			const QColor fill = fromThetaIncreasedColor(obj.getColor(), 0.5f);
-			static_cast<GLViewport*>(glWidget)->addRectangle(xa, ya, wa, ha, obj.getRotation(), fill, stroke, true);
-		}
+        if(0 != auxR){
+            HObject obj = ((HBox*)auxR)->obj;
+            const QPoint c = fao.center();
+            ODEBridge::AddBox(c.x(), c.y(), wa, ha,
+                              std::fabs(obj.getMass()), obj.getFriction(), obj.getBounceFactor(), obj.getBounceVelocity(),
+                              obj.getColMask(), obj.getFrictionMask(), obj.getRotation(), obj.getColor());
+        }
 		else if(0 != auxE){
 			div_t q;
 			q = div(ha,2);
-			HObject obj = ((HBall*)auxE)->obj;
-			const QColor stroke = fromThetaColor(obj.getColor());
-			const QColor fill = fromThetaIncreasedColor(obj.getColor(), 0.5f);
-			static_cast<GLViewport*>(glWidget)->addCircle(fao.center().x(), fao.center().y(), q.quot, fill, stroke, true);
-		}
+            HObject obj = ((HBall*)auxE)->obj;
+            ODEBridge::AddBall(fao.center().x(), fao.center().y(), q.quot,
+                               std::fabs(obj.getMass()), obj.getFriction(), obj.getBounceFactor(), obj.getBounceVelocity(),
+                               obj.getColMask(), obj.getFrictionMask(), obj.getRotation(), obj.getColor());
+        }
         else if(0 != auxL){
             HObject obj = ((HLine*)auxL)->obj;
-            const QColor stroke = fromThetaColor(obj.getColor());
             const QPoint p1 = view->mapFromScene(auxL->line().p1());
             const QPoint p2 = view->mapFromScene(auxL->line().p2());
-            static_cast<GLViewport*>(glWidget)->addLine(p1.x(), p1.y(), p2.x(), p2.y(), stroke, 2.0f);
+            ODEBridge::AddLine(p1.x(), p1.y(), p2.x(), p2.y(), obj.getFriction(), obj.getColMask(), obj.getFrictionMask(), obj.getColor());
         }
 
 	}

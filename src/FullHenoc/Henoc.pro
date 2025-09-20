@@ -19,7 +19,8 @@ SOURCES += main.cpp \
 	CfrmPeCaLi.cpp \
 	CfrmMundo.cpp \
 	CfrmHenoc.cpp \
-	glviewport.cpp
+	glviewport.cpp \
+	ode_bridge.cpp
 HEADERS += CfrmHenoc.h\
 	HObject.h\
 	HBox.h\
@@ -29,6 +30,7 @@ HEADERS += CfrmHenoc.h\
 	CfrmMundo.h \
 	diagramscene.h \
     glviewport.h \
+    ode_bridge.h \
     henocUniverseI.h
 RESOURCES += diagramscene.qrc
 

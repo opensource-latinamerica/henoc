@@ -7,20 +7,13 @@
 
 struct GLItem {
     enum Type { Box, Ball, Line } type;
-    // Common
     QColor stroke;
     QColor fill;
     bool dynamic = false;
-    // Kinematics (for simple gravity)
     float vx = 0.0f;
     float vy = 0.0f;
-
-    // Geometry
-    // Box: x,y,w,h, rotDeg
     float x = 0, y = 0, w = 0, h = 0, rotDeg = 0;
-    // Ball: cx, cy, r
     float cx = 0, cy = 0, r = 0;
-    // Line: x1,y1,x2,y2, width
     float x1 = 0, y1 = 0, x2 = 0, y2 = 0, lw = 1;
 };
 
@@ -41,5 +34,5 @@ protected:
 private:
     void stepSimulation(float dt);
     QVector<GLItem> m_items;
-    float m_gravity = 0.0f; // pixels per tick^2 (scaled externally)
+    float m_gravity = 0.0f;
 };

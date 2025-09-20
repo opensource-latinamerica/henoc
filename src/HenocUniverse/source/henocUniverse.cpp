@@ -264,11 +264,16 @@ void ContactList::Finalize(){
 }
 
 void ContactList::CreateJoints(dWorldID world, dJointGroupID contactGroup) const{
-	for (int i = 0; i < count; ++i){
-		const dContact &c = contacts[i];
-		dJointID joint = dJointCreateContact(world, contactGroup, &c);
+    for (int i = 0; i < count; ++i){
+        const dContact &c = contacts[i];
+        dJointID joint = dJointCreateContact(world, contactGroup, &c);
 
-		const dContactGeom &cg = c.geom;
-		dJointAttach(joint, dGeomGetBody(cg.g1), dGeomGetBody(cg.g2));
-	}
+        const dContactGeom &cg = c.geom;
+        // Some geometries may not have ODE geoms; fall back to object bodies
+        dBodyID b1 = 0;
+        dBodyID b2 = 0;
+        if (cg.g1) b1 = dGeomGetBody(cg.g1); else if (o1) b1 = o1->GetBody();
+        if (cg.g2) b2 = dGeomGetBody(cg.g2); else if (o2) b2 = o2->GetBody();
+        dJointAttach(joint, b1, b2);
+    }
 }
