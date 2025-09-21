@@ -37,7 +37,7 @@ CfrmHenoc::CfrmHenoc( QWidget * parent, Qt::WindowFlags flags):QMainWindow(paren
 	myWorldProp.delta = 0.15f; 	
 	myWorldProp.cmv = 1;
 	myWorldProp.fcs = 0.01f;
-	myWorldProp.gravity = 0.5f;
+    myWorldProp.gravity = 9.8f;
 	myWorldProp.erp = 0.7f;
 	myWorldProp.lin = 0.25f;
 	myWorldProp.co = 0;
@@ -105,11 +105,29 @@ void CfrmHenoc::Play(){
         }
         else if(0 != auxL){
             HObject obj = ((HLine*)auxL)->obj;
-            const QPoint p1 = view->mapFromScene(auxL->line().p1());
-            const QPoint p2 = view->mapFromScene(auxL->line().p2());
-            float thickness = auxL->pen().widthF();
-            if (thickness <= 0.0f) thickness = myWorldProp.lineThicknessPx;
-            ODEBridge::AddLine(p1.x(), p1.y(), p2.x(), p2.y(), obj.getFriction(), obj.getColMask(), obj.getFrictionMask(), obj.getColor(), thickness);
+            // Detect if this is a boundary (ENMARCA) line by scene coordinates
+            QPointF s1 = auxL->line().p1();
+            QPointF s2 = auxL->line().p2();
+            QRectF sr = scene->sceneRect();
+            auto approx = [](qreal a, qreal b){ return std::fabs(a-b) <= 0.5; };
+            bool isTop = approx(s1.y(), sr.top()) && approx(s2.y(), sr.top());
+            bool isBottom = approx(s1.y(), sr.bottom()) && approx(s2.y(), sr.bottom());
+            bool isLeft = approx(s1.x(), sr.left()) && approx(s2.x(), sr.left());
+            bool isRight = approx(s1.x(), sr.right()) && approx(s2.x(), sr.right());
+            static bool boundaryAdded = false;
+            if ((isTop || isBottom || isLeft || isRight)){
+                if (!boundaryAdded){
+                    boundaryAdded = true;
+                    ODEBridge::AddBoundaryWalls((int)sr.width(), (int)sr.height(), 1.0f);
+                }
+                // Skip adding this line as a regular ODE line; walls handle it
+            } else {
+                const QPoint p1 = view->mapFromScene(auxL->line().p1());
+                const QPoint p2 = view->mapFromScene(auxL->line().p2());
+                float thickness = auxL->pen().widthF();
+                if (thickness <= 0.0f) thickness = myWorldProp.lineThicknessPx;
+                ODEBridge::AddLine(p1.x(), p1.y(), p2.x(), p2.y(), obj.getFriction(), obj.getColMask(), obj.getFrictionMask(), obj.getColor(), thickness);
+            }
         }
 
 	}
@@ -143,8 +161,7 @@ void CfrmHenoc::AddCatapult(){
         item->setFlag(QGraphicsItem::ItemIsSelectable, false);
         float tColor = (0);
         item->obj.setColor( tColor );
-        qreal thick = std::max<qreal>(myWorldProp.lineThicknessPx, 8.0);
-        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), thick));
+        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 1.0));
         scene->addItem(item);
         item->obj.setType(3);
         item->obj.setFriction( 99 );
@@ -158,8 +175,7 @@ void CfrmHenoc::AddCatapult(){
         item->setFlag(QGraphicsItem::ItemIsSelectable, false);
         float tColor = (0);
         item->obj.setColor( tColor );
-        qreal thick = std::max<qreal>(myWorldProp.lineThicknessPx, 8.0);
-        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), thick));
+        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 1.0));
         scene->addItem(item);
         item->obj.setType(3);
         item->obj.setFriction( 99 );
@@ -173,8 +189,7 @@ void CfrmHenoc::AddCatapult(){
         item->setFlag(QGraphicsItem::ItemIsSelectable, false);
         float tColor = (0);
         item->obj.setColor( tColor );
-        qreal thick = std::max<qreal>(myWorldProp.lineThicknessPx, 8.0);
-        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), thick));
+        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 1.0));
         scene->addItem(item);
         item->obj.setType(3);
         item->obj.setFriction( 99 );
@@ -188,8 +203,7 @@ void CfrmHenoc::AddCatapult(){
         item->setFlag(QGraphicsItem::ItemIsSelectable, false);
         float tColor = (0);
         item->obj.setColor( tColor );
-        qreal thick = std::max<qreal>(myWorldProp.lineThicknessPx, 8.0);
-        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), thick));
+        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 1.0));
         scene->addItem(item);
         item->obj.setType(3);
         item->obj.setFriction( 99 );

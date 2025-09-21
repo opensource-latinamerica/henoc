@@ -246,4 +246,41 @@ namespace ODEBridge {
             glPopMatrix();
         }
     }
+
+    void AddBoundaryWalls(int width, int height, float wallThicknessPx){
+        ensureWorld();
+        float t = std::max(1.f, wallThicknessPx);
+        // Top: centered at y = -t/2
+        {
+            Obj *o = new Obj(); o->type = Obj::Line; o->dynamic = false; o->w = (float)width; o->h = t; o->mu = dInfinity; o->collisionMask = ~0u; o->frictionMask = ~0u; o->strokeR=0; o->strokeG=0; o->strokeB=0;
+            o->geom = dCreateBox(g_space, width, t, 1);
+            dGeomSetPosition(o->geom, width * 0.5, -t * 0.5, 0);
+            dGeomSetData(o->geom, o);
+            g_objs.push_back(o);
+        }
+        // Bottom: centered at y = height + t/2
+        {
+            Obj *o = new Obj(); o->type = Obj::Line; o->dynamic = false; o->w = (float)width; o->h = t; o->mu = dInfinity; o->collisionMask = ~0u; o->frictionMask = ~0u; o->strokeR=0; o->strokeG=0; o->strokeB=0;
+            o->geom = dCreateBox(g_space, width, t, 1);
+            dGeomSetPosition(o->geom, width * 0.5, height + t * 0.5, 0);
+            dGeomSetData(o->geom, o);
+            g_objs.push_back(o);
+        }
+        // Left: centered at x = -t/2
+        {
+            Obj *o = new Obj(); o->type = Obj::Line; o->dynamic = false; o->w = t; o->h = (float)height; o->mu = dInfinity; o->collisionMask = ~0u; o->frictionMask = ~0u; o->strokeR=0; o->strokeG=0; o->strokeB=0;
+            o->geom = dCreateBox(g_space, t, height, 1);
+            dGeomSetPosition(o->geom, -t * 0.5, height * 0.5, 0);
+            dGeomSetData(o->geom, o);
+            g_objs.push_back(o);
+        }
+        // Right: centered at x = width + t/2
+        {
+            Obj *o = new Obj(); o->type = Obj::Line; o->dynamic = false; o->w = t; o->h = (float)height; o->mu = dInfinity; o->collisionMask = ~0u; o->frictionMask = ~0u; o->strokeR=0; o->strokeG=0; o->strokeB=0;
+            o->geom = dCreateBox(g_space, t, height, 1);
+            dGeomSetPosition(o->geom, width + t * 0.5, height * 0.5, 0);
+            dGeomSetData(o->geom, o);
+            g_objs.push_back(o);
+        }
+    }
 }
