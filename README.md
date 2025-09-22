@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="branding/png/icon-h-gradient-256-128.png" alt="Henoc logo" width="128" height="128" />
+</p>
+
 # Henoc: Physics Sketch Animator
 
 Henoc is a sophisticated physics simulation software that brings user-drawn sketches to life. By leveraging a pattern recognition agent, Henoc can interpret and animate physics sketches from a simple blackboard interface, providing a dynamic and interactive way to visualize physics principles.

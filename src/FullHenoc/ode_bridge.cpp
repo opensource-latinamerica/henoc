@@ -226,11 +226,11 @@ namespace ODEBridge {
                 glColor4f(o->fillR, o->fillG, o->fillB, 1.0f);
                 glBegin(GL_TRIANGLE_FAN);
                 glVertex2f(0,0);
-                for (int i = 0; i <= slices; ++i){ float t = i * d; glVertex2f(std::sinf(t) * o->r, std::cosf(t) * o->r); }
+                for (int i = 0; i <= slices; ++i){ float t = i * d; glVertex2f(std::sin(t) * o->r, std::cos(t) * o->r); }
                 glEnd();
                 glColor4f(o->strokeR, o->strokeG, o->strokeB, 1);
                 glBegin(GL_LINE_LOOP);
-                for (int i = 0; i < slices; ++i){ float t = i * d; glVertex2f(std::sinf(t) * o->r, std::cosf(t) * o->r); }
+                for (int i = 0; i < slices; ++i){ float t = i * d; glVertex2f(std::sin(t) * o->r, std::cos(t) * o->r); }
                 glEnd();
             } else { // Line: draw as a thin quad for thickness
                 glColor4f(o->strokeR, o->strokeG, o->strokeB, 1);

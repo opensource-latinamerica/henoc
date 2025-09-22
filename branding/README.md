@@ -2,6 +2,13 @@
 
 This folder contains SVG sources for the Henoc logo and wordmark.
 
+## Usage and Rights
+
+- Copyright: The Henoc logos, wordmarks, and lockups in this folder are copyrighted creative assets owned by the Henoc project maintainers. They are not covered by the software license of the codebase.
+- Allowed use: You may use these assets as part of building, packaging, and distributing the Henoc application and its forks, as long as the use accurately represents the project and is non‑misleading.
+- Restricted use: Do not use the logos/wordmarks to imply sponsorship, endorsement, or affiliation; do not create derivative marks or modified logos; and do not use the assets for your own product or organization branding without permission.
+- Permission requests: If you want to use the Henoc logos/wordmarks outside of the project (e.g., marketing materials, articles, talks, apps, websites), please open a GitHub issue in this repository titled “Branding use request” describing the intended use, audience, visual context, and timeline. A maintainer will review and respond.
+
 ## Files
 
 - icon-h-solid-256.svg: Solid H mark (rounded square), monochrome.
