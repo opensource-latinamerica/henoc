@@ -1,7 +1,21 @@
+# Autotools (top-level generated)
+/.deps/
+/configure
+/configure~
+/aclocal.m4
+/autom4te.cache/
+/build-aux/
+/config.log
+/config.status
+/Makefile.in
+/Makefile
+
 # Build artifacts
 src/HenocUniverse/ode_install/
 src/HenocUniverse/.obj/
 src/HenocUniverse/libHenocUniverse.a
+branding/png/
+src/henoc
 
 # Qt build artifacts
 src/FullHenoc/Makefile*
@@ -22,9 +36,14 @@ src/HenocUniverse/ode/Makefile
 src/HenocUniverse/ode/Makefile.in
 src/HenocUniverse/ode/stamp-h1
 src/HenocUniverse/ode/m4/
+src/HenocUniverse/ode/**/.deps/
+src/HenocUniverse/ode/**/.libs/
+src/HenocUniverse/ode/**/*.o
+src/HenocUniverse/ode/**/*.lo
+src/HenocUniverse/ode/**/*.la
 
-# ODE submodule
-src/HenocUniverse/ode/*
+# Camera driver (ignored for now)
+src/HenocCameraDrv/**
 
 # OS generated files
 .DS_Store
@@ -44,7 +63,7 @@ Henoc
 
 # Qt files
 .qmake.stash
-Makefile
+/Makefile
 
 # Directories
 .obj/

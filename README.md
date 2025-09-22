@@ -52,15 +52,120 @@ cd henoc
 git submodule update --init --recursive
 ```
 
-## Example Dependencies (Debian/Ubuntu)
+## Example Dependencies
+
+Debian/Ubuntu
 
 ```bash
- sudo apt install autotools-dev autoconf automake libtool build-essential libfontconfig1  mesa-common-dev libglu1-mesa-dev qtbase5-dev qt5-qmake qtbase5-dev-tools -y
+sudo apt install -y \
+  autoconf automake libtool build-essential \
+  mesa-common-dev libglu1-mesa-dev \
+  qtbase5-dev qt5-qmake qtbase5-dev-tools \
+  # optional asset tools
+  inkscape librsvg2-bin imagemagick
 ```
 
-## Building the Project
+Fedora/RHEL
 
-The project includes a build that automates compiling the ODE submodule (Open Dynamics Engine) and the Henoc application.
+```bash
+sudo dnf install -y \
+  autoconf automake libtool make gcc-c++ \
+  mesa-libGL-devel mesa-libGLU-devel \
+  qt5-qtbase-devel qt5-qttools-devel \
+  # optional asset tools
+  inkscape librsvg2-tools ImageMagick
+```
+
+Arch Linux
+
+```bash
+sudo pacman -S --needed \
+  autoconf automake libtool base-devel \
+  mesa glu \
+  qt5-base qt5-tools \
+  # optional asset tools
+  inkscape librsvg imagemagick
+```
+
+## Build (Autotools, recommended)
+
+Two ways to build: without images (faster) or with images (generate PNGs from `branding/*.svg`).
+
+Prerequisites: see Dependencies above, plus `autoconf`, `automake`, `libtool`.
+
+Without images
+
+1. Initialize submodules:
+   ```bash
+   git submodule update --init --recursive
+   ```
+2. Generate the build system:
+   ```bash
+   bash ./autogen.sh
+   ```
+3. Configure (Qt5 qmake auto-detected; override with `--with-qmake=/path/to/qmake-qt5` if needed):
+   ```bash
+   ./configure
+   ```
+4. Build the app (also builds ODE on first run):
+   ```bash
+   make
+   ```
+   Note: the `assets` target is disabled by default. If you need PNGs, either
+   re-configure with `--enable-assets` and run `make assets`, or use the
+   fallback script `branding/export.sh`.
+5. Run:
+   ```bash
+   ./src/henoc
+   ```
+
+With images (generate PNG assets during make)
+
+1. Initialize submodules and generate the build system (same as above).
+2. Configure with assets enabled:
+   ```bash
+   ./configure --enable-assets
+   # optional: --with-qmake=/path/to/qmake-qt5
+   ```
+3. Generate PNGs from `branding/*.svg` (sizes: 16/32/64/128/256):
+   ```bash
+   make assets
+   ```
+   Notes: requires one of `inkscape` (preferred), `rsvg-convert` (librsvg), or ImageMagick `convert`.
+4. Build the app:
+   ```bash
+   make
+   ```
+5. Run:
+   ```bash
+   ./src/henoc
+   ```
+
+Tips
+- Override qmake at configure time with `--with-qmake=…`, or at build time with `make QMAKE=/path/to/qmake-qt5`.
+- ODE is built into `src/HenocUniverse/ode_install` by default; override with `./configure --with-ode-prefix=/abs/path`.
+ - `make assets` is only available when configured with `--enable-assets`.
+
+Quick start
+
+```bash
+git submodule update --init --recursive
+bash ./autogen.sh
+./configure            # or: ./configure --enable-assets
+make assets            # only if configured with --enable-assets
+make
+./src/henoc
+```
+
+Configure options
+
+- `--with-qmake=/path/to/qmake-qt5`: force a specific Qt5 qmake.
+- `--with-ode-prefix=/abs/path`: where ODE will be installed/built.
+- `--enable-assets`: enable Makefile-based SVG→PNG generation.
+
+## Building the Project (legacy src-only)
+
+The project also includes a legacy `src/Makefile` build that automates compiling the ODE submodule (Open Dynamics Engine) and the Henoc application.
 
 To build the Henoc application, follow these steps:
 
@@ -92,15 +197,19 @@ Once the build is complete, you can run the application from the `src` directory
 
 ## Cleaning the Project
 
-To remove all build artifacts, including the executable and intermediate object files, run the following command from the `src` directory:
-
-```bash
-make clean
-```
+- Top-level (Autotools):
+  ```bash
+  make clean        # delegates cleaning into src/
+  make distclean    # also removes configure results
+  ```
+- Legacy (src-only):
+  ```bash
+  cd src && make clean
+  ```
 
 ## Branding Assets
 
-SVG sources and export script live at the repository top level:
+SVG sources and export live at the repository top level:
 
 ```text
 branding/
@@ -109,12 +218,21 @@ branding/
   *.svg                # icon/wordmark/lockups
 ```
 
-Export locally:
+Export locally (two options):
 
+1) Via Makefile (recommended when configured with assets):
 ```bash
-cd branding
-./export.sh
+./configure --enable-assets
+make assets
 ```
+
+2) Via script (fallback when not using --enable-assets):
+```bash
+cd branding && ./export.sh
+```
+ 
+Note: If you run `make assets` without `--enable-assets`, it will fail with a
+message explaining how to enable it or use `branding/export.sh`.
 
 CI (GitHub Actions) automatically exports PNGs on push and uploads them as artifacts.
 

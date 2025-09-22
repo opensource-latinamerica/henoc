@@ -1,4 +1,7 @@
-# Top-level Makefile for the Henoc project
+## Top-level Makefile for the Henoc project
+
+# Allow overriding qmake from environment/command line
+QMAKE ?= qmake
 
 # Subdirectories
 HENOC_UNIVERSE_DIR = HenocUniverse
@@ -13,9 +16,10 @@ ODE_INSTALL_DIR_ABS = $(abspath $(HENOC_UNIVERSE_DIR)/ode_install)
 all: henoc
 
 # Target to build the FullHenoc application
+
 henoc: henochuniverse
 	@echo "--- Building henoc application ---"
-	@cd $(FULL_HENOC_DIR) && qmake Henoc.pro && $(MAKE)
+	@cd $(FULL_HENOC_DIR) && $(QMAKE) Henoc.pro && $(MAKE)
 
 # Target to build the HenocUniverse library
 henochuniverse: ode
