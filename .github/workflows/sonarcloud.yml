@@ -1,0 +1,72 @@
+name: SonarCloud
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  build-and-analyze:
+    name: Build and SonarCloud Analyze
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Set up JDK (for Sonar Scanner)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential autoconf automake libtool pkg-config \
+            qtbase5-dev qt5-qmake qtbase5-dev-tools \
+            mesa-common-dev libglu1-mesa-dev
+
+      - name: Bootstrap Autotools
+        run: |
+          bash ./autogen.sh
+
+      - name: Configure
+        run: |
+          ./configure
+
+      - name: Download build-wrapper for C/C++ analysis
+        run: |
+          mkdir -p $HOME/.sonar
+          curl -sSLo $HOME/.sonar/build-wrapper-linux-x86.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+          unzip -q $HOME/.sonar/build-wrapper-linux-x86.zip -d $HOME/.sonar/
+
+      - name: Build with build-wrapper
+        run: |
+          $HOME/.sonar/build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make -j$(nproc)
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >-
+            -Dsonar.cfamily.build-wrapper-output=bw-output
+
