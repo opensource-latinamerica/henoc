@@ -3,6 +3,7 @@ ACLOCAL_AMFLAGS = -I m4
 # Variables substituted by configure
 QMAKE = @QMAKE@
 ODE_PREFIX = @ODE_PREFIX@
+ASSET_SIZES = @ASSET_SIZES@
 
 .PHONY: all-local build-src clean-local distclean-local check-deps assets
 
@@ -21,7 +22,6 @@ distclean-local:
 # Branding assets
 if ASSETS
 
-ASSET_SIZES = @ASSET_SIZES@
 SVG_SRC = $(wildcard branding/*.svg)
 PNG_DIR = branding/png
 
