@@ -15,6 +15,7 @@ src/HenocUniverse/ode_install/
 src/HenocUniverse/.obj/
 src/HenocUniverse/libHenocUniverse.a
 src/henoc
+branding/png
 
 # Qt build artifacts
 src/FullHenoc/Makefile*
