@@ -32,7 +32,7 @@ ode:
 		echo "--- ODE library not found, building it now. ---"; \
 		cd $(ODE_DIR) && \
 		./bootstrap && \
-		./configure --prefix=$(ODE_INSTALL_DIR_ABS) --enable-double-precision && \
+		./configure --prefix=$(ODE_INSTALL_DIR_ABS) --enable-double-precision --enable-ou --enable-libccd && \
 		$(MAKE) && \
 		$(MAKE) install; \
 	else \
