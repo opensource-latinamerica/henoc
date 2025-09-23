@@ -195,6 +195,51 @@ Once the build is complete, you can run the application from the `src` directory
 ./henoc
 ```
 
+## Usage Examples & Tutorials
+
+### Load a Sample Scene
+1. Build Henoc and launch it with `./src/henoc` (Autotools build) or `./henoc` (legacy `src/` build).
+2. Choose `Archivo` → `Abrir XKI…` (or press `Ctrl+O`).
+3. Navigate to `examples/` and select a scene such as `balls01.xki` or `catapulta.xki`.
+4. Inspect the sketch in the editor, then click **Play** to watch the Open Dynamics Engine simulation.
+5. Use **Stop** to return to the editor, tweak objects (e.g., edit mass, friction, or line thickness), and replay to see the changes.
+
+### Draw Your First Sketch
+1. Start Henoc and click the **Box**, **Ball**, or **Line** toolbar buttons to enter insertion mode.
+2. Click-and-drag on the canvas to size each item. Right-click a line to adjust its thickness if desired.
+3. Select an object and press **Propiedades** to modify physics parameters such as mass or collision masks.
+4. When the scene is ready, press **Play**. Henoc embeds the sketch into the ODE world and animates it in the OpenGL viewport.
+5. Save your work with **Guardar XKI…**; files are stored in the XML-based `.xki` format and can be reloaded later.
+
+### Quick Catapult Tutorial
+1. Load `examples/catapulta.xki`.
+2. Review the boundary lines that form the ENMARCA frame—objects stay within these limits.
+3. In **Propiedades**, adjust world gravity (e.g., set it to `6.0`) and play the scene to see a slower arc.
+4. Edit the projectile ball: increase its mass to `12`, friction to `0.2`, and bounce factor to `0.6` for livelier rebounds.
+5. Re-run the simulation and observe how global and per-object settings combine to produce new behavior.
+
+### CLI Tips
+- Use the `--enable-assets` configure flag when you want freshly generated PNG icons for the UI.
+- To rebuild quickly during development: `make -C src` reuses the legacy Makefile and skips Autotools regeneration.
+- `make distclean` removes the configured build tree—helpful before packaging or running Sonar checks.
+
+### Further Reading
+- `docs/USER_GUIDE.md` – step-by-step walkthrough of the UI, configuration dialogs, and troubleshooting.
+- `docs/ARCHITECTURE.md` – system architecture, wiring, and workflows.
+- `docs/CLASS_DIAGRAMS.md` – consolidated ASCII class diagrams.
+
+## Contribution Guidelines
+
+We welcome community improvements. Please follow these steps when proposing changes:
+
+1. **Fork and branch** – create a feature branch (e.g., `feature/new-tool`) from `main`.
+2. **Keep builds green** – run `bash ./autogen.sh && ./configure && make` (or `make -C src`) to ensure Henoc compiles before opening a PR.
+3. **Coding style** – prefer Qt 5 idioms, keep files in ASCII, and add concise comments for non-obvious logic. Use existing patterns in `src/FullHenoc/` and `src/HenocUniverse/` as references.
+4. **Tests & demos** – when possible, update or add `.xki` examples and describe how to exercise the change. If the feature affects physics, include before/after notes in the PR.
+5. **Documentation** – update `docs/ARCHITECTURE.md`, `docs/CLASS_DIAGRAMS.md`, or the README when the architecture or user workflow changes. Include migration notes if you alter configuration flags.
+6. **Submit a pull request** – reference related issues, describe the motivation, list major changes, and mention manual testing performed.
+
+For larger contributions, open a discussion first to align on scope and design. Bug reports and feature requests are tracked in GitHub issues.
 ## Cleaning the Project
 
 - Top-level (Autotools):
@@ -233,8 +278,6 @@ cd branding && ./export.sh
  
 Note: If you run `make assets` without `--enable-assets`, it will fail with a
 message explaining how to enable it or use `branding/export.sh`.
-
-CI (GitHub Actions) automatically exports PNGs on push and uploads them as artifacts.
 
 ## Building With Different Qt Versions
 
@@ -303,5 +346,6 @@ Henoc targets Qt 5. If your system defaults to Qt 6, install Qt 5 side‑by‑si
 *   Soto Escobar Álvaro Antonio
 *   Valdez Guzmán Rubén
 *   Villanueva Cortez Eder
+
 
 [![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=opensource-latinamerica_henoc)
