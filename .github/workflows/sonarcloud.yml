@@ -51,6 +51,11 @@ jobs:
         run: |
           ./configure
 
+      - name: Clean previous build artifacts
+        run: |
+          rm -rf bw-output
+          make clean || true
+
       - name: Download build-wrapper for C/C++ analysis
         run: |
           mkdir -p $HOME/.sonar
