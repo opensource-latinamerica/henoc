@@ -227,17 +227,7 @@ Once the build is complete, you can run the application from the `src` directory
 - `docs/USER_GUIDE.md` – step-by-step walkthrough of the UI, configuration dialogs, and troubleshooting.
 - `docs/ARCHITECTURE.md` – system architecture, wiring, and workflows.
 - `docs/CLASS_DIAGRAMS.md` – consolidated ASCII class diagrams.
-
-## Contribution Guidelines
-
-We welcome community improvements. Please follow these steps when proposing changes:
-
-1. **Fork and branch** – create a feature branch (e.g., `feature/new-tool`) from `main`.
-2. **Keep builds green** – run `bash ./autogen.sh && ./configure && make` (or `make -C src`) to ensure Henoc compiles before opening a PR.
-3. **Coding style** – prefer Qt 5 idioms, keep files in ASCII, and add concise comments for non-obvious logic. Use existing patterns in `src/FullHenoc/` and `src/HenocUniverse/` as references.
-4. **Tests & demos** – when possible, update or add `.xki` examples and describe how to exercise the change. If the feature affects physics, include before/after notes in the PR.
-5. **Documentation** – update `docs/ARCHITECTURE.md`, `docs/CLASS_DIAGRAMS.md`, or the README when the architecture or user workflow changes. Include migration notes if you alter configuration flags.
-6. **Submit a pull request** – reference related issues, describe the motivation, list major changes, and mention manual testing performed.
+- `docs/CONTRIBUTING.md` – contribution workflow, coding style, and PR expectations.
 
 For larger contributions, open a discussion first to align on scope and design. Bug reports and feature requests are tracked in GitHub issues.
 ## Cleaning the Project
