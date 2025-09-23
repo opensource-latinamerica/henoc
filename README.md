@@ -227,9 +227,9 @@ Once the build is complete, you can run the application from the `src` directory
 - `docs/USER_GUIDE.md` – step-by-step walkthrough of the UI, configuration dialogs, and troubleshooting.
 - `docs/ARCHITECTURE.md` – system architecture, wiring, and workflows.
 - `docs/CLASS_DIAGRAMS.md` – consolidated ASCII class diagrams.
+- `docs/TROUBLESHOOTING.md` – Qt version tips and common fixes.
 - `docs/CONTRIBUTING.md` – contribution workflow, coding style, and PR expectations.
 
-For larger contributions, open a discussion first to align on scope and design. Bug reports and feature requests are tracked in GitHub issues.
 ## Cleaning the Project
 
 - Top-level (Autotools):
@@ -268,67 +268,6 @@ cd branding && ./export.sh
  
 Note: If you run `make assets` without `--enable-assets`, it will fail with a
 message explaining how to enable it or use `branding/export.sh`.
-
-## Building With Different Qt Versions
-
-Henoc targets Qt 5. If your system defaults to Qt 6, install Qt 5 side‑by‑side and ensure `qmake`/headers point to Qt 5 (e.g., `qtchooser` or distro‑specific packages).
-
-## Troubleshooting (Qt 5 only)
-
-- Qt 6 picked instead of Qt 5
-  - Symptom: build errors about missing Qt 5 modules or incompatible headers.
-  - Fix: install Qt 5 dev packages and ensure the Qt 5 `qmake` is used (e.g., `qmake-qt5`). On Debian/Ubuntu, `qt5-qmake` installs `qmake`. On Fedora, use `qt5-qtbase-devel` and `qmake-qt5`.
-  - Check: `qmake -v` should report Qt version 5.x.
-
-- Missing Qt 5 modules (widgets/opengl/xml)
-  - Symptom: compile fails finding `<QtWidgets/...>` or OpenGL headers.
-  - Fix (Debian/Ubuntu):
-    ```bash
-    sudo apt install qtbase5-dev qtbase5-dev-tools qttools5-dev-tools libglu1-mesa-dev mesa-common-dev
-    ```
-    Fix (Fedora):
-    ```bash
-    sudo dnf install qt5-qtbase-devel mesa-libGLU-devel
-    ```
-
-- ODE submodule not initialized
-  - Symptom: missing sources under `src/HenocUniverse/ode/` or submodule build errors.
-  - Fix:
-    ```bash
-    git submodule update --init --recursive
-    ```
-
-- ODE autotools warnings/errors during bootstrap
-  - Symptom: messages about obsolete macros or libtool warnings.
-  - Notes: warnings are typically harmless. If bootstrap fails, install autotools:
-    ```bash
-    # Debian/Ubuntu
-    sudo apt install autoconf automake libtool
-    # Fedora
-    sudo dnf install autoconf automake libtool
-    ```
-
-- OpenGL headers not found
-  - Symptom: missing GL/GLU headers.
-  - Fix (Debian/Ubuntu): `sudo apt install mesa-common-dev libglu1-mesa-dev`
-  - Fix (Fedora): `sudo dnf install mesa-libGL-devel mesa-libGLU-devel`
-
-- Branding export script fails
-  - Symptom: `export.sh` cannot find inkscape/rsvg/convert.
-  - Fix:
-    ```bash
-    # Choose one of the following exporters
-    sudo apt install inkscape
-    # or
-    sudo apt install librsvg2-bin   # provides rsvg-convert
-    # or
-    sudo apt install imagemagick
-    ```
-  - Also ensure it is executable: `chmod +x branding/export.sh`.
-
-- Runtime black screen or unexpected physics
-  - Ensure ENMARCA (frame) exists if you expect solid boundaries. The app auto‑adds ODE boundary walls when the frame lines are detected at the scene edges.
-  - Verify world settings (gravity defaults to 9.8). Adjust Fill Brightness and Density Scale in the World dialog as needed.
 
 ## Authors
 
