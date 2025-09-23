@@ -303,3 +303,5 @@ Henoc targets Qt 5. If your system defaults to Qt 6, install Qt 5 side‑by‑si
 *   Soto Escobar Álvaro Antonio
 *   Valdez Guzmán Rubén
 *   Villanueva Cortez Eder
+
+[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=opensource-latinamerica_henoc)
