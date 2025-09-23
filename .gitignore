@@ -52,6 +52,7 @@ Thumbs.db
 # IDE files
 .idea/
 .vscode/
+.idx/
 *.swp
 *~
 
