@@ -61,8 +61,7 @@ sudo apt install -y \
   autoconf automake libtool build-essential \
   mesa-common-dev libglu1-mesa-dev \
   qtbase5-dev qt5-qmake qtbase5-dev-tools \
-  # optional asset tools
-  inkscape librsvg2-bin imagemagick
+  inkscape librsvg2-bin imagemagick # optional asset tools
 ```
 
 Fedora/RHEL
@@ -72,8 +71,7 @@ sudo dnf install -y \
   autoconf automake libtool make gcc-c++ \
   mesa-libGL-devel mesa-libGLU-devel \
   qt5-qtbase-devel qt5-qttools-devel \
-  # optional asset tools
-  inkscape librsvg2-tools ImageMagick
+  inkscape librsvg2-tools ImageMagick # optional asset tools
 ```
 
 Arch Linux
@@ -83,8 +81,7 @@ sudo pacman -S --needed \
   autoconf automake libtool base-devel \
   mesa glu \
   qt5-base qt5-tools \
-  # optional asset tools
-  inkscape librsvg imagemagick
+  inkscape librsvg imagemagick # optional asset tools
 ```
 
 ## Build (Autotools, recommended)
@@ -195,16 +192,6 @@ Once the build is complete, you can run the application from the `src` directory
 ./henoc
 ```
 
-
-
-### Further Reading
-- `docs/USAGE_AND_EXAMPLES.md` – usage examples and tutorials.
-- `docs/USER_GUIDE.md` – step-by-step walkthrough of the UI, configuration dialogs, and troubleshooting.
-- `docs/ARCHITECTURE.md` – system architecture, wiring, and workflows.
-- `docs/CLASS_DIAGRAMS.md` – consolidated ASCII class diagrams.
-- `docs/TROUBLESHOOTING.md` – Qt version tips and common fixes.
-- `docs/CONTRIBUTING.md` – contribution workflow, coding style, and PR expectations.
-
 ## Cleaning the Project
 
 - Top-level (Autotools):
@@ -243,6 +230,15 @@ cd branding && ./export.sh
  
 Note: If you run `make assets` without `--enable-assets`, it will fail with a
 message explaining how to enable it or use `branding/export.sh`.
+
+### Further Reading
+- `docs/USAGE_AND_EXAMPLES.md` – usage examples and tutorials.
+- `docs/USER_GUIDE.md` – step-by-step walkthrough of the UI, configuration dialogs, and troubleshooting.
+- `docs/ARCHITECTURE.md` – system architecture, wiring, and workflows.
+- `docs/CLASS_DIAGRAMS.md` – consolidated ASCII class diagrams.
+- `docs/TROUBLESHOOTING.md` – Qt version tips and common fixes.
+- `docs/CONTRIBUTING.md` – contribution workflow, coding style, and PR expectations.
+- `docs/TODO.md` – pending tasks and future work.
 
 ## Authors
 

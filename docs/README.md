@@ -7,4 +7,5 @@ This directory contains reference material focused on the `FullHenoc` Qt front-e
 - `CLASS_DIAGRAMS.md` – consolidated ASCII class diagrams for both modules.
 - `TROUBLESHOOTING.md` – Qt version notes and common fixes.
 - `CONTRIBUTING.md` – contribution workflow, coding style, and PR expectations.
+- `TODO.md` – pending tasks and future work.
 
