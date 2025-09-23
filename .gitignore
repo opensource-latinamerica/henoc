@@ -68,3 +68,8 @@ Henoc
 # Directories
 .obj/
 ode_install/
+
+# Other files
+run_sonarq_scan.sh
+.scannerwork/
+bw-output/

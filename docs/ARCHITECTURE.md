@@ -36,18 +36,18 @@ Runtime structure (simplified)
 +------------+--------------+        QTimer->timeout
 | GLViewport (QOpenGLWidget)|<-----------------------+
 +------------+--------------+                        |
-             | uses                                   |
-             v                                        |
+             | uses                                  |
+             v                                       |
 +------------+--------------+                        |
 | ODEBridge namespace       |------------------------+
-| - builds ODE geoms        |    StepAndDraw() draws  |
+| - builds ODE geoms        |   StepAndDraw() draws  |
 | - applies Whstc params    |                        |
 +------------+--------------+                        |
              |                                       |
-             | leverages                              |
-             v                                        |
+             | leverages                             |
+             v                                       |
 +------------+--------------+                        |
-| HenocUniverse / ODE       |<------------------------+
+| HenocUniverse / ODE       |<-----------------------+
 | - World, Geometry, etc.   |
 +---------------------------+
 ```

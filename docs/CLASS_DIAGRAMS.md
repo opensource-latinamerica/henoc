@@ -14,26 +14,26 @@ FullHenoc relationships
             |
             | owns & configures
             v
-+-----------+---------------+        creates via insert mode
++-----------+-------------------+        creates via insert mode
 | DiagramScene : QGraphicsScene |----+---> HBox : QGraphicsRectItem
-| - mode / itemType            |    |     HBall : QGraphicsEllipseItem
-| - default line width         |    |     HLine : QGraphicsLineItem
-| - emits itemInserted()       |    |
-+-----------+---------------+    |     (each holds an HObject)
-            |                     |
-            | attaches            |
-            v                     |
-+-----------+---------------+     |
-| HObject (data carrier)    |<----+
-| - mass, friction, masks   |
-| - rotation, color, size   |
-+---------------------------+
+| - mode / itemType             |    |     HBall : QGraphicsEllipseItem
+| - default line width          |    |     HLine : QGraphicsLineItem
+| - emits itemInserted()        |    |
++-----------+-------------------+    |     (each holds an HObject)
+            |                        |
+            | attaches               |
+            v                        |
++-----------+----------------+       |
+| HObject (data carrier)     |<------+
+| - mass, friction, masks    |
+| - rotation, color, size    |
++----------------------------+
 
-+-----------+---------------+
++-----------+----------------+
 | GLViewport : QOpenGLWidget |
-| - setStepDelta()          |
-| - paintGL() -> ODEBridge  |
-+-----------+---------------+
+| - setStepDelta()           |
+| - paintGL() -> ODEBridge   |
++-----------+----------------+
             |
             | uses
             v
@@ -61,7 +61,7 @@ HenocUniverse core types
                       ^
                       |
           +-----------+------------+
-          | Shape implementations |
+          | Shape implementations  |
           | (circle, quad, terrain)|
           +-----------+------------+
 
@@ -93,7 +93,7 @@ HenocUniverse core types
 +-------------+-------------+
               |
               v
-+-------------+-------------+
++-------------+---------------+
 | ContactList                 |
 | - AddContact()/Finalize()   |
 | - CreateJoints()            |
@@ -115,7 +115,7 @@ HObject aggregation
 +------+-------+
        ^
        |
-+------+----+------+
++------+-------+--------+
 |  HBox   HBall   HLine |
 +-----------------------+
 ```

@@ -64,7 +64,14 @@ jobs:
 
       - name: Build with build-wrapper
         run: |
+          $HOME/.sonar/build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output bash autogen.sh
+          $HOME/.sonar/build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output ./configure
           $HOME/.sonar/build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make -j$(nproc)
+
+      - name: Inspect build-wrapper output
+        run: |
+          test -f bw-output/compile_commands.json
+          ls -R bw-output
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
@@ -73,5 +80,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >-
-            -Dsonar.cfamily.build-wrapper-output=bw-output
+            -Dsonar.cfamily.compile-commands=bw-output/compile_commands.json
 
