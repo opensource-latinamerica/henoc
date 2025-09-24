@@ -8,6 +8,7 @@
     <a href="https://github.com/opensource-latinamerica/henoc/issues"><img src="https://img.shields.io/github/issues/opensource-latinamerica/henoc" alt="GitHub issues"></a>
     <a href="https://github.com/opensource-latinamerica/henoc/pulls"><img src="https://img.shields.io/github/issues-pr/opensource-latinamerica/henoc" alt="GitHub pull requests"></a>
     <a href="https://github.com/opensource-latinamerica/henoc/graphs/contributors"><img src="https://img.shields.io/github/contributors/opensource-latinamerica/henoc" alt="Contributors"></a>
+    <br />
     <a href="https://github.com/opensource-latinamerica/henoc/commits/main"><img src="https://img.shields.io/github/last-commit/opensource-latinamerica/henoc" alt="GitHub last commit"></a>
     <a href="https://github.com/opensource-latinamerica/henoc"><img src="https://img.shields.io/github/repo-size/opensource-latinamerica/henoc" alt="GitHub repo size"></a>
     <a href="https://github.com/opensource-latinamerica/henoc"><img src="https://img.shields.io/github/languages/count/opensource-latinamerica/henoc" alt="GitHub language count"></a>
