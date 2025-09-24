@@ -2,6 +2,18 @@
   <img src="branding/png/icon-h-gradient-256-128.png" alt="Henoc logo" width="128" height="128" />
 </p>
 
+<p align="center">
+    <a href="https://github.com/opensource-latinamerica/henoc/actions/workflows/sonarcloud.yml"><img src="https://img.shields.io/github/actions/workflow/status/opensource-latinamerica/henoc/sonarcloud.yml?branch=main" alt="Build Status"></a>
+    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+    <a href="https://github.com/opensource-latinamerica/henoc/issues"><img src="https://img.shields.io/github/issues/opensource-latinamerica/henoc" alt="GitHub issues"></a>
+    <a href="https://github.com/opensource-latinamerica/henoc/pulls"><img src="https://img.shields.io/github/issues-pr/opensource-latinamerica/henoc" alt="GitHub pull requests"></a>
+    <a href="https://github.com/opensource-latinamerica/henoc/graphs/contributors"><img src="https://img.shields.io/github/contributors/opensource-latinamerica/henoc" alt="Contributors"></a>
+    <a href="https://github.com/opensource-latinamerica/henoc/commits/main"><img src="https://img.shields.io/github/last-commit/opensource-latinamerica/henoc" alt="GitHub last commit"></a>
+    <a href="https://github.com/opensource-latinamerica/henoc"><img src="https://img.shields.io/github/repo-size/opensource-latinamerica/henoc" alt="GitHub repo size"></a>
+    <a href="https://github.com/opensource-latinamerica/henoc"><img src="https://img.shields.io/github/languages/count/opensource-latinamerica/henoc" alt="GitHub language count"></a>
+    <a href="https://github.com/opensource-latinamerica/henoc"><img src="https://img.shields.io/github/languages/top/opensource-latinamerica/henoc" alt="GitHub top language"></a>
+</p>
+
 # Henoc: Physics Sketch Animator
 
 Henoc is a sophisticated physics simulation software that brings user-drawn sketches to life. By leveraging a pattern recognition agent, Henoc can interpret and animate physics sketches from a simple blackboard interface, providing a dynamic and interactive way to visualize physics principles.
@@ -231,7 +243,10 @@ cd branding && ./export.sh
 Note: If you run `make assets` without `--enable-assets`, it will fail with a
 message explaining how to enable it or use `branding/export.sh`.
 
-### Further Reading
+---
+
+## Further Reading
+
 - `docs/USAGE_AND_EXAMPLES.md` – usage examples and tutorials.
 - `docs/USER_GUIDE.md` – step-by-step walkthrough of the UI, configuration dialogs, and troubleshooting.
 - `docs/ARCHITECTURE.md` – system architecture, wiring, and workflows.
@@ -247,5 +262,22 @@ message explaining how to enable it or use `branding/export.sh`.
 *   Valdez Guzmán Rubén
 *   Villanueva Cortez Eder
 
+---
+
+## License
+
+MIT license [LICENSE](LICENSE.md) Copyright (c) 2022 - Henoc authors.
+
+Also, have the following in mind.
+
+THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
 
 [![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=opensource-latinamerica_henoc)

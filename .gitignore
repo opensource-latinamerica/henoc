@@ -74,3 +74,4 @@ ode_install/
 run_sonarq_scan.sh
 .scannerwork/
 bw-output/
+sonar-cfamily-reproducer.tar.xz
