@@ -263,8 +263,6 @@ message explaining how to enable it or use `branding/export.sh`.
 *   Valdez Guzmán Rubén
 *   Villanueva Cortez Eder
 
----
-
 ## License
 
 MIT license [LICENSE](LICENSE.md) Copyright (c) 2022 - Henoc authors.
@@ -278,7 +276,5 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
 
 [![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=opensource-latinamerica_henoc)
