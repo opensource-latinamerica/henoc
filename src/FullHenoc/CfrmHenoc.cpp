@@ -424,6 +424,39 @@ void CfrmHenoc::Open(){
 	}
 
     if (xmlReader.readNextStartElement()) {
+        // Safe drawing area inside ENMARCA borders (use current frame thickness)
+        const QRectF sr = scene->sceneRect();
+        int margin = 1;
+        if (m_enmarcaEnabled && !m_enmarcaLines.isEmpty()) {
+            qreal w = 0.0;
+            for (HLine *ln : m_enmarcaLines) {
+                if (!ln) continue;
+                qreal lw = ln->pen().widthF();
+                if (lw > w) w = lw;
+            }
+            margin = (int)std::ceil(w);
+            if (margin < 0) margin = 0;
+        }
+        const int safeLeft = (int)std::ceil(sr.left()) + margin;
+        const int safeTop = (int)std::ceil(sr.top()) + margin;
+        const int safeRight = (int)std::floor(sr.right()) - margin;
+        const int safeBottom = (int)std::floor(sr.bottom()) - margin;
+
+        auto clampInt = [](int v, int lo, int hi){ return v < lo ? lo : (v > hi ? hi : v); };
+        auto clampRectTopLeft = [&](int &x, int &y, int w, int h){
+            const int maxX = std::max(safeLeft, safeRight - std::max(0, w));
+            const int maxY = std::max(safeTop, safeBottom - std::max(0, h));
+            x = clampInt(x, safeLeft, maxX);
+            y = clampInt(y, safeTop, maxY);
+        };
+        auto clampSize = [&](int &w, int &h){
+            if (w > (safeRight - safeLeft)) w = std::max(1, safeRight - safeLeft);
+            if (h > (safeBottom - safeTop)) h = std::max(1, safeBottom - safeTop);
+        };
+        auto clampPoint = [&](int &x, int &y){
+            x = clampInt(x, safeLeft, safeRight);
+            y = clampInt(y, safeTop, safeBottom);
+        };
         if (xmlReader.name().toString() == "Sketch"){
             while(xmlReader.readNextStartElement()){
                 if(xmlReader.name().toString() == "Ball"){
@@ -438,12 +471,18 @@ void CfrmHenoc::Open(){
                     int frictionMask = xmlReader.attributes().value(QStringLiteral("frictionMask")).toInt();
                     int rotation = xmlReader.attributes().value(QStringLiteral("rotation")).toInt();
 
-                    HBall *item = new HBall(x, y, radius, radius);
+                    // Ensure ball fits inside safe rect
+                    int w = radius;
+                    int h = radius;
+                    clampSize(w, h);
+                    clampRectTopLeft(x, y, w, h);
+
+                    HBall *item = new HBall(x, y, w, h);
                     item->setFlag(QGraphicsItem::ItemIsSelectable, true);
                     scene->addItem(item);
                     item->obj.setType(2);
-                    item->obj.setWidth(radius);
-                    item->obj.setHeight(radius);
+                    item->obj.setWidth(w);
+                    item->obj.setHeight(h);
                     item->obj.setMass(mass);
                     item->obj.setFriction(friction);
                     item->obj.setBounceFactor(bounceFactor);
@@ -467,6 +506,10 @@ void CfrmHenoc::Open(){
                     int colMask = xmlReader.attributes().value(QStringLiteral("collisionMask")).toInt();
                     int frictionMask = xmlReader.attributes().value(QStringLiteral("frictionMask")).toInt();
                     int rotation = xmlReader.attributes().value(QStringLiteral("rotation")).toInt();
+
+                    // Ensure box fits inside safe rect
+                    clampSize(width, height);
+                    clampRectTopLeft(x, y, width, height);
 
                     HBox *item = new HBox(10, 10, 20, 20);
                     item->setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -502,6 +545,9 @@ void CfrmHenoc::Open(){
                     int colMask = xmlReader.attributes().value(QStringLiteral("collisionMask")).toInt();
                     int frictionMask = xmlReader.attributes().value(QStringLiteral("frictionMask")).toInt();
 
+                    // Clamp endpoints into safe rect
+                    clampPoint(x1, y1);
+                    clampPoint(x2, y2);
                     QLineF ml((qreal)x1, (qreal)y1, (qreal)x2, (qreal)y2);
                     HLine *item = new HLine(ml);
                     item->setFlag(QGraphicsItem::ItemIsSelectable, true);
