@@ -21,6 +21,7 @@ class GLViewport : public QOpenGLWidget, protected QOpenGLFunctions {
 public:
     explicit GLViewport(QWidget *parent = nullptr);
     void setStepDelta(float dt) { m_step = dt; }
+    void setLogicalSize(int w, int h) { m_logicalW = w; m_logicalH = h; }
     void clearObjects();
     void addRectangle(int x, int y, int w, int h, float rotationDeg, const QColor &fill, const QColor &stroke, bool dynamic = true);
     void addCircle(int cx, int cy, int r, const QColor &fill, const QColor &stroke, bool dynamic = true);
@@ -37,4 +38,6 @@ private:
     QVector<GLItem> m_items;
     float m_gravity = 0.0f;
     float m_step = 0.015f;
+    int m_logicalW = 0;
+    int m_logicalH = 0;
 };

@@ -54,7 +54,12 @@ void GLViewport::resizeGL(int w, int h)
 {
     glViewport(0, 0, w, h);
 #if USE_ODE_BRIDGE
-    ODEBridge::Resize(w, h);
+    // Keep a stable logical coordinate system if requested
+    if (m_logicalW > 0 && m_logicalH > 0) {
+        ODEBridge::Resize(m_logicalW, m_logicalH);
+    } else {
+        ODEBridge::Resize(w, h);
+    }
 #endif
 }
 

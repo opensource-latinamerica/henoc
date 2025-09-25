@@ -32,6 +32,7 @@ class DiagramScene;
 class QGraphicsItem;
 class QOpenGLWidget;
 class QTimer;
+class HLine;
 
 class CfrmHenoc : public QMainWindow, frmHenoc {
 	Q_OBJECT
@@ -58,6 +59,9 @@ class CfrmHenoc : public QMainWindow, frmHenoc {
 		DiagramScene *scene;
 		QTimer *timer;
 		Whstc myWorldProp;
+        // ENMARCA (frame) state and references
+        bool m_enmarcaEnabled = false;
+        QList<HLine*> m_enmarcaLines;
 };
 
 #endif

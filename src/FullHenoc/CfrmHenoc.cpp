@@ -16,11 +16,12 @@
 #include "ode_bridge.h"
 #include <QVBoxLayout>
 #include "glviewport.h"
+#include <cmath>
 
 using namespace std;
 
 CfrmHenoc::CfrmHenoc( QWidget * parent, Qt::WindowFlags flags):QMainWindow(parent, flags){
-	setupUi(this);
+    setupUi(this);
 	
 	connect(btnBox, &QPushButton::clicked, this, &CfrmHenoc::AddBox);
 	connect(btnLine, &QPushButton::clicked, this, &CfrmHenoc::AddLine);
@@ -46,8 +47,10 @@ CfrmHenoc::CfrmHenoc( QWidget * parent, Qt::WindowFlags flags):QMainWindow(paren
     myWorldProp.lineThicknessPx = 2.0f;
 
 	scene = new DiagramScene(NULL);
-	scene->setSceneRect(QRectF(0, 0, 655, 517));
-	view->setScene(scene);	
+    scene->setSceneRect(QRectF(0, 0, 655, 517));
+    view->setScene(scene);
+    // Keep scene anchored to top-left so its edges match the visible drawing area
+    view->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
 	connect(scene, &DiagramScene::itemInserted, this, &CfrmHenoc::itemInserted);
     connect(scene, &QGraphicsScene::selectionChanged, this, &CfrmHenoc::onSelectionChanged);
@@ -58,29 +61,60 @@ CfrmHenoc::CfrmHenoc( QWidget * parent, Qt::WindowFlags flags):QMainWindow(paren
     QWidget *page2 = stackedWidget->widget(1);
     if (!page2->layout()) {
         auto *v = new QVBoxLayout(page2);
-        v->setContentsMargins(0, 0, 0, 0);
+        // Match page 1 layout margins/spacing to avoid visible shifts
+        v->setContentsMargins(9, 9, 9, 9);
+        v->setSpacing(6);
+    } else {
+        // If it already had a layout, normalize margins/spacing too
+        page2->layout()->setContentsMargins(9, 9, 9, 9);
+        page2->layout()->setSpacing(6);
     }
-    page2->layout()->addWidget(glWidget);
+    // Wrap GL viewport in a QFrame to match QGraphicsView's default look
+    QFrame *glFrame = new QFrame(page2);
+    glFrame->setFrameShape(QFrame::StyledPanel);
+    glFrame->setFrameShadow(QFrame::Sunken);
+    auto *inner = new QVBoxLayout(glFrame);
+    inner->setContentsMargins(0, 0, 0, 0);
+    inner->setSpacing(0);
+    inner->addWidget(glWidget);
+    page2->layout()->addWidget(glFrame);
 
     timer = new QTimer(this);
     // Trigger repaints while playing
     connect(timer, &QTimer::timeout, glWidget, QOverload<>::of(&QOpenGLWidget::update));
-}	
+
+    // Initialize ENMARCA button to the "enable" icon (no frame yet)
+    m_enmarcaEnabled = false;
+    btnCatapult->setIcon(QIcon(QLatin1String(":/Botones/images/Botones/enmarcax.png")));
+    btnCatapult->setToolTip(tr("Activar enmarca"));
+
+    // Fix logical GL size to match the scene rectangle for 1:1 mapping
+    const QRectF sr = scene->sceneRect();
+    static_cast<GLViewport*>(glWidget)->setLogicalSize((int)std::lround(sr.width()), (int)std::lround(sr.height()));
+}
 
 void CfrmHenoc::Play(){
+    // Show the GL viewport so its size is up to date
+    stackedWidget->setCurrentIndex(1);
+
     QList<QGraphicsItem*> lista = scene->items();
-    int xa, ya, wa, ha;
-    //glWidget->delSpace();
     // Reset world and configure ODE params
     static_cast<GLViewport*>(glWidget)->clearObjects();
     ODEBridge::SetWorldParams(myWorldProp);
     static_cast<GLViewport*>(glWidget)->setStepDelta(myWorldProp.delta);
-	for(unsigned int i=0; i < lista.size(); i++){
-		lista.at(i);
-		xa = view->mapFromScene( lista.at(i)->mapToScene( lista.at(i)->boundingRect() )).boundingRect().x();  
-		ya = view->mapFromScene( lista.at(i)->mapToScene( lista.at(i)->boundingRect() )).boundingRect().y(); 
-		wa = view->mapFromScene( lista.at(i)->mapToScene( lista.at(i)->boundingRect() )).boundingRect().width(); 
-		ha = view->mapFromScene( lista.at(i)->mapToScene( lista.at(i)->boundingRect() )).boundingRect().height();
+
+    // Use scene coordinates directly (GL logical size is fixed to scene size)
+    const QRectF sr = scene->sceneRect();
+    // Ensure ODE/GL logical projection matches the scene size
+    ODEBridge::Resize((int)std::lround(sr.width()), (int)std::lround(sr.height()));
+
+    bool boundaryAdded = false; // reset per Play invocation
+    for(unsigned int i=0; i < lista.size(); i++){
+        const QRectF sbr = lista.at(i)->sceneBoundingRect();
+        const int xa = (int)std::lround(sbr.x());
+        const int ya = (int)std::lround(sbr.y());
+        const int wa = (int)std::lround(sbr.width());
+        const int ha = (int)std::lround(sbr.height());
 		
 		QGraphicsRectItem * auxR = qgraphicsitem_cast<QGraphicsRectItem*>(lista.at(i));		
 		QGraphicsEllipseItem * auxE = qgraphicsitem_cast<QGraphicsEllipseItem*>(lista.at(i));		
@@ -91,51 +125,48 @@ void CfrmHenoc::Play(){
         if(0 != auxR){
             HObject obj = ((HBox*)auxR)->obj;
             const QPoint c = fao.center();
-            ODEBridge::AddBox(c.x(), c.y(), wa, ha,
+            const int ow = (int)std::lround(obj.width());
+            const int oh = (int)std::lround(obj.height());
+            ODEBridge::AddBox(c.x(), c.y(), ow, oh,
                               std::fabs(obj.getMass()), obj.getFriction(), obj.getBounceFactor(), obj.getBounceVelocity(),
                               obj.getColMask(), obj.getFrictionMask(), obj.getRotation(), obj.getColor());
         }
-		else if(0 != auxE){
-			div_t q;
-			q = div(ha,2);
+        else if(0 != auxE){
             HObject obj = ((HBall*)auxE)->obj;
-            ODEBridge::AddBall(fao.center().x(), fao.center().y(), q.quot,
+            const int ow = (int)std::lround(obj.width());
+            const int oh = (int)std::lround(obj.height());
+            const int radius = std::max(1, (int)std::lround(std::min(ow, oh) * 0.5));
+            ODEBridge::AddBall(fao.center().x(), fao.center().y(), radius,
                                std::fabs(obj.getMass()), obj.getFriction(), obj.getBounceFactor(), obj.getBounceVelocity(),
                                obj.getColMask(), obj.getFrictionMask(), obj.getRotation(), obj.getColor());
         }
         else if(0 != auxL){
             HObject obj = ((HLine*)auxL)->obj;
-            // Detect if this is a boundary (ENMARCA) line by scene coordinates
-            QPointF s1 = auxL->line().p1();
-            QPointF s2 = auxL->line().p2();
-            QRectF sr = scene->sceneRect();
-            auto approx = [](qreal a, qreal b){ return std::fabs(a-b) <= 0.5; };
-            bool isTop = approx(s1.y(), sr.top()) && approx(s2.y(), sr.top());
-            bool isBottom = approx(s1.y(), sr.bottom()) && approx(s2.y(), sr.bottom());
-            bool isLeft = approx(s1.x(), sr.left()) && approx(s2.x(), sr.left());
-            bool isRight = approx(s1.x(), sr.right()) && approx(s2.x(), sr.right());
-            static bool boundaryAdded = false;
-            if ((isTop || isBottom || isLeft || isRight)){
+            // Detect if this is one of our ENMARCA lines using stored references
+            HLine *hline = static_cast<HLine*>(auxL);
+            bool isBoundary = m_enmarcaEnabled && m_enmarcaLines.contains(hline);
+            if (isBoundary){
                 if (!boundaryAdded){
                     boundaryAdded = true;
-                    ODEBridge::AddBoundaryWalls((int)sr.width(), (int)sr.height(), 1.0f);
+                    // Align to scene logical dimensions (same as GL logical size)
+                    ODEBridge::AddBoundaryWalls((int)std::lround(sr.width()), (int)std::lround(sr.height()), 1.0f);
                 }
                 // Skip adding this line as a regular ODE line; walls handle it
             } else {
-                const QPoint p1 = view->mapFromScene(auxL->line().p1());
-                const QPoint p2 = view->mapFromScene(auxL->line().p2());
+                // Use scene endpoints directly
+                const QPointF sp1 = auxL->mapToScene(auxL->line().p1());
+                const QPointF sp2 = auxL->mapToScene(auxL->line().p2());
+                const int x1 = (int)std::lround(sp1.x());
+                const int y1 = (int)std::lround(sp1.y());
+                const int x2 = (int)std::lround(sp2.x());
+                const int y2 = (int)std::lround(sp2.y());
                 float thickness = auxL->pen().widthF();
                 if (thickness <= 0.0f) thickness = myWorldProp.lineThicknessPx;
-                ODEBridge::AddLine(p1.x(), p1.y(), p2.x(), p2.y(), obj.getFriction(), obj.getColMask(), obj.getFrictionMask(), obj.getColor(), thickness);
+                ODEBridge::AddLine(x1, y1, x2, y2, obj.getFriction(), obj.getColMask(), obj.getFrictionMask(), obj.getColor(), thickness);
             }
         }
 
 	}
-
-
-
-    // Switch to the OpenGL page which hosts the GL viewport
-    stackedWidget->setCurrentIndex(1);
     glWidget->update();
 	//glWidget->setWorldParams(myWorldProp);		
 	timer->start( myWorldProp.fAnim );
@@ -155,60 +186,53 @@ void CfrmHenoc::AddLine(){
 }
 
 void CfrmHenoc::AddCatapult(){
-    {
-        QLineF ml( 0, 0, 655, 0 );
-        HLine *item = new HLine(ml);
-        item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-        float tColor = (0);
-        item->obj.setColor( tColor );
-        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 1.0));
-        scene->addItem(item);
-        item->obj.setType(3);
-        item->obj.setFriction( 99 );
-        item->obj.setColMask( ~0 );
-        item->obj.setFrictionMask( ~0 );
-    }
-	
-    {
-        QLineF ml( 655, 0,  655, 517 );
-        HLine *item = new HLine(ml);
-        item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-        float tColor = (0);
-        item->obj.setColor( tColor );
-        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 1.0));
-        scene->addItem(item);
-        item->obj.setType(3);
-        item->obj.setFriction( 99 );
-        item->obj.setColMask( ~0 );
-        item->obj.setFrictionMask( ~0 );
-    }
-	
-    {
-        QLineF ml( 0, 517, 655, 517 );
-        HLine *item = new HLine(ml);
-        item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-        float tColor = (0);
-        item->obj.setColor( tColor );
-        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 1.0));
-        scene->addItem(item);
-        item->obj.setType(3);
-        item->obj.setFriction( 99 );
-        item->obj.setColMask( ~0 );
-        item->obj.setFrictionMask( ~0 );
-    }
+    // Toggle ENMARCA (frame) on/off
+    if (!m_enmarcaEnabled) {
+        // Add frame lines matching the visible drawing area (viewport)
+        auto addFrameLine = [&](const QPointF &a, const QPointF &b){
+            HLine *item = new HLine(QLineF(a, b));
+            item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+            float tColor = 0.0f;
+            item->obj.setColor(tColor);
+            static const qreal kFrameWidth = 1.0;
+            static const int kFriction = 99;
+            QPen pen(fromThetaColor(tColor), kFrameWidth);
+            pen.setCosmetic(true);
+            ((QGraphicsLineItem*)item)->setPen(pen);
+            scene->addItem(item);
+            item->obj.setType(3);
+            item->obj.setFriction(kFriction);
+            item->obj.setColMask(~0);
+            item->obj.setFrictionMask(~0);
+            m_enmarcaLines.append(item);
+        };
 
-    {
-        QLineF ml( 0, 0, 0, 517 );
-        HLine *item = new HLine(ml);
-        item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-        float tColor = (0);
-        item->obj.setColor( tColor );
-        ((QGraphicsLineItem*)item)->setPen(QPen(fromThetaColor(tColor), 1.0));
-        scene->addItem(item);
-        item->obj.setType(3);
-        item->obj.setFriction( 99 );
-        item->obj.setColMask( ~0 );
-        item->obj.setFrictionMask( ~0 );
+        // Derive edges from the view's viewport so frame covers the full drawing space
+        const int vw = view->viewport()->width();
+        const int vh = view->viewport()->height();
+        const QPointF tl = view->mapToScene(QPoint(0, 0));
+        const QPointF topRight = view->mapToScene(QPoint(vw - 1, 0));
+        const QPointF bl = view->mapToScene(QPoint(0, vh - 1));
+        const QPointF br = view->mapToScene(QPoint(vw - 1, vh - 1));
+        addFrameLine(tl, topRight); // top
+        addFrameLine(topRight, br); // right
+        addFrameLine(bl, br); // bottom
+        addFrameLine(tl, bl); // left
+
+        m_enmarcaEnabled = true;
+        btnCatapult->setIcon(QIcon(QLatin1String(":/Botones/images/Botones/enmarcax.png")));
+        btnCatapult->setToolTip(tr("Desactivar enmarca"));
+    } else {
+        // Remove previously added frame lines
+        for (HLine *line : m_enmarcaLines) {
+            if (!line) continue;
+            if (line->scene() == scene) scene->removeItem(line);
+            delete line;
+        }
+        m_enmarcaLines.clear();
+        m_enmarcaEnabled = false;
+        btnCatapult->setIcon(QIcon(QLatin1String(":/Botones/images/Botones/enmarcax.png")));
+        btnCatapult->setToolTip(tr("Activar enmarca"));
     }
 }
 
