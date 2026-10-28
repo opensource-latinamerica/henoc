@@ -1,0 +1,58 @@
+name: Build
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build on Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential autoconf automake libtool pkg-config \
+            qtbase5-dev qt5-qmake qtbase5-dev-tools \
+            mesa-common-dev libglu1-mesa-dev
+
+      - name: Bootstrap Autotools
+        run: bash ./autogen.sh
+
+      - name: Configure
+        run: ./configure
+
+      - name: Build
+        run: make -j"$(nproc)"
+
+      - name: Collect build artifacts
+        run: |
+          shopt -s nullglob
+          mkdir -p artifact
+          for f in \
+            src/FullHenoc/henoc \
+            src/HenocUniverse/libHenocUniverse*.a \
+            src/HenocUniverse/ode_install/lib/libode.a; do
+            cp --parents "$f" artifact/
+          done
+          find artifact -type f | sort
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: henoc-linux-build
+          path: artifact
+          if-no-files-found: warn

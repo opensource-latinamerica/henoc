@@ -4,6 +4,7 @@
 
 <p align="center">
     <a href="https://github.com/opensource-latinamerica/henoc/actions/workflows/sonarcloud.yml"><img src="https://img.shields.io/github/actions/workflow/status/opensource-latinamerica/henoc/sonarcloud.yml?branch=main" alt="Build Status"></a>
+    <a href="https://github.com/opensource-latinamerica/henoc/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/opensource-latinamerica/henoc/build.yml?branch=main" alt="CI Build Status"></a>
     <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
     <a href="https://github.com/opensource-latinamerica/henoc/issues"><img src="https://img.shields.io/github/issues/opensource-latinamerica/henoc" alt="GitHub issues"></a>
     <a href="https://github.com/opensource-latinamerica/henoc/pulls"><img src="https://img.shields.io/github/issues-pr/opensource-latinamerica/henoc" alt="GitHub pull requests"></a>
@@ -46,6 +47,13 @@ Minimum/recommended versions to build and run Henoc:
 Optional (branding export):
 
 - Inkscape (preferred) or `rsvg-convert` (librsvg) or ImageMagick `convert`.
+
+## Continuous Integration
+
+GitHub Actions workflows:
+
+- `.github/workflows/build.yml` — builds the full project on Ubuntu (recursive submodule checkout, `autogen.sh`, `./configure`, `make`) on every push to `main`/`master` and every pull request. The resulting binaries (`henoc`, `libHenocUniverse.a`, ODE static lib) are uploaded as a workflow artifact named `henoc-linux-build`.
+- `.github/workflows/sonarcloud.yml` — full build wrapped by SonarCloud's build-wrapper for static analysis.
 
 ## Third‑Party Libraries
 
