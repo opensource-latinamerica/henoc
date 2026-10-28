@@ -43,7 +43,7 @@ jobs:
           shopt -s nullglob
           mkdir -p artifact
           for f in \
-            src/FullHenoc/henoc \
+            src/henoc \
             src/HenocUniverse/libHenocUniverse*.a \
             src/HenocUniverse/ode_install/lib/libode.a; do
             cp --parents "$f" artifact/
